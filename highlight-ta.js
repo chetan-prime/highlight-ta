@@ -1,15 +1,15 @@
 function HighlightTa() {
-	console.log("highlight-ta instantiated");
 	this.cntr = null;
+	this.compCntr = null;
 	this.div = null;
 	this.ta = null;
-
-	this.compCntr = null;
+	this.re = null;
+	this.mark = null;
 }
 
 
 HighlightTa.prototype.highlight = function(text) {
-	text = text.replace(/([A-Z][a-z0-9]*)/g, '<mark style="color: transparent;">$&</mark>');
+	text = text.replace(this.re, this.mark);
 	return text;
 }
 
@@ -107,7 +107,7 @@ HighlightTa.prototype.scratch = function(node) {
 	node.style.padding = "0px";
 	node.style.backgroundColor = "transparent";
 	node.style.border = "0px solid #000000";
-	node.style.borderRadius = "0px;
+	node.style.borderRadius = "0px";
 	node.style.overflow = "auto";
 }
 
@@ -180,12 +180,24 @@ HighlightTa.prototype.isDiv = function(node) {
 }
 
 
+HighlightTa.prototype.setMark = function(bgclr, pad, rds) {
+	this.mark = '<mark style="background-color: ' + bgclr + '; ' 
+			+ 'padding: ' + pad + '; ' 
+			+ 'border-radius: ' + rds + '; '
+			+ 'color: transparent;" >'
+			+ "$&" + '</mark>';
+}
+
+
+HighlightTa.prototype.setRegex = function(pattern, flags) {
+	this.re = new RegExp(pattern, flags);
+}
+
+
 HighlightTa.prototype.init = function(node) {
 	if(this.isDiv(node)) {
-		console.log("node is a div");
 		this.cleanUp();
 		this.cntr = node;
 		this.makeTa();
-		console.log("job done");
 	}
 }
