@@ -7,10 +7,6 @@ function HighlightTa() {
 	this.compCntr = null;
 }
 
-HighlightTa.prototype.delUpdate = function() {
-	window.setTimeout(this.update.call(this), 0);
-}
-
 
 HighlightTa.prototype.highlight = function(text) {
 	text = text.replace(/([A-Z][a-z0-9]*)/g, '<mark style="color: transparent;">$&</mark>');
@@ -31,7 +27,7 @@ HighlightTa.prototype.adjustBar = function() {
 }
 
 
-HighlightTa.prototype.update = function() {
+HighlightTa.prototype.onInput = function() {
 	this.div.innerHTML = this.newLines(this.ta.value);
 	this.div.innerHTML = this.highlight(this.div.innerHTML);
 
@@ -52,9 +48,18 @@ HighlightTa.prototype.onResize = function() {
 
 
 HighlightTa.prototype.addEvents = function() {
-	this.ta.addEventListener('input', this.delUpdate.bind(this), false);
+	this.ta.addEventListener('input', this.onInput.bind(this), false);
 	this.ta.addEventListener('scroll', this.onScroll.bind(this), false);
 	window.addEventListener('resize', this.onResize.bind(this), false);
+}
+
+
+HighlightTa.prototype.styleFont = function(node) {
+	node.style.fontFamily = this.compCntr.getPropertyValue('font-family');
+	node.style.fontSize = this.compCntr.getPropertyValue('font-size');
+	node.style.lineHeight = this.compCntr.getPropertyValue('line-height');
+	node.style.letterSpacing = this.compCntr.getPropertyValue('letter-spacing');
+	node.style.color = this.compCntr.getPropertyValue('color');
 }
 
 
@@ -70,10 +75,7 @@ HighlightTa.prototype.styleDiv = function() {
 	this.div.style.top = parseFloat(this.compCntr.getPropertyValue('padding-top')) + "px";
 	this.div.style.left = parseFloat(this.compCntr.getPropertyValue('padding-left')) + "px";
 
-	this.div.style.fontFamily = this.compCntr.getPropertyValue('font-family');
-	this.div.style.fontSize = this.compCntr.getPropertyValue('font-size');
-	this.div.style.lineHeight = this.compCntr.getPropertyValue('line-height');
-	this.div.style.letterSpacing = this.compCntr.getPropertyValue('letter-spacing');
+	this.styleFont(this.div);
 	this.div.style.color = "transparent";
 }
 
@@ -91,24 +93,31 @@ HighlightTa.prototype.styleTa = function() {
 	this.ta.style.paddingTop = this.compCntr.getPropertyValue('padding-top');
 	this.ta.style.paddingBottom = this.compCntr.getPropertyValue('padding-bottom');
 
-	this.ta.style.fontFamily = this.compCntr.getPropertyValue('font-family');
-	this.ta.style.fontSize = this.compCntr.getPropertyValue('font-size');
-	this.ta.style.lineHeight = this.compCntr.getPropertyValue('line-height');
-	this.ta.style.letterSpacing = this.compCntr.getPropertyValue('letter-spacing');
-	this.ta.style.color = this.compCntr.getPropertyValue('color');
+	this.styleFont(this.ta);
+}
+
+
+HighlightTa.prototype.scratch = function(node) {
+	node.style.position = "absolute";
+	node.style.display = "block";
+	node.style.top = "0px";
+	node.style.left = "0px";
+	node.style.boxStyling = "border-box";
+	node.style.margin = "0px";
+	node.style.padding = "0px";
+	node.style.backgroundColor = "transparent";
+	node.style.border = "0px solid #000000";
+	node.style.borderRadius = "0px;
+	node.style.overflow = "auto";
 }
 
 
 HighlightTa.prototype.setupDiv = function() {
-	this.div.style.position = "absolute";
-	this.div.style.display = "block";
+	this.scratch(this.div);
+
 	this.div.style.zIndex = "1"
-	this.div.style.boxStyling = "border-box";
-	this.div.style.margin = "0px";
-	this.div.style.padding = "0px";
 	this.div.style.whiteSpace = "pre-wrap";
 	this.div.style.wordWrap = "break-word";
-	this.div.style.border = "0px solid #000000";
 	this.div.style.overflow = "hidden";
 
 	this.styleDiv();
@@ -116,16 +125,9 @@ HighlightTa.prototype.setupDiv = function() {
 
 
 HighlightTa.prototype.setupTa = function() {
-	this.ta.style.position = "absolute";
-	this.ta.style.display = "block";
+	this.scratch(this.ta);
+
 	this.ta.style.zIndex = "2";
-	this.ta.style.top = "0px";
-	this.ta.style.left = "0px";
-	this.ta.style.boxStyling = "border-box";
-	this.ta.style.margin = "0px";
-	this.ta.style.backgroundColor = "transparent";
-	this.ta.style.border = "0px solid #000000";
-	this.ta.style.overflow = "auto";
 	this.ta.style.resize = "none";
 
 	this.styleTa();
