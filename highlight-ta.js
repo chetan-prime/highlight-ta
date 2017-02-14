@@ -20,6 +20,14 @@ HighlightTa.prototype.newLines = function(text) {
 }
 
 
+HighlightTa.prototype.removeHTML = function(text) {
+	text = text.replace(/&/g, '&amp');
+	text = text.replace(/</g, '&lt');
+	text = text.replace(/>/g, '&gt');
+	return text;
+}
+
+
 HighlightTa.prototype.adjustBar = function() {
 	this.div.style.width = (this.ta.clientWidth 
 			- parseFloat(this.compCntr.getPropertyValue('padding-left')) 
@@ -28,8 +36,13 @@ HighlightTa.prototype.adjustBar = function() {
 
 
 HighlightTa.prototype.onInput = function() {
-	this.div.innerHTML = this.newLines(this.ta.value);
-	this.div.innerHTML = this.highlight(this.div.innerHTML);
+	var text = this.ta.value;
+
+	text = this.removeHTML(text);
+	text = this.newLines(text);
+	text = this.highlight(text);
+
+	this.div.innerHTML = text;
 
 	this.adjustBar()
 }
