@@ -148,7 +148,7 @@ HighlightTa.prototype.scratch = function(node) {
 	node.style.display = "block";
 	node.style.top = "0px";
 	node.style.left = "0px";
-	//node.style.boxStyling = "border-box";
+	node.style.boxStyling = "border-box";
 	node.style.margin = "0px";
 	node.style.padding = "0px";
 	node.style.backgroundColor = "transparent";
@@ -161,7 +161,7 @@ HighlightTa.prototype.scratch = function(node) {
 HighlightTa.prototype.setupDiv = function() {
 	this.scratch(this.div);
 
-	this.div.style.zIndex = "1"
+	this.div.style.zIndex = "0"
 	this.div.style.whiteSpace = "pre-wrap";
 	this.div.style.wordWrap = "break-word";
 	this.div.style.overflow = "hidden";
@@ -173,7 +173,7 @@ HighlightTa.prototype.setupDiv = function() {
 HighlightTa.prototype.setupTa = function() {
 	this.scratch(this.ta);
 
-	this.ta.style.zIndex = "2";
+	this.ta.style.zIndex = "1";
 	this.ta.style.resize = "none";
 
 	this.styleTa();
@@ -224,6 +224,21 @@ HighlightTa.prototype.cleanUp = function() {
 
 HighlightTa.prototype.isDiv = function(node) {
 	return node.tagName === 'DIV';
+}
+
+
+HighlightTa.prototype.getTa = function() {
+	return this.ta;
+}
+
+
+HighlightTa.prototype.getDiv = function() {
+	return this.div;
+}
+
+
+HighlightTa.prototype.getText = function() {
+	return this.ta.value;
 }
 
 
