@@ -7,3 +7,5 @@ function highlightTaDemo() {
 	taHlght.setMark('#bbbbbb', '0px', '0px');
 	taHlght.init(document.getElementById('highlight-ta'));
 }
+
+highlightTaDemo();

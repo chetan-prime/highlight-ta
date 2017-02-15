@@ -1,10 +1,37 @@
 function HighlightTa() {
 	this.cntr = null;
 	this.compCntr = null;
+	this.compTa = null;
 	this.div = null;
 	this.ta = null;
 	this.re = null;
 	this.mark = null;
+}
+
+
+HighlightTa.prototype.resize = function(){
+	window.setTimeout(this.size.call(this), 0);
+}
+
+HighlightTa.prototype.size = function() {
+	var scrollLeft = window.pageXOffset;
+	var scrollTop = window.pageYOffset;
+
+	this.cntr.style.height = "auto";
+	this.ta.style.height = "auto";
+
+	if(this.ta.clientHeight < this.ta.scrollHeight) {
+		this.cntr.style.height = (this.ta.scrollHeight
+					+ parseFloat(this.compCntr.getPropertyValue('padding-top')) 
+					+ parseFloat(this.compCntr.getPropertyValue('padding-bottom'))
+					+ parseFloat(this.compTa.getPropertyValue('padding-top')) 
+					+ parseFloat(this.compTa.getPropertyValue('padding-bottom'))) + "px";
+	}
+
+	this.styleHeight(this.ta);
+	this.styleHeight(this.div);
+
+	window.scrollTo(scrollLeft, scrollTop);
 }
 
 
@@ -39,12 +66,13 @@ HighlightTa.prototype.onInput = function() {
 	var text = this.ta.value;
 
 	text = this.removeHTML(text);
-	text = this.newLines(text);
 	text = this.highlight(text);
+	text = this.newLines(text);
 
 	this.div.innerHTML = text;
 
-	this.adjustBar()
+	this.size();
+	this.adjustBar();
 }
 
 
@@ -76,14 +104,23 @@ HighlightTa.prototype.styleFont = function(node) {
 }
 
 
-HighlightTa.prototype.styleDiv = function() {
-	this.div.style.width = (this.cntr.clientWidth 
-				- parseFloat(this.compCntr.getPropertyValue('padding-left')) 
-				- parseFloat(this.compCntr.getPropertyValue('padding-right'))) + "px";
-	this.div.style.height = (this.cntr.clientHeight 
+HighlightTa.prototype.styleHeight = function(node) {
+	node.style.height = (this.cntr.clientHeight 
 				- parseFloat(this.compCntr.getPropertyValue('padding-top')) 
 				- parseFloat(this.compCntr.getPropertyValue('padding-bottom'))) + "px";
+}
 
+
+HighlightTa.prototype.styleWidth = function(node) {
+	node.style.width = (this.cntr.clientWidth 
+				- parseFloat(this.compCntr.getPropertyValue('padding-left')) 
+				- parseFloat(this.compCntr.getPropertyValue('padding-right'))) + "px";
+}
+
+
+HighlightTa.prototype.styleDiv = function() {
+	this.styleWidth(this.div);
+	this.styleHeight(this.div);
 
 	this.div.style.top = parseFloat(this.compCntr.getPropertyValue('padding-top')) + "px";
 	this.div.style.left = parseFloat(this.compCntr.getPropertyValue('padding-left')) + "px";
@@ -94,12 +131,8 @@ HighlightTa.prototype.styleDiv = function() {
 
 
 HighlightTa.prototype.styleTa = function() {
-	this.ta.style.width = (this.cntr.clientWidth 
-				- parseFloat(this.compCntr.getPropertyValue('padding-left')) 
-				- parseFloat(this.compCntr.getPropertyValue('padding-right'))) + "px";
-	this.ta.style.height = (this.cntr.clientHeight 
-				- parseFloat(this.compCntr.getPropertyValue('padding-top')) 
-				- parseFloat(this.compCntr.getPropertyValue('padding-bottom'))) + "px";
+	this.styleWidth(this.ta);
+	this.styleHeight(this.ta);
 
 	this.ta.style.paddingLeft = this.compCntr.getPropertyValue('padding-left');
 	this.ta.style.paddingRight = this.compCntr.getPropertyValue('padding-right');
@@ -115,11 +148,11 @@ HighlightTa.prototype.scratch = function(node) {
 	node.style.display = "block";
 	node.style.top = "0px";
 	node.style.left = "0px";
-	node.style.boxStyling = "border-box";
+	//node.style.boxStyling = "border-box";
 	node.style.margin = "0px";
 	node.style.padding = "0px";
 	node.style.backgroundColor = "transparent";
-	node.style.border = "0px solid #000000";
+	node.style.border = "1px solid #000000";
 	node.style.borderRadius = "0px";
 	node.style.overflow = "auto";
 }
@@ -162,6 +195,7 @@ HighlightTa.prototype.addTa = function() {
 	this.cntr.appendChild(this.ta);
 
 	this.compCntr = window.getComputedStyle(this.cntr, null);
+	this.compTa = window.getComputedStyle(this.ta, null);
 }
 
 
