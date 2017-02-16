@@ -3,9 +3,10 @@ function highlightTaDemo() {
 
 	var taHlght = new HighlightTa();
 
-	taHlght.setRegex('Brian', 'g');
-	taHlght.setMark('#bbbbbb', '0px', '0px');
-	taHlght.init(document.getElementById('highlight-ta'));
+	//taHlght.makeRegex('Brian', 'g');
+	//taHlght.setMark('#bbbbbb', '0px');
+	var re = new RegExp('Brian', 'g');
+	taHlght.init(document.getElementById('highlight-ta'), re, '#bbbbbb', '0px');
 }
 
 highlightTaDemo();

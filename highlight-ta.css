@@ -24,11 +24,11 @@ section {
 	max-height: 300px;
 	margin: 20px auto 20px auto;
 	padding: 10px;
-	border: 15px solid #dddddd;
+	border: 10px solid #dddddd;
 	border-radius: 10px;
-	box-sizing: border-box;
+	background-color: #ffffff;
 	font-family: 'Helvetica', 'Arial', sans-serif;
-	line-height: 1em;
+	line-height: 1.2em;
 	letter-spacing: 1px;
 	resize: none;
 }
