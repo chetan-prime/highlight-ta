@@ -38,12 +38,12 @@ HighlightTa.prototype.getSize = function() {
 HighlightTa.prototype.size = function() {
 	var scrollLeft = window.pageXOffset;
 	var scrollTop = window.pageYOffset;
-	
+
 	this.cntr.style.height = "auto";
 	this.ta.style.height = "auto";
 
-	if(this.ta.clientHeight < this.ta.scrollHeight) {
-		console.log("scroll height larger");
+	if(this.cntr.scrollHeight < this.ta.scrollHeight) {
+		console.log(this.cntr.scrollHeight + ", " + this.ta.scrollHeight);
 		this.cntr.style.height = this.getSize();
 	}
 
@@ -65,6 +65,7 @@ HighlightTa.prototype.highlight = function(text) {
 
 HighlightTa.prototype.newLines = function(text) {
 	text = text.replace(/\n$/g, '\n\n');
+
 	return text;
 }
 
@@ -73,6 +74,7 @@ HighlightTa.prototype.removeHTML = function(text) {
 	text = text.replace(/&/g, '&amp');
 	text = text.replace(/</g, '&lt');
 	text = text.replace(/>/g, '&gt');
+
 	return text;
 }
 
@@ -133,15 +135,15 @@ HighlightTa.prototype.styleHeight = function(inner, outer, comp) {
 }
 
 
-HighlightTa.prototype.styleWidth = function(node) {
-	node.style.width = (this.cntr.clientWidth 
-		- parseFloat(this.compCntr.getPropertyValue('padding-left')) 
-		- parseFloat(this.compCntr.getPropertyValue('padding-right'))) + "px";
+HighlightTa.prototype.styleWidth = function(inner, outer, comp) {
+	inner.style.width = (outer.clientWidth 
+		- parseFloat(comp.getPropertyValue('padding-left')) 
+		- parseFloat(comp.getPropertyValue('padding-right'))) + "px";
 }
 
 
 HighlightTa.prototype.styleDiv = function() {
-	this.styleWidth(this.div);
+	this.styleWidth(this.div, this.ta, this.compTa);
 	this.styleHeight(this.div, this.ta, this.compTa);
 
 	this.div.style.top = parseFloat(this.compCntr.getPropertyValue('padding-top')) + "px";
@@ -153,7 +155,7 @@ HighlightTa.prototype.styleDiv = function() {
 
 
 HighlightTa.prototype.styleTa = function() {
-	this.styleWidth(this.ta);
+	this.styleWidth(this.ta, this.cntr, this.compCntr);
 	this.styleHeight(this.ta, this.cntr, this.compCntr);
 
 	this.ta.style.paddingLeft = this.compCntr.getPropertyValue('padding-left');
@@ -174,8 +176,8 @@ HighlightTa.prototype.scratch = function(node) {
 	node.style.margin = "0px";
 	node.style.padding = "0px";
 	node.style.backgroundColor = "transparent";
-	node.style.border = "1px solid #000000";
-	//node.style.border = "0px solid #000000";
+	//node.style.border = "1px solid #000000";
+	node.style.border = "0px solid #000000";
 	node.style.borderRadius = "0px";
 	node.style.overflow = "auto";
 }
