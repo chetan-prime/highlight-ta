@@ -5,7 +5,7 @@ function HighlightTaObj() {
 	this.ta = null;
 	this.re = null;
 	this.mark = null;
-	this.compCntr = null;
+	this.comp = null;
 
 	this.boxSize = null;
 	this.fontSize = null;
@@ -24,7 +24,7 @@ HighlightTaObj.prototype.getText = function() {
 
 
 HighlightTaObj.prototype.getComp = function() {
-	return this.ta.compCntr;
+	return this.ta.comp;
 }
 
 
@@ -35,7 +35,9 @@ HighlightTaObj.prototype.setIndex = function(num) {
 		num = num.toString();
 	}
 
-	this.cntr.style.zIndex = num;
+	if(parseFloat(num)) {
+		this.cntr.style.zIndex = num;
+	}
 }
 
 
@@ -136,8 +138,9 @@ HighlightTaObj.prototype.addEvents = function() {
 
 
 HighlightTaObj.prototype.setMark = function(dclr) {
+	console.log(dclr);
 	if(typeof dclr === 'string') {
-		this.mark = '<mark class="' + dclr + '">$&</mark>';
+		this.mark = '<mark style="margin: 0px; padding: 0px; border: 0px; color: transparent;" class=" ' + dclr + '">$&</mark>';
 	}
 
 }
@@ -165,11 +168,11 @@ HighlightTaObj.prototype.fixNan = function(obj) {
 
 
 HighlightTaObj.prototype.styleFont = function(node) {
-	node.style.fontFamily = this.compCntr.getPropertyValue('font-family');
-	node.style.fontSize = this.compCntr.getPropertyValue('font-size');
-	node.style.lineHeight = this.compCntr.getPropertyValue('line-height');
-	node.style.letterSpacing = this.compCntr.getPropertyValue('letter-spacing');
-	node.style.color = this.compCntr.getPropertyValue('color');
+	node.style.fontFamily = this.comp.getPropertyValue('font-family');
+	node.style.fontSize = this.comp.getPropertyValue('font-size');
+	node.style.lineHeight = this.comp.getPropertyValue('line-height');
+	node.style.letterSpacing = this.comp.getPropertyValue('letter-spacing');
+	node.style.color = this.comp.getPropertyValue('color');
 }
 
 
@@ -269,20 +272,20 @@ HighlightTaObj.prototype.setupCntr = function(node) {
 		this.cntr.style.position = "relative";
 	}
 
-	this.compCntr = window.getComputedStyle(this.cntr, null);
+	this.comp = window.getComputedStyle(this.cntr, null);
 }
 
 
 HighlightTaObj.prototype.setupTares = function() {
-	this.boxSize = this.compCntr.getPropertyValue('box-sizing');
+	this.boxSize = this.comp.getPropertyValue('box-sizing');
 
-	this.fontSize = parseFloat(this.compCntr.getPropertyValue('font-size'));
-	this.lineHeight = parseFloat(this.compCntr.getPropertyValue('line-height'));
+	this.fontSize = parseFloat(this.comp.getPropertyValue('font-size'));
+	this.lineHeight = parseFloat(this.comp.getPropertyValue('line-height'));
 
-	this.padLeft = parseFloat(this.compCntr.getPropertyValue('padding-left'));
-	this.padRight = parseFloat(this.compCntr.getPropertyValue('padding-right'));
-	this.padTop = parseFloat(this.compCntr.getPropertyValue('padding-top'));
-	this.padBttm = parseFloat(this.compCntr.getPropertyValue('padding-bottom'));
+	this.padLeft = parseFloat(this.comp.getPropertyValue('padding-left'));
+	this.padRight = parseFloat(this.comp.getPropertyValue('padding-right'));
+	this.padTop = parseFloat(this.comp.getPropertyValue('padding-top'));
+	this.padBttm = parseFloat(this.comp.getPropertyValue('padding-bottom'));
 
 	this.tare = this.padTop + this.padBttm;
 
@@ -370,6 +373,10 @@ function HighlightTa() {
 
 		remove: function() {
 			hlta.cleanUp();
+		},
+
+		getText: function () {
+			return hlta.getText();
 		},
 
 		getComp: function() {

@@ -31,4 +31,5 @@ section {
 
 .mark-style {
 	background-color: rgba(80, 244, 66, 0.7);
+	border-radius: 2px;
 }
