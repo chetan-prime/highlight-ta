@@ -1,10 +1,10 @@
 function highlightTaDemo() {
 	console.log("highlightTaDemo() has started.");
 
-	var taHlght = new HighlightTa();
-
 	var re = new RegExp('Brian', 'g');
-	taHlght.init(document.getElementById('highlight-ta'), re, '#bbbbbb', '0px');
+
+	var taHlght = new HighlightTa(document.getElementById('highlight-div'), 
+			document.getElementById('highlight-ta'), re, "mark-style");
 }
 
 highlightTaDemo();
