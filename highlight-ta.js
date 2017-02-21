@@ -1,455 +1,445 @@
-function HighlightTaObj() {
-	//console.log("HighlightTaObj() created");
-	this.cntr = null;
-	this.div = null;
-	this.ta = null;
-	this.re = null;
-	this.mark = null;
-	this.comp = null;
-	this.corners = null;
-	this.modTop = null;
-	this.modBttm = null;
+function highlightta() {
+	//'private' variables
+	var cntr = null;
+	var div = null;
+	var ta = null;
+	var re = null;
+	var mark = null;
+	var comp = null;
+	var corners = null;
+	var modTop = null;
+	var modBttm = null;
 
-	this.boxSize = null;
-	this.width = null;
-	this.borderTop = null;
-	this.borderBttm = null;
-	this.borderRadTop = null;
-	this.borderRadBttm = null;
-	this.padLeft = null;
-	this.padRight = null;
-	this.padTop = null;
-	this.padBttm = null;
-}
+	var boxSize = null;
+	var width = null;
+	var borderTop = null;
+	var borderBttm = null;
+	var borderRadTop = null;
+	var borderRadBttm = null;
+	var padLeft = null;
+	var padRight = null;
+	var padTop = null;
+	var padBttm = null;
 
+	//initialize on instance
+	if(arguments) {
+		setup(arguments);
+	};
 
-HighlightTaObj.prototype.getText = function() {
-	return this.ta.value;
-}
-
-
-HighlightTaObj.prototype.getComp = function() {
-	return this.ta.comp;
-}
-
-
-HighlightTaObj.prototype.setIndex = function(num) {
-	num = this.fixNan(num);
-
-	if(typeof num === 'number') {
-		num = num.toString();
-	}
-
-	if(parseFloat(num)) {
-		this.cntr.style.zIndex = num;
-	}
-}
+	//'private' functions
+	function getText() {
+		return ta.value;
+	};
 
 
-HighlightTaObj.prototype.setMark = function(dclr) {
-	console.log(dclr);
-	if(typeof dclr === 'string') {
-		this.mark = '<mark style="margin: 0px; padding: 0px;'
-			+ 'border: 0px; color: transparent;" class=" ' 
-			+ dclr + '">$&</mark>';
-	}
-
-}
+	function getComp() {
+		return comp;
+	};
 
 
-HighlightTaObj.prototype.setRegExp = function(regex) {
-	if(regex instanceof RegExp) {
-		this.re = regex;
-	}
-}
+	function setIndex(num) {
+		num = fixNan(num);
+
+		if(typeof num === 'number') {
+			num = num.toString();
+		}
+
+		if(parseFloat(num)) {
+			cntr.style.zIndex = num;
+		}
+	};
 
 
-HighlightTaObj.prototype.highlight = function(text) {
-	if(this.re !== null) {
-		text = text.replace(this.re, this.mark);
-	}
-
-	return text;
-}
-
-
-HighlightTaObj.prototype.newLines = function(text) {
-	text = text.replace(/\n$/g, '\n\n');
-
-	return text;
-}
+	function setMark(dclr) {
+		if(typeof dclr === 'string') {
+			mark = '<mark style="margin: 0px; padding: 0px;'
+				+ 'border: 0px; color: transparent;" class=" ' 
+				+ dclr + '">$&</mark>';
+		}
+	};
 
 
-HighlightTaObj.prototype.removeHTML = function(text) {
-	text = text.replace(/&/g, '&amp');
-	text = text.replace(/</g, '&lt');
-	text = text.replace(/>/g, '&gt');
-
-	return text;
-}
+	function setRegExp(regex) {
+		if(regex instanceof RegExp) {
+			re = regex;
+		}
+	};
 
 
-HighlightTaObj.prototype.scrollbar = function() {
-	if(this.ta.clientHeight !== this.ta.scrollHeight) {
-		if(this.ta.style.overflowY !== 'scroll') {
-			if(this.corners) {
-				this.styleCorners();
+	function highlight(text) {
+		if(re !== null) {
+			text = text.replace(re, mark);
+		}
+
+		return text;
+	};
+
+
+	function newLines(text) {
+		text = text.replace(/\n$/g, '\n\n');
+
+		return text;
+	};
+
+
+	function removeHTML(text) {
+		text = text.replace(/&/g, '&amp');
+		text = text.replace(/</g, '&lt');
+		text = text.replace(/>/g, '&gt');
+
+		return text;
+	};
+
+
+	function scrollbar() {
+		if(ta.clientHeight !== ta.scrollHeight) {
+			if(ta.style.overflowY !== 'scroll') {
+				if(corners) {
+					styleCorners();
+				}
+
+				ta.style.overflowY = 'scroll';
 			}
+		}else if(ta.style.overflowY === 'scroll') {
+			ta.style.overflowY = 'hidden';
 
-			this.ta.style.overflowY = 'scroll';
+			if(corners) {
+				cancelCorners();
+			}
 		}
-	}else if(this.ta.style.overflowY === 'scroll') {
-		this.ta.style.overflowY = 'hidden';
+	};
 
-		if(this.corners) {
-			this.cancelCorners();
+
+	function setCorners() {
+		borderRadTop = parseFloat(comp.getPropertyValue('border-top-right-radius'));
+		borderRadBttm = parseFloat(comp.getPropertyValue('border-bottom-right-radius'));
+
+		borderRadTop = fixNan(borderRadTop);
+		borderRadBttm = fixNan(borderRadBttm);
+
+		modTop = (borderTop < borderRadTop) ? true : false;
+		modBttm = (borderBttm < borderRadBttm) ? true : false;
+	};
+
+
+	function modCorners(bool) {
+		if(typeof bool === 'boolean') {
+			corners = bool;
 		}
-	}
-}
+	};
 
 
-HighlightTaObj.prototype.setCorners = function() {
-	this.borderRadTop = parseFloat(this.comp.getPropertyValue('border-top-right-radius'));
-	this.borderRadBttm = parseFloat(this.comp.getPropertyValue('border-bottom-right-radius'));
+	function cancelCorners() {
+		if(modTop) {
+			cntr.style.borderTopRightRadius = borderRadTop + "px";
+		}	
 
-	this.borderRadTop = this.fixNan(this.borderRadTop);
-	this.borderRadBttm = this.fixNan(this.borderRadBttm);
-
-	this.modTop = (this.borderTop < this.borderRadTop) ? true : false;
-	this.modBttm = (this.borderBttm < this.borderRadBttm) ? true : false;
-}
-
-
-HighlightTaObj.prototype.modCorners = function(bool) {
-	if(typeof bool === 'boolean') {
-		this.corners = bool;
-	}
-}
+		if(modBttm) {
+			cntr.style.borderBottomRightRadius = borderRadBttm + "px";
+		}	
+	};
 
 
-HighlightTaObj.prototype.cancelCorners = function() {
-	if(this.modTop) {
-		this.cntr.style.borderTopRightRadius = this.borderRadTop + "px";
-	}	
+	function styleCorners() {
+		if(modTop) {
+			cntr.style.borderTopRightRadius = "0px";
+		}	
 
-	if(this.modBttm) {
-		this.cntr.style.borderBottomRightRadius = this.borderRadBttm + "px";
-	}	
-}
-
-
-HighlightTaObj.prototype.styleCorners = function() {
-	if(this.modTop) {
-		this.cntr.style.borderTopRightRadius = "0px";
-	}	
-
-	if(this.modBttm) {
-		this.cntr.style.borderBottomRightRadius = "0px";
-	}	
-}
+		if(modBttm) {
+			cntr.style.borderBottomRightRadius = "0px";
+		}	
+	};
 
 
-HighlightTaObj.prototype.size = function() {
-	this.scrollLeft = window.pageXOffset;
-	this.scrollTop = window.pageYOffset;
+	function size() {
+		scrollLeft = window.pageXOffset;
+		scrollTop = window.pageYOffset;
 
-	this.cntr.style.height = "auto";
-	this.ta.style.height = "auto";
+		cntr.style.height = "auto";
+		ta.style.height = "auto";
 
-	if(this.cntr.clientHeight < this.ta.scrollHeight) {
-		this.cntr.style.height = (this.ta.scrollHeight + this.tare) + "px";
-	}
+		if(cntr.clientHeight < ta.scrollHeight) {
+			cntr.style.height = (ta.scrollHeight + tare) + "px";
+		}
 
-	this.setTaHeight();
-	this.setTaWidth();
-	this.setDivHeight();
-	this.scrollbar();
-	this.setDivWidth();
+		setTaHeight();
+		setTaWidth();
+		setDivHeight();
+		scrollbar();
+		setDivWidth();
 
-	window.scrollTo(this.scrollLeft, this.scrollTop);
-}
-
-
-HighlightTaObj.prototype.onInput = function() {
-	var text = this.ta.value;
-
-	text = this.removeHTML(text);
-	text = this.highlight(text);
-	text = this.newLines(text);
-
-	this.div.innerHTML = text;
-
-	this.size();
-}
+		window.scrollTo(scrollLeft, scrollTop);
+	};
 
 
-HighlightTaObj.prototype.onScroll = function() {
-	this.div.scrollTop = this.ta.scrollTop;
-}
+	function onInput() {
+		var text = ta.value;
+
+		text = removeHTML(text);
+		text = highlight(text);
+		text = newLines(text);
+
+		div.innerHTML = text;
+
+		size();
+	};
 
 
-HighlightTaObj.prototype.onResize = function() {
-	if(this.width !== this.cntr.clientWidth) {
-		this.getTares();
-		this.styleTa();
-		this.styleDiv();
-	}
-}
+	function onScroll() {
+		div.scrollTop = ta.scrollTop;
+	};
 
 
-HighlightTaObj.prototype.removeEvents = function() {
-	this.ta.removeEventListener('input', this.onInput.bind(this), false);
-	this.ta.removeEventListener('scroll', this.onScroll.bind(this), false);
-	window.removeEventListener('resize', this.onResize.bind(this), false);
-}
+	function onResize() {
+		if(width !== cntr.clientWidth) {
+			getTares();
+			styleTa();
+			styleDiv();
+		}
+	};
 
 
-HighlightTaObj.prototype.addEvents = function() {
-	this.ta.addEventListener('input', this.onInput.bind(this), false);
-	this.ta.addEventListener('scroll', this.onScroll.bind(this), false);
-	window.addEventListener('resize', this.onResize.bind(this), false);
-}
+	function removeEvents() {
+		ta.removeEventListener('input', onInput, false);
+		ta.removeEventListener('scroll', onScroll, false);
+		window.removeEventListener('resize', onResize, false);
+	};
 
 
-HighlightTaObj.prototype.styleFont = function(node) {
-	node.style.fontFamily = this.comp.getPropertyValue('font-family');
-	node.style.fontSize = this.comp.getPropertyValue('font-size');
-	node.style.lineHeight = this.comp.getPropertyValue('line-height');
-	node.style.letterSpacing = this.comp.getPropertyValue('letter-spacing');
-	node.style.color = this.comp.getPropertyValue('color');
-}
+	function addEvents() {
+		ta.addEventListener('input', onInput, false);
+		ta.addEventListener('scroll', onScroll, false);
+		window.addEventListener('resize', onResize, false);
+	};
 
 
-HighlightTaObj.prototype.scratch = function(node) {
-	node.style.position = "absolute";
-	node.style.display = "block";
-	node.style.top = "0px";
-	node.style.left = "0px";
-	node.style.boxStyling = "border-box";
-	node.style.margin = "0px";
-	node.style.padding = "0px";
-	node.style.backgroundColor = "transparent";
-	node.style.border = "0px solid #000000";
-	node.style.borderRadius = "0px";
-	node.style.wordWrap = "break-word";
-	node.style.overflow = "hidden";
-	node.style.overflowX = "hidden";
-	node.style.overflowY = "hidden";
-}
+	function styleFont(node) {
+		node.style.fontFamily = comp.getPropertyValue('font-family');
+		node.style.fontSize = comp.getPropertyValue('font-size');
+		node.style.lineHeight = comp.getPropertyValue('line-height');
+		node.style.letterSpacing = comp.getPropertyValue('letter-spacing');
+		node.style.color = comp.getPropertyValue('color');
+	};
 
 
-HighlightTaObj.prototype.setDivLoc = function() {
-	this.div.style.top = this.padTop + "px";
-	this.div.style.left = this.padLeft + "px";
-}
+	function scratch(node) {
+		node.style.position = "absolute";
+		node.style.display = "block";
+		node.style.top = "0px";
+		node.style.left = "0px";
+		node.style.boxStyling = "border-box";
+		node.style.margin = "0px";
+		node.style.padding = "0px";
+		node.style.backgroundColor = "transparent";
+		node.style.border = "0px solid #000000";
+		node.style.borderRadius = "0px";
+		node.style.wordWrap = "break-word";
+		node.style.overflow = "hidden";
+		node.style.overflowX = "hidden";
+		node.style.overflowY = "hidden";
+	};
 
 
-HighlightTaObj.prototype.setDivHeight = function() {
-	this.div.style.height = (this.ta.clientHeight - this.padTop - this.padBttm) + "px";
-}
+	function setDivLoc() {
+		div.style.top = padTop + "px";
+		div.style.left = padLeft + "px";
+	};
 
 
-HighlightTaObj.prototype.setDivWidth = function() {
-	this.div.style.width = (this.ta.clientWidth - this.padLeft - this.padRight) + "px";
-}
+	function setDivHeight() {
+		div.style.height = (ta.clientHeight - padTop - padBttm) + "px";
+	};
 
 
-HighlightTaObj.prototype.styleDiv = function() {
-	this.styleFont(this.div);
-	this.setDivHeight();
-	this.setDivWidth();
-	this.setDivLoc();
-}
+	function setDivWidth() {
+		div.style.width = (ta.clientWidth - padLeft - padRight) + "px";
+	};
 
 
-HighlightTaObj.prototype.setupDiv = function() {
-	this.div = document.createElement('DIV');
-	this.scratch(this.div);
-	this.cntr.appendChild(this.div);
+	function styleDiv() {
+		styleFont(div);
+		setDivHeight();
+		setDivWidth();
+		setDivLoc();
+	};
 
-	this.styleDiv();
+
+	function setupDiv() {
+		div = document.createElement('DIV');
+		scratch(div);
+		cntr.appendChild(div);
+
+		styleDiv();
 	
-	this.div.style.zIndex = "1";
-	this.div.style.whiteSpace = "pre-wrap";
-	this.div.style.color = "transparent";
-}
+		div.style.zIndex = "1";
+		div.style.whiteSpace = "pre-wrap";
+		div.style.color = "transparent";
+	};
 
 
-HighlightTaObj.prototype.setTaWidth = function() {
-	this.ta.style.width = (this.cntr.clientWidth - this.padLeft - this.padRight) + "px";
-}
+	function setTaWidth() {
+		ta.style.width = (cntr.clientWidth - padLeft - padRight) + "px";
+	};
 
 
-HighlightTaObj.prototype.setTaHeight = function() {
-	this.ta.style.height = (this.cntr.clientHeight - this.padTop - this.padBttm) + "px";
-}
+	function setTaHeight() {
+		ta.style.height = (cntr.clientHeight - padTop - padBttm) + "px";
+	};
 
 
-HighlightTaObj.prototype.setTaPad = function() {
-	this.ta.style.paddingTop = this.padTop + "px";
-	this.ta.style.paddingRight = this.padRight + "px";
-	this.ta.style.paddingBottom = this.padBttm + "px";
-	this.ta.style.paddingLeft = this.padLeft + "px";
-}
+	function setTaPad() {
+		ta.style.paddingTop = padTop + "px";
+		ta.style.paddingRight = padRight + "px";
+		ta.style.paddingBottom = padBttm + "px";
+		ta.style.paddingLeft = padLeft + "px";
+	};
 
 
-HighlightTaObj.prototype.styleTa = function() {
-	this.styleFont(this.ta);
-	this.setTaWidth();
-	this.setTaHeight();
-	this.setTaPad();
-}
+	function styleTa() {
+		styleFont(ta);
+		setTaWidth();
+		setTaHeight();
+		setTaPad();
+	};
 
 
-HighlightTaObj.prototype.setupTa = function(node) {
-	this.ta = node;
-	this.scratch(this.ta);
+	function setupTa(node) {
+		ta = node;
+		scratch(ta);
 
-	if(this.ta.style.position === "") {
-		this.ta.style.position = "absolute";
-	}
+		styleTa();
 
-	this.styleTa();
-
-	this.ta.style.resize = "none";
-	this.ta.style.zIndex = "2";
-}
+		ta.style.resize = "none";
+		ta.style.zIndex = "2";
+	};
 
 
-HighlightTaObj.prototype.setupCntr = function(node) {
-	this.cntr = node;
+	function setupCntr(node) {
+		cntr = node;
 
-	if(this.cntr.style.position === "") {
-		this.cntr.style.position = "relative";
-	}
+		if(cntr.style.position === "") {
+			cntr.style.position = "relative";
+		}
 
-	this.comp = window.getComputedStyle(this.cntr, null);
-}
-
-
-HighlightTaObj.prototype.fixNan = function(obj) {
-	if(isNaN(obj)){
-		return 0;
-	}
-
-	return obj;
-}
+		comp = window.getComputedStyle(cntr, null);
+	};
 
 
-HighlightTaObj.prototype.setTares = function() {
-	this.boxSize = this.comp.getPropertyValue('box-sizing');
-	this.width = this.cntr.clientWidth;
+	function fixNan(obj) {
+		if(isNaN(obj)){
+			return 0;
+		}
 
-	this.fontSize = parseFloat(this.comp.getPropertyValue('font-size'));
-	this.lineHeight = parseFloat(this.comp.getPropertyValue('line-height'));
-
-	this.padLeft = parseFloat(this.comp.getPropertyValue('padding-left'));
-	this.padRight = parseFloat(this.comp.getPropertyValue('padding-right'));
-	this.padTop = parseFloat(this.comp.getPropertyValue('padding-top'));
-	this.padBttm = parseFloat(this.comp.getPropertyValue('padding-bottom'));
-
-	this.tare = this.padTop + this.padBttm;
-}
+		return obj;
+	};
 
 
-HighlightTaObj.prototype.getTares = function() {
-	this.setTares();
+	function setTares() {
+		boxSize = comp.getPropertyValue('box-sizing');
+		width = cntr.clientWidth;
 
-	if(this.boxSize !== 'border-box') {
-		this.tare *= -1;
-	}
+		fontSize = parseFloat(comp.getPropertyValue('font-size'));
+		lineHeight = parseFloat(comp.getPropertyValue('line-height'));
 
-}
+		padLeft = parseFloat(comp.getPropertyValue('padding-left'));
+		padRight = parseFloat(comp.getPropertyValue('padding-right'));
+		padTop = parseFloat(comp.getPropertyValue('padding-top'));
+		padBttm = parseFloat(comp.getPropertyValue('padding-bottom'));
 
-
-HighlightTaObj.prototype.cleanUp = function() {
-	if(this.cntr !== null) {
-		this.cntr = null;
-		this.div = null;
-	}
-
-	if(this.ta !== null) {
-		this.removeEvents();
-		this.ta = null;
-	}
-}
+		tare = padTop + padBttm;
+	};
 
 
-HighlightTaObj.prototype.isTa = function(node) {
-	return node.tagName === 'TEXTAREA';
-}
+	function getTares() {
+		setTares();
+
+		if(boxSize !== 'border-box') {
+			tare *= -1;
+		}
+	};
 
 
-HighlightTaObj.prototype.isDiv = function(node) {
-	return node.tagName === 'DIV';
-}
+	function cleanUp() {
+		if(cntr !== null) {
+			cntr = null;
+			div = null;
+		}
+
+		if(ta !== null) {
+			removeEvents();
+			ta = null;
+		}
+	};
 
 
-HighlightTaObj.prototype.init = function(args) {
-	//args is [div elem, ta elem, re, re-style]
-	if(this.isDiv(args[0])) {
-		this.cleanUp();
-		this.setupCntr(args[0]);
-		this.modCorners(true);
-		this.setCorners();
-	}
-
-	if(this.isTa(args[1])) {
-		this.getTares();
-		this.setupTa(args[1]);
-		this.setupDiv();
-		this.addEvents();
-	}
-
-	if(args[2] && args[3]) {
-		this.setRegExp(args[2]);
-		this.setMark(args[3]);
-
-		this.onInput();
-	}
-}
+	function isTa(node) {
+		return node.tagName === 'TEXTAREA';
+	};
 
 
-//'interface' for HighlightTaObj()
-function HighlightTa() {
-	var hlta = new HighlightTaObj();
+	function isDiv(node) {
+		return node.tagName === 'DIV';
+	};
 
-	//instantiate
-	if(arguments.length > 0) {
-		hlta.init(arguments);
-	}
 
+	function setup(args) {
+		//args is [div elem, ta elem, re, re-style]
+		console.log("yo");
+		if(isDiv(args[0])) {
+		console.log("yo1");
+			cleanUp();
+			setupCntr(args[0]);
+			modCorners(true);
+			setCorners();
+		}
+
+		if(isTa(args[1])) {
+			getTares();
+			setupTa(args[1]);
+			setupDiv();
+			addEvents();
+		}
+
+		if(args[2] && args[3]) {
+			setRegExp(args[2]);
+			setMark(args[3]);
+
+			onInput();
+		}
+	};
+
+	//'interface'
 	return {
 		init: function() {
-			hlta.init(arguments);
+			setup(arguments);
 		},
 
 		corners: function(bool) {
-			hlta.modCorners(bool);
+			modCorners(bool);
 		},
 
 		remove: function() {
-			hlta.cleanUp();
+			cleanUp();
 		},
 
 		getText: function () {
-			return hlta.getText();
+			return getText();
 		},
 
 		getComp: function() {
-			return hlta.getComp();
+			return getComp();
 		},
 
 		setZ: function(num) {
-			hlta.setIndex(num);
+			setIndex(num);
 		},
 
 		setRegex: function(re) {
-			hlta.setRegExp(re);
+			setRegExp(re);
 		},
 
 		setMark: function(dclr) {
-			hlta.setMark(dclr);
+			setMark(dclr);
 		},
 	}
 }

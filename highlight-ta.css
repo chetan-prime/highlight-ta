@@ -9,14 +9,17 @@ body {
 	background-color: #00c6ac;
 }
 
+
 main {
 	width: 100%;
 	background-color: #00c6ac;
 }
 
+
 section {
 	width: 100%;
 }
+
 
 .comment-box {
 	width: 30%;
@@ -29,6 +32,13 @@ section {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	resize: none;
 }
+
+@media (min-width: 800px) {
+	.comment-box {
+		border-radius: 20px;
+	}
+}
+
 
 .mark-style {
 	background-color: rgba(80, 244, 66, 0.7);

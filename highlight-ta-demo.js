@@ -3,7 +3,7 @@ function highlightTaDemo() {
 
 	var re = new RegExp('Brian', 'g');
 
-	var taHlght = new HighlightTa(document.getElementById('highlight-div'), 
+	var taHlght = highlightta(document.getElementById('highlight-div'), 
 			document.getElementById('highlight-ta'), re, "mark-style");
 }
 
