@@ -8,9 +8,11 @@ Checkout this [demo]().
 
 ##Details##
 
-Highlight-Ta uses a regex to highlight text inside a textarea. This is a stand-alone script. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who needed a fast, highlighted textarea without relying on jQuery or weighty, third-party libraries.
+Highlight-Ta is a stand-along script that uses a regex to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need a fast, highlighted textarea without relying on jQuery or weighty, third-party libraries.
 
 ##Usage##
+
+Grab `highlight-ta.js` and add it to your resources.
 
 Start with a \<textarea\> inside a \<div\> element:
 
@@ -21,6 +23,7 @@ Start with a \<textarea\> inside a \<div\> element:
 ```
 
 Create a custom CSS class for the \<mark\> element:
+
 ```CSS
 .mark-style {
 	background-color: rgba(80, 244, 66, 0.7);
@@ -28,7 +31,7 @@ Create a custom CSS class for the \<mark\> element:
 }
 ```
 
-Next, create a RegExp object. Then pass the \<div\>, \<textarea\>, RegExp, and CSS class when you initialize a new instance of HighlightTa.
+Next, create a RegExp object. Then pass the \<div\>, \<textarea\>, RegExp, and CSS class to initialize a new instance of HighlightTa.
 
 ```Javascript
 var re = new RegExp('Brian', 'g');
@@ -36,30 +39,25 @@ var div = document.getElementById('highlight-div');
 var ta = document.getElementById('highlight-ta');
 var dclr = "mark-style";
 
-var hlghtTa = new HighlightTa(div, ta, re, dclr);
+var hlghtTa = highlightta(div, ta, re, dclr);
 ```
 
 That's all you need. The intention is to keep style and function separate. If you wish to style HighlightTa, style the \<div\> element. The \<textarea\> will adjust accordingly.
 
-If you're wondering, "why not dynamically create a textarea inside the div?" The main advantage is a user's input won't be lost if they accidentally refresh the page.
+If you're wondering, "why not dynamically create a textarea inside the div?" The main advantage is input won't be lost if the page accidentally is accidentally refreshed.
 
 There are also a few helper methods:
 
-Set the z-index of HighlightTa:
+```Javascript
+//Set the z-index of HighlightTa:
+hlghtTa.setZ(2); //use a number
+hlghtTa.setZ("2"); //or use a string
 
-`hlghtTa.setZ(2);`
+//Grab the text inside the textarea:
+hlghtTa.getText();
 
-or
-
-`hlghtTa.setZ("2");`
-
-Return the text inside the \<textarea\>:
-
-`hlghtTa.getText();`
-
-Release \<testarea\> from HighlightTa:
-
-`hlghtTa.remove();`
+//Release \<testarea\> from HighlightTa:
+hlghtTa.remove();
 
 ##License##
 

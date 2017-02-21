@@ -6,11 +6,16 @@ function HighlightTaObj() {
 	this.re = null;
 	this.mark = null;
 	this.comp = null;
+	this.corners = null;
+	this.modTop = null;
+	this.modBttm = null;
 
 	this.boxSize = null;
-	this.fontSize = null;
-	this.lineHeight = null;
-	this.lineDiff = null;
+	this.width = null;
+	this.borderTop = null;
+	this.borderBttm = null;
+	this.borderRadTop = null;
+	this.borderRadBttm = null;
 	this.padLeft = null;
 	this.padRight = null;
 	this.padTop = null;
@@ -37,6 +42,24 @@ HighlightTaObj.prototype.setIndex = function(num) {
 
 	if(parseFloat(num)) {
 		this.cntr.style.zIndex = num;
+	}
+}
+
+
+HighlightTaObj.prototype.setMark = function(dclr) {
+	console.log(dclr);
+	if(typeof dclr === 'string') {
+		this.mark = '<mark style="margin: 0px; padding: 0px;'
+			+ 'border: 0px; color: transparent;" class=" ' 
+			+ dclr + '">$&</mark>';
+	}
+
+}
+
+
+HighlightTaObj.prototype.setRegExp = function(regex) {
+	if(regex instanceof RegExp) {
+		this.re = regex;
 	}
 }
 
@@ -69,11 +92,60 @@ HighlightTaObj.prototype.removeHTML = function(text) {
 HighlightTaObj.prototype.scrollbar = function() {
 	if(this.ta.clientHeight !== this.ta.scrollHeight) {
 		if(this.ta.style.overflowY !== 'scroll') {
+			if(this.corners) {
+				this.styleCorners();
+			}
+
 			this.ta.style.overflowY = 'scroll';
 		}
 	}else if(this.ta.style.overflowY === 'scroll') {
 		this.ta.style.overflowY = 'hidden';
+
+		if(this.corners) {
+			this.cancelCorners();
+		}
 	}
+}
+
+
+HighlightTaObj.prototype.setCorners = function() {
+	this.borderRadTop = parseFloat(this.comp.getPropertyValue('border-top-right-radius'));
+	this.borderRadBttm = parseFloat(this.comp.getPropertyValue('border-bottom-right-radius'));
+
+	this.borderRadTop = this.fixNan(this.borderRadTop);
+	this.borderRadBttm = this.fixNan(this.borderRadBttm);
+
+	this.modTop = (this.borderTop < this.borderRadTop) ? true : false;
+	this.modBttm = (this.borderBttm < this.borderRadBttm) ? true : false;
+}
+
+
+HighlightTaObj.prototype.modCorners = function(bool) {
+	if(typeof bool === 'boolean') {
+		this.corners = bool;
+	}
+}
+
+
+HighlightTaObj.prototype.cancelCorners = function() {
+	if(this.modTop) {
+		this.cntr.style.borderTopRightRadius = this.borderRadTop + "px";
+	}	
+
+	if(this.modBttm) {
+		this.cntr.style.borderBottomRightRadius = this.borderRadBttm + "px";
+	}	
+}
+
+
+HighlightTaObj.prototype.styleCorners = function() {
+	if(this.modTop) {
+		this.cntr.style.borderTopRightRadius = "0px";
+	}	
+
+	if(this.modBttm) {
+		this.cntr.style.borderBottomRightRadius = "0px";
+	}	
 }
 
 
@@ -117,9 +189,11 @@ HighlightTaObj.prototype.onScroll = function() {
 
 
 HighlightTaObj.prototype.onResize = function() {
-	this.setupTares();
-	this.setTaWidth();
-	this.setDivWidth();
+	if(this.width !== this.cntr.clientWidth) {
+		this.getTares();
+		this.styleTa();
+		this.styleDiv();
+	}
 }
 
 
@@ -134,36 +208,6 @@ HighlightTaObj.prototype.addEvents = function() {
 	this.ta.addEventListener('input', this.onInput.bind(this), false);
 	this.ta.addEventListener('scroll', this.onScroll.bind(this), false);
 	window.addEventListener('resize', this.onResize.bind(this), false);
-}
-
-
-HighlightTaObj.prototype.setMark = function(dclr) {
-	console.log(dclr);
-	if(typeof dclr === 'string') {
-		this.mark = '<mark style="margin: 0px; padding: 0px; border: 0px; color: transparent;" class=" ' + dclr + '">$&</mark>';
-	}
-
-}
-
-
-HighlightTaObj.prototype.makeRegex = function(pattern, flags) {
-	this.re = new RegExp(pattern, flags);
-}
-
-
-HighlightTaObj.prototype.setRegex = function(regex) {
-	if(regex instanceof RegExp) {
-		this.re = regex;
-	}
-}
-
-
-HighlightTaObj.prototype.fixNan = function(obj) {
-	if(isNaN(obj)){
-		return 0;
-	}
-
-	return obj;
 }
 
 
@@ -185,14 +229,13 @@ HighlightTaObj.prototype.scratch = function(node) {
 	node.style.margin = "0px";
 	node.style.padding = "0px";
 	node.style.backgroundColor = "transparent";
-	//node.style.border = "1px solid #000000";
 	node.style.border = "0px solid #000000";
 	node.style.borderRadius = "0px";
+	node.style.wordWrap = "break-word";
 	node.style.overflow = "hidden";
 	node.style.overflowX = "hidden";
 	node.style.overflowY = "hidden";
 }
-
 
 
 HighlightTaObj.prototype.setDivLoc = function() {
@@ -211,21 +254,24 @@ HighlightTaObj.prototype.setDivWidth = function() {
 }
 
 
+HighlightTaObj.prototype.styleDiv = function() {
+	this.styleFont(this.div);
+	this.setDivHeight();
+	this.setDivWidth();
+	this.setDivLoc();
+}
+
+
 HighlightTaObj.prototype.setupDiv = function() {
 	this.div = document.createElement('DIV');
 	this.scratch(this.div);
 	this.cntr.appendChild(this.div);
 
-	this.styleFont(this.div);
+	this.styleDiv();
+	
 	this.div.style.zIndex = "1";
 	this.div.style.whiteSpace = "pre-wrap";
-	this.div.style.wordWrap = "break-word";
-	this.div.style.overflow = "hidden";
 	this.div.style.color = "transparent";
-
-	this.setDivLoc();
-	this.setDivWidth();
-	this.setDivHeight();
 }
 
 
@@ -235,7 +281,7 @@ HighlightTaObj.prototype.setTaWidth = function() {
 
 
 HighlightTaObj.prototype.setTaHeight = function() {
-	this.ta.style.height = (this.cntr.clientHeight - this.padTop - this.padBttm + this.lineDiff) + "px";
+	this.ta.style.height = (this.cntr.clientHeight - this.padTop - this.padBttm) + "px";
 }
 
 
@@ -247,6 +293,14 @@ HighlightTaObj.prototype.setTaPad = function() {
 }
 
 
+HighlightTaObj.prototype.styleTa = function() {
+	this.styleFont(this.ta);
+	this.setTaWidth();
+	this.setTaHeight();
+	this.setTaPad();
+}
+
+
 HighlightTaObj.prototype.setupTa = function(node) {
 	this.ta = node;
 	this.scratch(this.ta);
@@ -255,13 +309,10 @@ HighlightTaObj.prototype.setupTa = function(node) {
 		this.ta.style.position = "absolute";
 	}
 
-	this.styleFont(this.ta);
+	this.styleTa();
+
 	this.ta.style.resize = "none";
 	this.ta.style.zIndex = "2";
-
-	this.setTaWidth();
-	this.setTaHeight();
-	this.setTaPad();
 }
 
 
@@ -276,8 +327,18 @@ HighlightTaObj.prototype.setupCntr = function(node) {
 }
 
 
-HighlightTaObj.prototype.setupTares = function() {
+HighlightTaObj.prototype.fixNan = function(obj) {
+	if(isNaN(obj)){
+		return 0;
+	}
+
+	return obj;
+}
+
+
+HighlightTaObj.prototype.setTares = function() {
 	this.boxSize = this.comp.getPropertyValue('box-sizing');
+	this.width = this.cntr.clientWidth;
 
 	this.fontSize = parseFloat(this.comp.getPropertyValue('font-size'));
 	this.lineHeight = parseFloat(this.comp.getPropertyValue('line-height'));
@@ -288,24 +349,16 @@ HighlightTaObj.prototype.setupTares = function() {
 	this.padBttm = parseFloat(this.comp.getPropertyValue('padding-bottom'));
 
 	this.tare = this.padTop + this.padBttm;
+}
+
+
+HighlightTaObj.prototype.getTares = function() {
+	this.setTares();
 
 	if(this.boxSize !== 'border-box') {
 		this.tare *= -1;
 	}
-}
 
-
-HighlightTaObj.prototype.check = function () {
-	console.log("check");
-	console.log("Font size: " + this.fontSize);
-	console.log("Line Height: " + this.lineHeight);
-	console.log("Line Diff: " + this.lineDiff);
-	console.log("Cntr clientWidth: " + this.cntr.clientWidth);
-	console.log("Cntr clientHeight: " + this.cntr.clientHeight);
-	console.log("Ta scrollHeight: " + this.cntr.scrollHeight);
-	console.log("Ta clientWidth: " + this.ta.clientWidth);
-	console.log("Ta clientHeight: " + this.ta.clientHeight);
-	console.log("Ta scrollHeight: " + this.ta.scrollHeight);
 }
 
 
@@ -337,29 +390,29 @@ HighlightTaObj.prototype.init = function(args) {
 	if(this.isDiv(args[0])) {
 		this.cleanUp();
 		this.setupCntr(args[0]);
+		this.modCorners(true);
+		this.setCorners();
 	}
 
 	if(this.isTa(args[1])) {
-		this.setupTares();
+		this.getTares();
 		this.setupTa(args[1]);
 		this.setupDiv();
 		this.addEvents();
 	}
 
 	if(args[2] && args[3]) {
-		this.setRegex(args[2]);
+		this.setRegExp(args[2]);
 		this.setMark(args[3]);
 
 		this.onInput();
 	}
-
 }
 
 
 //'interface' for HighlightTaObj()
 function HighlightTa() {
 	var hlta = new HighlightTaObj();
-	console.log("HighlightTa() created");
 
 	//instantiate
 	if(arguments.length > 0) {
@@ -369,6 +422,10 @@ function HighlightTa() {
 	return {
 		init: function() {
 			hlta.init(arguments);
+		},
+
+		corners: function(bool) {
+			hlta.modCorners(bool);
 		},
 
 		remove: function() {
@@ -385,6 +442,14 @@ function HighlightTa() {
 
 		setZ: function(num) {
 			hlta.setIndex(num);
+		},
+
+		setRegex: function(re) {
+			hlta.setRegExp(re);
+		},
+
+		setMark: function(dclr) {
+			hlta.setMark(dclr);
 		},
 	}
 }
