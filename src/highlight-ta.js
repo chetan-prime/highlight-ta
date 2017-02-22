@@ -14,8 +14,7 @@ function highlightta() {
 	var width = null;
 	var borderTop = null;
 	var borderBttm = null;
-	var borderRadTop = null;
-	var borderRadBttm = null;
+	var borderRad = null;
 	var padLeft = null;
 	var padRight = null;
 	var padTop = null;
@@ -25,6 +24,7 @@ function highlightta() {
 	if(arguments) {
 		setup(arguments);
 	};
+
 
 	//'private' functions
 	function getText() {
@@ -50,12 +50,14 @@ function highlightta() {
 	};
 
 
-	function setMark(dclr) {
+	function setMarkClass(dclr) {
 		if(typeof dclr === 'string') {
 			mark = '<mark style="margin: 0px; padding: 0px;'
 				+ 'border: 0px; color: transparent;" class=" ' 
 				+ dclr + '">$&</mark>';
 		}
+
+		screen();
 	};
 
 
@@ -63,6 +65,8 @@ function highlightta() {
 		if(regex instanceof RegExp) {
 			re = regex;
 		}
+
+		screen();
 	};
 
 
@@ -91,52 +95,14 @@ function highlightta() {
 	};
 
 
-	function scrollbar() {
-		if(ta.clientHeight !== ta.scrollHeight) {
-			if(ta.style.overflowY !== 'scroll') {
-				if(corners) {
-					styleCorners();
-				}
-
-				ta.style.overflowY = 'scroll';
-			}
-		}else if(ta.style.overflowY === 'scroll') {
-			ta.style.overflowY = 'hidden';
-
-			if(corners) {
-				cancelCorners();
-			}
-		}
-	};
-
-
-	function setCorners() {
-		borderRadTop = parseFloat(comp.getPropertyValue('border-top-right-radius'));
-		borderRadBttm = parseFloat(comp.getPropertyValue('border-bottom-right-radius'));
-
-		borderRadTop = fixNan(borderRadTop);
-		borderRadBttm = fixNan(borderRadBttm);
-
-		modTop = (borderTop < borderRadTop) ? true : false;
-		modBttm = (borderBttm < borderRadBttm) ? true : false;
-	};
-
-
-	function modCorners(bool) {
-		if(typeof bool === 'boolean') {
-			corners = bool;
-		}
-	};
-
-
 	function cancelCorners() {
 		if(modTop) {
-			cntr.style.borderTopRightRadius = borderRadTop + "px";
-		}	
+			cntr.style.borderTopRightRadius = borderRad + "px";
+		}
 
 		if(modBttm) {
-			cntr.style.borderBottomRightRadius = borderRadBttm + "px";
-		}	
+			cntr.style.borderBottomRightRadius = borderRad + "px";
+		}
 	};
 
 
@@ -148,6 +114,28 @@ function highlightta() {
 		if(modBttm) {
 			cntr.style.borderBottomRightRadius = "0px";
 		}	
+	};
+
+
+	function scrollbar() {
+		if(ta.clientHeight !== ta.scrollHeight) {
+			if(ta.style.overflowY !== 'scroll') {
+				if(corners) {
+					styleCorners();
+				}
+
+				ta.style.overflowY = 'scroll';
+				setDivWidth();
+			}
+		}else if(ta.style.overflowY === 'scroll') {
+			ta.style.overflowY = 'hidden';
+
+			if(corners) {
+				cancelCorners();
+			}
+
+			setDivWidth();
+		}
 	};
 
 
@@ -166,13 +154,12 @@ function highlightta() {
 		setTaWidth();
 		setDivHeight();
 		scrollbar();
-		setDivWidth();
 
 		window.scrollTo(scrollLeft, scrollTop);
 	};
 
 
-	function onInput() {
+	function screen() {
 		var text = ta.value;
 
 		text = removeHTML(text);
@@ -180,7 +167,11 @@ function highlightta() {
 		text = newLines(text);
 
 		div.innerHTML = text;
+	};
 
+
+	function onInput() {
+		screen();
 		size();
 	};
 
@@ -191,11 +182,15 @@ function highlightta() {
 
 
 	function onResize() {
-		if(width !== cntr.clientWidth) {
-			getTares();
-			styleTa();
-			styleDiv();
+		getTares();
+		styleTa();
+		styleDiv();
+
+		if(corners && ta.style.overflowY !== 'scroll') {
+			cancelCorners();
 		}
+
+		size();
 	};
 
 
@@ -258,6 +253,11 @@ function highlightta() {
 
 	function styleDiv() {
 		styleFont(div);
+
+		div.style.zIndex = "1";
+		div.style.whiteSpace = "pre-wrap";
+		div.style.color = "transparent";
+
 		setDivHeight();
 		setDivWidth();
 		setDivLoc();
@@ -270,10 +270,6 @@ function highlightta() {
 		cntr.appendChild(div);
 
 		styleDiv();
-	
-		div.style.zIndex = "1";
-		div.style.whiteSpace = "pre-wrap";
-		div.style.color = "transparent";
 	};
 
 
@@ -297,6 +293,10 @@ function highlightta() {
 
 	function styleTa() {
 		styleFont(ta);
+
+		ta.style.resize = "none";
+		ta.style.zIndex = "2";
+
 		setTaWidth();
 		setTaHeight();
 		setTaPad();
@@ -308,9 +308,6 @@ function highlightta() {
 		scratch(ta);
 
 		styleTa();
-
-		ta.style.resize = "none";
-		ta.style.zIndex = "2";
 	};
 
 
@@ -334,12 +331,17 @@ function highlightta() {
 	};
 
 
+	function setCorners() {
+		borderRad = parseFloat(comp.getPropertyValue('border-top-left-radius'));
+
+		borderRad = fixNan(borderRad);
+		modTop = (borderTop < borderRad) ? true : false;
+		modBttm = (borderBttm < borderRad) ? true : false;
+	};
+
+
 	function setTares() {
 		boxSize = comp.getPropertyValue('box-sizing');
-		width = cntr.clientWidth;
-
-		fontSize = parseFloat(comp.getPropertyValue('font-size'));
-		lineHeight = parseFloat(comp.getPropertyValue('line-height'));
 
 		padLeft = parseFloat(comp.getPropertyValue('padding-left'));
 		padRight = parseFloat(comp.getPropertyValue('padding-right'));
@@ -352,9 +354,21 @@ function highlightta() {
 
 	function getTares() {
 		setTares();
+		setCorners();
 
 		if(boxSize !== 'border-box') {
 			tare *= -1;
+		}
+	};
+
+
+	function modCorners(bool) {
+		if(corners && !bool) {
+			cancelCorners();
+		}
+
+		if(typeof bool === 'boolean') {
+			corners = bool;
 		}
 	};
 
@@ -384,29 +398,36 @@ function highlightta() {
 
 	function setup(args) {
 		//args is [div elem, ta elem, re, re-style]
-		console.log("yo");
+		if(!args.length) {
+			return;
+		}
+
 		if(isDiv(args[0])) {
-		console.log("yo1");
 			cleanUp();
 			setupCntr(args[0]);
-			modCorners(true);
-			setCorners();
 		}
 
 		if(isTa(args[1])) {
 			getTares();
+
+			if(args[4] === false) {
+				modCorners(args[4]);
+			}else{
+				modCorners(true);
+			}
+
 			setupTa(args[1]);
 			setupDiv();
 			addEvents();
+			size();
 		}
 
 		if(args[2] && args[3]) {
-			setRegExp(args[2]);
-			setMark(args[3]);
-
-			onInput();
+			setMarkClass(args[2]);
+			setRegExp(args[3]);
 		}
 	};
+
 
 	//'interface'
 	return {
@@ -439,7 +460,7 @@ function highlightta() {
 		},
 
 		setMark: function(dclr) {
-			setMark(dclr);
+			setMarkClass(dclr);
 		},
 	}
 }
