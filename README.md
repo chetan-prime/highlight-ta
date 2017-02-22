@@ -79,6 +79,7 @@ hlghtTa.setMark("class-name");
 
 //Set the RegExp with JavaScript RegExp object:
 hlghtTa.setRegex(RegExp);
+```
 
 If you want to experiment with or modify Highlight-Ta, use the prototype object in `highlight-ta-proto.js`.
 
