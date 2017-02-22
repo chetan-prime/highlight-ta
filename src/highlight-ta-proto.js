@@ -340,13 +340,12 @@ HighlightTaObj.prototype.setCorners = function() {
 
 HighlightTaObj.prototype.setTares = function() {
 	this.boxSize = this.comp.getPropertyValue('box-sizing');
-
+	this.borderTop = parseFloat(this.comp.getPropertyValue('border-top-width'));
+	this.borderBttm = parseFloat(this.comp.getPropertyValue('border-bottom-width'));
 	this.padLeft = parseFloat(this.comp.getPropertyValue('padding-left'));
 	this.padRight = parseFloat(this.comp.getPropertyValue('padding-right'));
 	this.padTop = parseFloat(this.comp.getPropertyValue('padding-top'));
 	this.padBttm = parseFloat(this.comp.getPropertyValue('padding-bottom'));
-
-	this.tare = this.padTop + this.padBttm;
 }
 
 
@@ -355,7 +354,9 @@ HighlightTaObj.prototype.getTares = function() {
 	this.setCorners();
 
 	if(this.boxSize !== 'border-box') {
-		this.tare *= -1;
+		this.tare = (this.padTop + this.padBttm) * -1;
+	}else{
+		this.tare = this.borderTop + this.borderBttm;
 	}
 }
 
@@ -398,7 +399,7 @@ HighlightTaObj.prototype.setup = function(args) {
 	if(!args.length) {
 		return;
 	}
-	//args is [div elem, ta elem, re, re-style]
+
 	if(this.isDiv(args[0])) {
 		this.cleanUp();
 		this.setupCntr(args[0]);

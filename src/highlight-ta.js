@@ -53,7 +53,7 @@ function highlightta() {
 	function setMarkClass(dclr) {
 		if(typeof dclr === 'string') {
 			mark = '<mark style="margin: 0px; padding: 0px;'
-				+ 'border: 0px; color: transparent;" class=" ' 
+				+ 'border: 0px; color: transparent;" class="'
 				+ dclr + '">$&</mark>';
 		}
 
@@ -146,7 +146,7 @@ function highlightta() {
 		cntr.style.height = "auto";
 		ta.style.height = "auto";
 
-		if(cntr.clientHeight < ta.scrollHeight) {
+		if(cntr.clientHeight <= ta.scrollHeight) {
 			cntr.style.height = (ta.scrollHeight + tare) + "px";
 		}
 
@@ -268,7 +268,6 @@ function highlightta() {
 		div = document.createElement('DIV');
 		scratch(div);
 		cntr.appendChild(div);
-
 		styleDiv();
 	};
 
@@ -306,7 +305,6 @@ function highlightta() {
 	function setupTa(node) {
 		ta = node;
 		scratch(ta);
-
 		styleTa();
 	};
 
@@ -335,6 +333,7 @@ function highlightta() {
 		borderRad = parseFloat(comp.getPropertyValue('border-top-left-radius'));
 
 		borderRad = fixNan(borderRad);
+
 		modTop = (borderTop < borderRad) ? true : false;
 		modBttm = (borderBttm < borderRad) ? true : false;
 	};
@@ -342,13 +341,12 @@ function highlightta() {
 
 	function setTares() {
 		boxSize = comp.getPropertyValue('box-sizing');
-
+		borderTop = parseFloat(comp.getPropertyValue('border-top-width'));
+		borderBttm = parseFloat(comp.getPropertyValue('border-bottom-width'));
 		padLeft = parseFloat(comp.getPropertyValue('padding-left'));
 		padRight = parseFloat(comp.getPropertyValue('padding-right'));
 		padTop = parseFloat(comp.getPropertyValue('padding-top'));
 		padBttm = parseFloat(comp.getPropertyValue('padding-bottom'));
-
-		tare = padTop + padBttm;
 	};
 
 
@@ -357,7 +355,9 @@ function highlightta() {
 		setCorners();
 
 		if(boxSize !== 'border-box') {
-			tare *= -1;
+			tare = (padTop + padBttm) * -1;
+		}else{
+			tare = borderTop + borderBttm;
 		}
 	};
 
@@ -397,7 +397,6 @@ function highlightta() {
 
 
 	function setup(args) {
-		//args is [div elem, ta elem, re, re-style]
 		if(!args.length) {
 			return;
 		}
