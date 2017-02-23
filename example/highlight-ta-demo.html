@@ -10,27 +10,28 @@
 	<body>
 		<main>
 			<section class="container">
-				<section>
+				<section class="center space">
 					<h3>RegExp Fiddler</h3>
 					<p>Practice Regexes!</p>
-				<section>
+				</section>
 
-				<section class="input">
+				<section class="input center">
 					<form id="regex-form">
-						<div class="span-top clr">
-							<div class="span-top fl">
-								<span class="span-top">/</span>
+						<div class="inline-bar clr">
+							<div class="inline-bar fl">
+								<span class="inline-bar">/</span>
 							</div>
 							<textarea id="regex-input" class="input-box" rows="1"></textarea>
 							<span>/</span>
 						</div>
-						<input type="checkbox" name="modifier-g" id="mod-g" value="g">
-						<label for="mod-g">g</label>
-						<input type="checkbox" name="modifier-i" id="mod-i" value="i">
-						<label for="mod-i">i</label>
-						<input type="checkbox" name="modifier-m" id="mod-m" value="m">
-						<label for="mod-m">m</label>
-						</section>
+						<div class="checks">
+							<input type="checkbox" name="modifier-g" id="mod-g" value="g" checked="checked">
+							<label for="mod-g">g</label>
+							<input type="checkbox" name="modifier-i" id="mod-i" value="i">
+							<label for="mod-i">i</label>
+							<input type="checkbox" name="modifier-m" id="mod-m" value="m">
+							<label for="mod-m">m</label>
+						</div>
 					</form>
 				</section>
 
@@ -40,7 +41,7 @@
 					</div>
 				</section>
 
-				<section>
+				<section class="space center">
 					<p>Made using Highlight-Ta.</p>
 					<p>If this seems useful, get the <a href="http://github.com/taylor-vann/highlight-ta">code</a>.<p>
 				<section>

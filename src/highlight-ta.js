@@ -232,6 +232,7 @@ var highlightta = function() {
 		node.style.overflow = "hidden";
 		node.style.overflowX = "hidden";
 		node.style.overflowY = "hidden";
+		node.style.textAlign = "left";
 	};
 
 
@@ -421,8 +422,11 @@ var highlightta = function() {
 			size();
 		}
 
-		if(args[2] && args[3]) {
+		if(args[2]) {
 			setMarkClass(args[2]);
+		}
+
+		if(args[3]) {
 			setRegExp(args[3]);
 		}
 	};

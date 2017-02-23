@@ -43,7 +43,7 @@ HighlightTaObj.prototype.setIndex = function(num) {
 }
 
 
-HighlightTaObj.prototype.setMark = function(dclr) {
+HighlightTaObj.prototype.setMarkClass = function(dclr) {
 	if(typeof dclr === 'string') {
 		this.mark = '<mark style="margin: 0px; padding: 0px;'
 			+ 'border: 0px; color: transparent;" class=" ' 
@@ -225,6 +225,7 @@ HighlightTaObj.prototype.scratch = function(node) {
 	node.style.overflow = "hidden";
 	node.style.overflowX = "hidden";
 	node.style.overflowY = "hidden";
+	node.style.textAlign = "left";
 }
 
 
@@ -421,8 +422,11 @@ HighlightTaObj.prototype.setup = function(args) {
 		this.size();
 	}
 
-	if(args[2] && args[3]) {
-		this.setMark(args[2]);
+	if(args[2]) {
+		this.setMarkClass(args[2]);
+	}
+
+	if(args[3]) {
 		this.setRegExp(args[3]);
 	}
 }
@@ -465,7 +469,7 @@ function HighlightTa() {
 		},
 
 		setMark: function(dclr) {
-			hlta.setMark(dclr);
+			hlta.setMarkClass(dclr);
 		},
 	}
 }

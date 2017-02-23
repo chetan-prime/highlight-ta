@@ -5,9 +5,10 @@ body {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
-main, h3, p, span, input, textarea {
+main, section, h3, p, span, form, input, textarea {
 	margin: 0px;
 	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-weight: lighter;
 }
 
 main {
@@ -18,14 +19,12 @@ main {
 
 h3 {
 	margin: 0px;
-	text-align: center;
 	font-size: 1.2rem;
 	font-weight: lighter;
 }
 
 
 p {
-	text-align: center;
 	margin: 0px;
 	font-size: 14px;
 }
@@ -37,25 +36,22 @@ label {
 
 
 input[type="text"] {
-	width: 200px;
+
 	padding: 5px;
 	border: 0px solid #aaaaaa;
 	border-bottom-width: 1px;
 	border-radius: 0px;
 }
 
+
 input[type="text"]:focus {
-	border-color: rgba(80, 244, 66, 1);
 	border-color: rgba(65, 65, 65, 1);
 }
 
 
 input[type="checkbox"] {
-	height: 10px;
-	width: 10px;
-	margin: 0px 0px 0px 10px;
+	margin: 0px 0px 0px 5px;
 }
-
 
 
 .container {
@@ -63,6 +59,7 @@ input[type="checkbox"] {
 	margin: 0px auto 0px auto;
 
 }
+
 	@media (min-width: 500px) {
 		.container {
 			width: 80%;
@@ -81,23 +78,20 @@ input[type="checkbox"] {
 .input {
 	position: relative;
 	width: 100%;
-	text-align: center;
 }
 
 
-.span-top {
-	display: inline-block;
+.checks {
+	display: block;
+	margin-top: 10px;
 }
 
-
-.fl {
-	float: left;
-}
-
-
-.clr {
-	clear: both;
-}
+	@media (min-width: 500px) {
+		.checks {
+			display: inline-block;
+			margin-top: 0px;
+		}
+	}
 
 
 .input-box {
@@ -110,14 +104,22 @@ input[type="checkbox"] {
 	resize: none;
 }
 
-	.input-box:focus {
-		border-color: #999999;
+.input-box:focus {
+	border-color: #999999;
+}
+
+	@media (min-width: 500px) { 
+		.input-box {
+			width: 300px;
+		}
 	}
 
 
 .mark-style {
 	background-color: rgba(80, 244, 66, 0.7);
-	background-color: rgba(200, 200, 200, 1);
+	background-color: rgba(255, 69, 56, 0.7);
+	background-color: rgba(255, 146, 56, 0.8);
+
 	border-radius: 2px;
 }
 
@@ -132,10 +134,12 @@ input[type="checkbox"] {
 	background-color: #ffffff;
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	font-size: 0.9rem;
-	font-weight: lighter;
 	resize: none;
 }
 
-.input-box:focus {
-	border-color: #aaaaaa;
-}
+/* helper classes */
+.inline-bar { display: inline-block; }
+.fl { float: left; }
+.clr:after { content: ''; display: block; clear: both; }
+.space { margin-bottom: 30px; }
+.center { text-align: center; }
