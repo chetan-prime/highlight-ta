@@ -8,7 +8,7 @@ Checkout this [demo]().
 
 ##Details##
 
-Highlight-Ta is a stand-along script that uses a regex to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need a fast, highlighted textarea without relying on jQuery or weighty, third-party libraries.
+Highlight-Ta is a stand-along script that uses a regex to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
 
 ##Usage##
 
@@ -42,8 +42,8 @@ var ta = document.getElementById('highlight-ta');
 var dclr = "mark-style";
 
 //Instantiate and initialize highlight-ta:
-var hlghtTa = highlightta(div, ta, re, dclr);
-var hlghtTa = highlightta(div, ta, re, dclr, false);
+var hlghtTa = highlightta(div, ta, dclr, re);
+var hlghtTa = highlightta(div, ta, dclr, re, false);
 ```
 
 That's all you need. The intention is to keep style and function separate. If you wish to style HighlightTa, then style the \<div\> element. The \<textarea\> will adjust accordingly.
@@ -54,14 +54,14 @@ There are also a few helper methods:
 
 ```Javascript
 //Initialize or reset the textarea with init():
-hlghtTa.init(div, ta, re, dclr);
-hlghtTa.init(div, ta, re, dclr, false);
+hlghtTa.init(div, ta, dclr, re);
+hlghtTa.init(div, ta, dclr, re, false);
 
 //Turn corners off:
 hlghtTa.corners();
 hlghtTa.corners(false);
 
-//Release \<testarea\> from HighlightTa:
+//Release \<textarea\> from HighlightTa:
 hlghtTa.remove();
 
 //Get the text inside the textarea:
@@ -85,8 +85,8 @@ If you want to experiment with or modify Highlight-Ta, use the prototype object 
 
 ```Javascript
 //Instantiate and initialize the prototype object:
-var ta = new HighlightTa(document.getElementById("SomeID"));
-var ta = new HighlightTa(document.getElementById("SomeID"), false);
+var ta = new HighlightTa(div,ta, dclr, re);
+var ta = new HighlightTa(div,ta, dclr, re, false);
 ```
 
 ##Compatability##

@@ -1,4 +1,4 @@
-function highlightta() {
+var highlightta = function() {
 	//'private' variables
 	var cntr = null;
 	var div = null;

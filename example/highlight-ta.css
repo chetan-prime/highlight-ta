@@ -5,64 +5,137 @@ body {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
-
-main {
-	width: 100%;
+main, h3, p, span, input, textarea {
+	margin: 0px;
+	font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
-
-section {
+main {
+	margin: 30px auto 0px auto;
 	width: 100%;
 }
 
 
 h3 {
 	margin: 0px;
-	font-size: 18px;
+	text-align: center;
+	font-size: 1.2rem;
 	font-weight: lighter;
 }
 
 
 p {
+	text-align: center;
 	margin: 0px;
 	font-size: 14px;
 }
 
 
-input[type="text"] {
-	padding: 5px;
-	border: 2px solid #aaaaaa;
-	border-radius: 5px;
+label {
+	font-size: 0.9rem;
 }
+
+
+input[type="text"] {
+	width: 200px;
+	padding: 5px;
+	border: 0px solid #aaaaaa;
+	border-bottom-width: 1px;
+	border-radius: 0px;
+}
+
+input[type="text"]:focus {
+	border-color: rgba(80, 244, 66, 1);
+	border-color: rgba(65, 65, 65, 1);
+}
+
+
+input[type="checkbox"] {
+	height: 10px;
+	width: 10px;
+	margin: 0px 0px 0px 10px;
+}
+
+
+
+.container {
+	width: 95%;
+	margin: 0px auto 0px auto;
+
+}
+	@media (min-width: 500px) {
+		.container {
+			width: 80%;
+			max-width: 500px;
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.container {
+			width: 70%;
+			max-width: 600px;
+		}
+	}
+
+
+.input {
+	position: relative;
+	width: 100%;
+	text-align: center;
+}
+
+
+.span-top {
+	display: inline-block;
+}
+
+
+.fl {
+	float: left;
+}
+
+
+.clr {
+	clear: both;
+}
+
+
+.input-box {
+	width: 250px;
+	border: 0px solid #cccccc;
+	border-bottom-width: 1px;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-size: 0.9rem;
+	font-weight: lighter;
+	resize: none;
+}
+
+	.input-box:focus {
+		border-color: #999999;
+	}
 
 
 .mark-style {
 	background-color: rgba(80, 244, 66, 0.7);
+	background-color: rgba(200, 200, 200, 1);
 	border-radius: 2px;
 }
 
 
 .comment-box {
-	width: 95%;
+	width: 100%;
 	margin: 20px auto 20px auto;
 	padding: 10px;
-	border: 2px solid #aaaaaa;
+	border: 1px solid #aaaaaa;
 	border-radius: 5px;
+	box-sizing: border-box;
 	background-color: #ffffff;
 	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-size: 0.9rem;
+	font-weight: lighter;
 	resize: none;
 }
 
-	@media (min-width: 500px) {
-		.comment-box {
-			width: 80%;
-			max-width: 600px;
-		}
-	}
-
-	@media (min-width: 1000px) {
-		.comment-box {
-			width: 70%;
-			max-width: 800px;
-		}
-	}
+.input-box:focus {
+	border-color: #aaaaaa;
+}
