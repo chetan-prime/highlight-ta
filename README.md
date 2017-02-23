@@ -4,7 +4,7 @@
 
 Use a regex to highlight text inside a textarea.
 
-Checkout this [demo]().
+Checkout this [demo](https://taylor-vann.github.io/highlight-ta/) app. You can experiment with regexes.
 
 ##Details##
 
