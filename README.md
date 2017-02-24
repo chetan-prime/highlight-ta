@@ -95,6 +95,7 @@ Browser | Status
 ---|---
 Firefox | Yes
 Chrome | Yes
+Safari | Yes
 IE | Not yet tested
 Edge | Not yet tested
 Opera | Not yet tested

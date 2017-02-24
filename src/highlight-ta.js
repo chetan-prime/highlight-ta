@@ -21,9 +21,7 @@ var highlightta = function() {
 	var padBttm = null;
 
 	//initialize on instance
-	if(arguments) {
-		setup(arguments);
-	};
+	setup(arguments);
 
 
 	//'private' functions

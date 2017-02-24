@@ -30,8 +30,8 @@ function highlightTaDemo() {
 		cntrta.value = letter;
 	}
 
-	var taHlght = highlightta(cntr, cntrta, "mark-style");
-
+	//var taHlght = highlightta(cntr, cntrta, "mark-style");
+	var taHlght = new HighlightTa(cntr, cntrta, "mark-style");
 
 	//main function to trigger highlights
 	function changed() {
