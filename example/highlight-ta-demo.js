@@ -2,7 +2,13 @@ function highlightTaDemo() {
 	//starting texts
 	var regexes = ["[A-Z][a-z]*", "@[a-z]{1,15}\\s", ".+@.+",
 			"\\([0-9]{3}\\)-?[0-9]{3}-[0-9]{4}", "[A-Z][a-z]"]
-	var letter = "You can insert your own text to practice too!\nThis textarea will 'highlight' it based on your regex.\n\nPhone Numbers:\n(123)-456-7890\n(305)894-4205\n839-574-893\n\nEmails:\nyobunkyboo@5ome-dude.com\n4funkymonkies@hom3fry.com\nfabtabpunkbag@gimmeshelter.com\n\nTwitter Handles:\n@twittenbykittens\n@junebugjunkie\n@couchpuppy\n\nAddresses:\nCornelius Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n43321 Manteca Dr\nJacksonville Fl\n32201"
+	var letter = "You can insert your own text to practice too!\nThis \
+textarea will 'highlight' it based on your regex.\n\nPhone Numbers:\n(123)\
+-456-7890\n(305)894-4205\n839-574-893\n\nEmails:\nyobunkyboo@5ome-dude.com\n\
+4funkymonkies@hom3fry.com\nfabtabpunkbag@gimmeshelter.com\n\nTwitter Handles:\
+\n@twittenbykittens\n@junebugjunkie\n@couchpuppy\n\nAddresses:\nCornelius \
+Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
+43321 Manteca Dr\nJacksonville Fl\n32201"
 
 
 	//get 'form' elements
@@ -31,7 +37,7 @@ function highlightTaDemo() {
 	}
 
 	//var taHlght = highlightta(cntr, cntrta, "mark-style");
-	var taHlght = new HighlightTa(cntr, cntrta, "mark-style");
+	var taHlght = highlightta(cntr, cntrta, "mark-style");
 
 	//main function to trigger highlights
 	function changed() {

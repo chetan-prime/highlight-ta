@@ -20,16 +20,6 @@ function HighlightTaObj() {
 }
 
 
-HighlightTaObj.prototype.getText = function() {
-	return this.ta.value;
-}
-
-
-HighlightTaObj.prototype.getComp = function() {
-	return this.comp;
-}
-
-
 HighlightTaObj.prototype.setIndex = function(num) {
 	num = this.fixNan(num);
 
@@ -439,6 +429,7 @@ function HighlightTa() {
 	//instantiate
 	hlta.setup(arguments);
 
+
 	return {
 		init: function() {
 			hlta.setup(arguments);
@@ -448,20 +439,12 @@ function HighlightTa() {
 			hlta.modCorners(bool);
 		},
 
-		remove: function() {
-			hlta.cleanUp();
-		},
-
-		getText: function () {
-			return hlta.getText();
+		getText: function() {
+			return hlta.ta.value;
 		},
 
 		getComp: function() {
-			return hlta.getComp();
-		},
-
-		setZ: function(num) {
-			hlta.setIndex(num);
+			return hlta.comp;
 		},
 
 		setRegex: function(re) {
@@ -470,6 +453,14 @@ function HighlightTa() {
 
 		setMark: function(dclr) {
 			hlta.setMarkClass(dclr);
+		},
+
+		setZ: function(num) {
+			hlta.setIndex(num);
+		},
+
+		destroy: function() {
+			hlta.cleanUp();
 		},
 	}
 }

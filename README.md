@@ -61,24 +61,24 @@ hlghtTa.init(div, ta, dclr, re, false);
 hlghtTa.corners();
 hlghtTa.corners(false);
 
-//Release \<textarea\> from HighlightTa:
-hlghtTa.remove();
-
 //Get the text inside the textarea:
 hlghtTa.getText();
 
 //Get the CSSStyleDeclaration object:
 hlghtTa.getComp();
 
-//Set the z-index:
-hlghtTa.setZ(2); //use a number
-hlghtTa.setZ("2"); //or use a string
+//Set the RegExp with JavaScript RegExp object:
+hlghtTa.setRegex(RegExp);
 
 //Set the class for \<mark\>:
 hlghtTa.setMark("class-name");
 
-//Set the RegExp with JavaScript RegExp object:
-hlghtTa.setRegex(RegExp);
+//Set the z-index:
+hlghtTa.setZ(2); //use a number
+hlghtTa.setZ("2"); //or use a string
+
+//Release \<textarea\> and remove events
+hlghtTa.destroy();
 ```
 
 If you want to experiment with or modify Highlight-Ta, use the prototype object in `highlight-ta-proto.js`.
@@ -91,13 +91,13 @@ var ta = new HighlightTa(div,ta, dclr, re, false);
 
 ##Compatability##
 
-Browser | Status
+Browser | Works
 ---|---
 Firefox | Yes
 Chrome | Yes
 Safari | Yes
-IE | Not yet tested
-Edge | Not yet tested
+IE | Yes
+Edge | Yes
 Opera | Not yet tested
 Android | Yes
 iOS | Not yet tested

@@ -24,17 +24,7 @@ var highlightta = function() {
 	setup(arguments);
 
 
-	//'private' functions
-	function getText() {
-		return ta.value;
-	};
-
-
-	function getComp() {
-		return comp;
-	};
-
-
+	//'private' functionss
 	function setIndex(num) {
 		num = fixNan(num);
 
@@ -440,20 +430,12 @@ var highlightta = function() {
 			modCorners(bool);
 		},
 
-		remove: function() {
-			cleanUp();
-		},
-
 		getText: function () {
-			return getText();
+			return ta.value;
 		},
 
 		getComp: function() {
-			return getComp();
-		},
-
-		setZ: function(num) {
-			setIndex(num);
+			return comp;
 		},
 
 		setRegex: function(re) {
@@ -462,6 +444,14 @@ var highlightta = function() {
 
 		setMark: function(dclr) {
 			setMarkClass(dclr);
+		},
+
+		setZ: function(num) {
+			setIndex(num);
+		},
+
+		destroy: function() {
+			cleanUp();
 		},
 	}
 }
