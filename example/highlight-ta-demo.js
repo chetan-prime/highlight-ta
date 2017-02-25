@@ -36,8 +36,8 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
 		cntrta.value = letter;
 	}
 
-	var taHlght = new HighlightTa(cntr, cntrta, "mark-style");
-	//var taHlght = highlightta(cntr, cntrta, "mark-style");
+	//var taHlght = new HighlightTa(cntr, cntrta, "mark-style");
+	var taHlght = highlightta(cntr, cntrta, "mark-style");
 
 	//main function to trigger highlights
 	function changed() {
