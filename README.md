@@ -41,23 +41,25 @@ var div = document.getElementById('highlight-div');
 var ta = document.getElementById('highlight-ta');
 var dclr = "mark-style";
 
-//Instantiate and initialize highlight-ta:
+//Instantiate and initialize highlight-ta
+var hlghtTa = highlightta();
+var hlghtTa = highlightta(div, ta);
 var hlghtTa = highlightta(div, ta, dclr, re);
 var hlghtTa = highlightta(div, ta, dclr, re, false);
 ```
 
-That's all you need. The intention is to keep style and function separate. If you wish to style HighlightTa, then style the \<div\> element. The \<textarea\> will adjust accordingly.
+That's all. The intention is to keep style and function separate. If you wish to style HighlightTa, then style the \<div\> element. The \<textarea\> will adjust accordingly.
 
 If you're wondering, "why not dynamically create a textarea inside the div?" The main advantage is input won't be lost if the page accidentally is accidentally refreshed.
 
 There are also a few helper methods:
 
 ```Javascript
-//Initialize or reset the textarea with init():
+//Initialize or reset the textarea
 hlghtTa.init(div, ta, dclr, re);
 hlghtTa.init(div, ta, dclr, re, false);
 
-//Turn corners off:
+//Turn corners off
 hlghtTa.corners();
 hlghtTa.corners(false);
 
@@ -85,8 +87,10 @@ If you want to experiment with or modify Highlight-Ta, use the prototype object 
 
 ```Javascript
 //Instantiate and initialize the prototype object:
-var ta = new HighlightTa(div,ta, dclr, re);
-var ta = new HighlightTa(div,ta, dclr, re, false);
+var ta = new HighlightTa();
+var ta = new HighlightTa(div, ta);
+var ta = new HighlightTa(div, ta, dclr, re);
+var ta = new HighlightTa(div, ta, dclr, re, false);
 ```
 
 ##Compatability##
