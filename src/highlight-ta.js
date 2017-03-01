@@ -21,7 +21,7 @@ var highlightta = function() {
 	var padBttm = null;
 
 	//initialize on instance
-	setup(arguments);
+	setup.apply(this, arguments);
 
 
 	//'private' functionss
@@ -385,37 +385,37 @@ var highlightta = function() {
 	};
 
 
-	function setup(args) {
-		if(!args.length) {
+	function setup() {
+		if(!arguments.length) {
 			return;
 		}
 
-		if(isDiv(args[0])) {
+		if(isDiv(arguments[0])) {
 			cleanUp();
-			setupCntr(args[0]);
+			setupCntr(arguments[0]);
 		}
 
-		if(isTa(args[1])) {
+		if(isTa(arguments[1])) {
 			getTares();
 
-			if(args[4] === false) {
-				modCorners(args[4]);
+			if(arguments[4] === false) {
+				modCorners(arguments[4]);
 			}else{
 				modCorners(true);
 			}
 
-			setupTa(args[1]);
+			setupTa(arguments[1]);
 			setupDiv();
 			addEvents();
 			size();
 		}
 
-		if(args[2]) {
-			setMarkClass(args[2]);
+		if(arguments[2]) {
+			setMarkClass(arguments[2]);
 		}
 
-		if(args[3]) {
-			setRegExp(args[3]);
+		if(arguments[3]) {
+			setRegExp(arguments[3]);
 		}
 	};
 
@@ -423,7 +423,7 @@ var highlightta = function() {
 	//'interface'
 	return {
 		init: function() {
-			setup(arguments);
+			setup.apply(this, arguments);
 		},
 
 		corners: function(bool) {

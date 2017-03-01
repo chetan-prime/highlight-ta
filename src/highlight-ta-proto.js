@@ -17,6 +17,8 @@ function HighlightTaObj() {
 	this.padRight = null;
 	this.padTop = null;
 	this.padBttm = null;
+
+	this.setup.apply(this, arguments);
 }
 
 
@@ -386,38 +388,38 @@ HighlightTaObj.prototype.isDiv = function(node) {
 }
 
 
-HighlightTaObj.prototype.setup = function(args) {
-	if(!args.length) {
+HighlightTaObj.prototype.setup = function() {
+	if(!arguments.length) {
 		return;
 	}
 
-	if(this.isDiv(args[0])) {
+	if(this.isDiv(arguments[0])) {
 		this.cleanUp();
-		this.setupCntr(args[0]);
+		this.setupCntr(arguments[0]);
 	}
 
-	if(this.isTa(args[1])) {
+	if(this.isTa(arguments[1])) {
 		this.getTares();
 
-		if(args[4] === false) {
-			this.modCorners(args[4]);
+		if(arguments[4] === false) {
+			this.modCorners(arguments[4]);
 		}else{
 			this.modCorners(true);
 		}
 
 		this.getTares();
-		this.setupTa(args[1]);
+		this.setupTa(arguments[1]);
 		this.setupDiv();
 		this.addEvents();
 		this.size();
 	}
 
-	if(args[2]) {
-		this.setMarkClass(args[2]);
+	if(arguments[2]) {
+		this.setMarkClass(arguments[2]);
 	}
 
-	if(args[3]) {
-		this.setRegExp(args[3]);
+	if(arguments[3]) {
+		this.setRegExp(arguments[3]);
 	}
 }
 
@@ -427,12 +429,12 @@ function HighlightTa() {
 	var hlta = new HighlightTaObj();
 
 	//instantiate
-	hlta.setup(arguments);
+	hlta.setup.apply(hlta, arguments);
 
 
 	return {
 		init: function() {
-			hlta.setup(arguments);
+			hlta.setup.apply(hlta, arguments);
 		},
 
 		corners: function(bool) {

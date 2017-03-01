@@ -44,6 +44,7 @@ var dclr = "mark-style";
 //Instantiate and initialize highlight-ta
 var hlghtTa = highlightta();
 var hlghtTa = highlightta(div, ta);
+var hlghtTa = highlightta(div, ta, dclr);
 var hlghtTa = highlightta(div, ta, dclr, re);
 var hlghtTa = highlightta(div, ta, dclr, re, false);
 ```
