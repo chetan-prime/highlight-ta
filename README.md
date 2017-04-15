@@ -1,16 +1,16 @@
-#Highlight-Ta#
+# Highlight-Ta #
 
-##Abstract##
+## Abstract ##
 
 Use a regex to highlight text inside a textarea.
 
 Checkout this [demo](https://taylor-vann.github.io/highlight-ta/) app. You can experiment with regexes.
 
-##Details##
+## Details ##
 
 Highlight-Ta is a stand-along script that uses a regex to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
 
-##Usage##
+## Usage ##
 
 Highlight-Ta will square it's top-right and bottom-right corners by default if its border-width is less than its border-radius. It keeps the textarea sharp and neat. This feature can be disabled during or after initialization.
 
@@ -94,7 +94,7 @@ var ta = new HighlightTa(div, ta, dclr, re);
 var ta = new HighlightTa(div, ta, dclr, re, false);
 ```
 
-##Compatability##
+## Compatability ##
 
 Browser | Works
 ---|---
@@ -107,6 +107,6 @@ Opera | Not yet tested
 Android | Yes
 iOS | Not yet tested
 
-##License##
+## License ##
 
 Highlight-Ta is release under the GNU [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
