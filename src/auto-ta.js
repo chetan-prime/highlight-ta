@@ -1,10 +1,9 @@
 var hlghtta = function (b, t, f, c) {
   "use strict";
 
-  var ta, cntr, tComp, cComp, crnrs, modT, modB, radT, 
-    radB, brdrT, brdrB, brdrL, brdrR, padT, padB, padL,
-    padR, tare, scrlL, scrlT, div, re, mark, func,
-    cPadT, cPadL;
+  var ta, cntr, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
+    brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, div, re, mark,
+    func, cPadT, cPadL;
 
 
   function noCrnrs() {
@@ -81,7 +80,15 @@ var hlghtta = function (b, t, f, c) {
   }
 
 
+  function removeNodes(d) {
+    while(d.hasChildNodes()) {
+      d.removeChild(d.lastChild);
+    }
+  }
+
+
   function filter() {
+    removeNodes(div);
     var txt = ta.value;
 
     txt = removeHTML(txt);
@@ -214,7 +221,6 @@ var hlghtta = function (b, t, f, c) {
     ta.style.overflow = "hidden";
     ta.style.overflowX = "hidden";
     ta.style.overflowY = "hidden";
-    ta.style.wordWrap = "break-word";
     ta.style.position = "relative";
     ta.style.background = "none";
     ta.style.backgroundColor = "transparent";
@@ -290,16 +296,6 @@ var hlghtta = function (b, t, f, c) {
       cntr.removeChild(div);
       cntr = undefined;
     }
-  }
-
-
-  function copyText(t, d) {
-    while(d.hasChildNodes()) {
-      d.removeChild(d.lastChild);
-    }
-
-    var txt = document.createTextNode(t.value);
-    d.appendChild(txt);
   }
 
 
