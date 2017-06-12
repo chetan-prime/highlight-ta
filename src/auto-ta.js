@@ -1,13 +1,11 @@
 var hlghtta = function (b, t, f, c) {
   "use strict";
 
-  var ta, cComp, tComp, crnrs, modT, modB, radT, radB,
-    brdrT, brdrB, brdrL, brdrR, padT, padB, padL, padR,
-    tare, tareT, tareL, tareB, tareR, scrlL, scrlT;
+  var ta, cntr, tComp, cComp, crnrs, modT, modB, radT, 
+    radB, brdrT, brdrB, brdrL, brdrR, padT, padB, padL,
+    padR, tare, scrlL, scrlT, div, re, mark, func,
+    cPadT, cPadL;
 
-  var cntr, div, bgrnd, re, mark, boxSize, width, borderTop, borderBttm, borderRad, padL, padR, func;
-
-  var cPadT, cPadL, cBrdrT, cBrdrL, cMrgnT, cMrgnL, cTareT, cTareL;
 
   function noCrnrs() {
     if(crnrs) {
@@ -52,26 +50,26 @@ var hlghtta = function (b, t, f, c) {
     }
 
     ta.style.height = ta.scrollHeight + tare + "px";
-    div.style.heigt = ta.style.height + "px";
 
     scrollbar();
+    updateDiv();
+
     window.scrollTo(scrlL, scrlT);
   }
 
 
-  function cntrSpace() {
-    div.style.top = (cTareT + brdrT + padT) + "px";
-    div.style.left = (cTareL + brdrL + padL) + "px";
-  }
-
-
   function removeHTML(t) {
+    t = t.replace(/&/g, '&amp');
+    t = t.replace(/</g, '&lt');
+    t = t.replace(/>/g, '&gt');
 
     return t;
   }
 
 
   function newLines(t) {
+    //t = t.replace(/\n$/g, '\n\n');
+    t = t.replace(/\n$/g, '<br><br>');
 
     return t;
   }
@@ -97,22 +95,22 @@ var hlghtta = function (b, t, f, c) {
   function onInput() {
     var txt = filter(ta.value);
     div.innerHTML = txt;
-    onResize();
+    size();
   }
 
 
   function onScroll() {
-    div.scrollTop = ta.scrollTop
-    console.log("ta scroll");
+    div.scrollTop = ta.scrollTop;
   }
 
 
   function onResize() {
     noCrnrs();
     getTare();
-    getCntrTare();
     cntrSpace();
+    styleTa();
     styleDiv();
+    simpleStyle();
 
     if(ta.style.overflowY === "scroll") {
       sharpCrnrs();
@@ -131,7 +129,7 @@ var hlghtta = function (b, t, f, c) {
 
   function rmvEvnts() {
     ta.removeEventListener("input", size, false);
-	ta.removeEventListener("scroll", onScroll, false);
+    ta.removeEventListener("scroll", onScroll, false);
     window.removeEventListener("resize", onResize, false);
   }
 
@@ -167,19 +165,11 @@ var hlghtta = function (b, t, f, c) {
 
 
   function setCntrTare() {
-    cBrdrT = parseFloat(cComp.getPropertyValue("border-top-width"));
-    cBrdrL = parseFloat(cComp.getPropertyValue("border-left-width"));
     cPadT = parseFloat(cComp.getPropertyValue("padding-top"));
     cPadL = parseFloat(cComp.getPropertyValue("padding-left"));
-    cMrgnT = parseFloat(cComp.getPropertyValue("margin-top"));
-    cMrgnL = parseFloat(cComp.getPropertyValue("margin-left"));
 
-    cBrdrT = fixNan(cBrdrT);
-    cBrdrL = fixNan(cBrdrL);
     cPadT = fixNan(cPadT);
     cPadL = fixNan(cPadL);
-    cMrgnT = fixNan(cMrgnT);
-    cMrgnL = fixNan(cMrgnL);
   }
 
 
@@ -196,30 +186,13 @@ var hlghtta = function (b, t, f, c) {
 
   function getTare() {
     setTare();
+    setCntrTare();
     setCrnrs();
 
     if(tComp.getPropertyValue("box-sizing") === "border-box") {
       tare = brdrT + brdrB;
     }else{
       tare = (padT + padB) * -1;
-    }
-
-    tareT = padT * -1;
-    tareL = padL * -1;
-    tareR = padR * -1;
-    tareB = padB * -1;
-  }
-
-
-  function getCntrTare() {
-    setCntrTare();
-
-    if(cComp.getPropertyValue("box-sizing") === "border-box") {
-      cTareT = cPadT + cBrdrT;
-      cTareL = cPadL + cBrdrL;
-    }else{
-      cTareT = cPadT + cBrdrT;
-      cTareL = cPadL + cBrdrL;
     }
   }
 
@@ -249,18 +222,25 @@ var hlghtta = function (b, t, f, c) {
   }
 
 
-  function styleDiv() {
+  function simpleStyle() {
+    if(cntr.style.position === "") {
+      cntr.style.position = "relative";
+    }
+
     div.style.position = "absolute";
-    div.style.whiteSpace = "pre-wrap";
+    div.style.whiteSpace = "pre-line";
     div.style.wordWrap = "break-word";
     div.style.overflow = "hidden";
     div.style.overflowX = "hidden";
     div.style.overflowY = "hidden";
-    //div.style.maxHeight = cComp.getPropertyValue("max-height");
     //div.style.color = "transparent";
-    //div.style.borderColor = "transparent";
-    div.style.border = "none";
+    //div.style.border = "none";
+    div.style.border = "1px solid #000000";
     div.style.boxSizing = "border-box";
+  }
+
+
+  function styleDiv() {
     div.style.boxSizing = tComp.getPropertyValue("box-sizing");
     div.style.fontStyle = tComp.getPropertyValue("font-style");
     div.style.fontSize = tComp.getPropertyValue("font-size");
@@ -269,30 +249,29 @@ var hlghtta = function (b, t, f, c) {
     div.style.lineHeight = tComp.getPropertyValue("line-height");
     div.style.marginTop = tComp.getPropertyValue("margin-top");
     div.style.marginLeft = tComp.getPropertyValue("margin-left");
-    div.style.height = ta.clientHeight + tareL + tareR + "px";
-    div.style.width = ta.clientWidth + tareT + tareB + "px";
   }
 
 
-  function styleCntr() {
-    if(cntr.style.position === "") {
-      cntr.style.position = "relative";
-      console.log("changed");
-    }
+  function cntrSpace() {
+    div.style.top = (cPadT + brdrT + padT) + "px";
+    div.style.left = (cPadL + brdrL + padL) + "px";
+  }
 
-    console.log(tare);
-    cntr.style.top = tare + "px";
+
+  function updateDiv() {
+    div.style.height = (ta.clientHeight - padL - padR) + "px";
+    div.style.width = (ta.clientWidth - padT - padB) + "px";
   }
 
 
   function unstyle(n) {
+    n.style.position = "";
+    n.style.width = "";
     n.style.overflow = "";
     n.style.overflowX = "";
     n.style.overflowY = "";
     n.style.wordWrap = "";
     n.style.whiteSpace = "";
-    n.style.position = "";
-    n.style.height = "";
   }
 
 
@@ -305,6 +284,12 @@ var hlghtta = function (b, t, f, c) {
       crnrs = undefined;
       ta = undefined;
     }
+
+    if(cntr !== undefined) {
+      unstyle(cntr);
+      cntr.removeChild(div);
+      cntr = undefined;
+    }
   }
 
 
@@ -315,7 +300,6 @@ var hlghtta = function (b, t, f, c) {
 
     var txt = document.createTextNode(t.value);
     d.appendChild(txt);
-
   }
 
 
@@ -328,9 +312,9 @@ var hlghtta = function (b, t, f, c) {
       func = f;
     }
 
-    if(t.tagName === "TEXTAREA") {
-      cleanUp();
+    cleanUp();
 
+    if(t.tagName === "TEXTAREA") {
       ta = t;
       tComp = window.getComputedStyle(ta);
 
@@ -346,21 +330,12 @@ var hlghtta = function (b, t, f, c) {
       cntr = b;
       cComp = window.getComputedStyle(cntr);
 
-      styleCntr();
-
       div = document.createElement("DIV");
 
+      onResize();
+      onInput();
       cntr.appendChild(div);
-
-      bgrnd = document.createElement("DIV");
-      div.appendChild(bgrnd);
     }
-
-    getTare();
-    getCntrTare();
-    styleDiv();
-    onInput();
-    onResize();
   }
 
 
