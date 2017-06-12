@@ -1,457 +1,436 @@
 var highlightta = function() {
-	//'private' variables
-	var cntr = null;
-	var div = null;
-	var ta = null;
-	var re = null;
-	var mark = null;
-	var comp = null;
-	var corners = null;
-	var modTop = null;
-	var modBttm = null;
+  //'private' variables
+  var cntr;
+  var div;
+  var ta;
+  var re;
+  var mark;
+  var comp;
+  var corners;
+  var modTop;
+  var modBttm;
 
-	var boxSize = null;
-	var width = null;
-	var borderTop = null;
-	var borderBttm = null;
-	var borderRad = null;
-	var padLeft = null;
-	var padRight = null;
-	var padTop = null;
-	var padBttm = null;
+  var boxSize;
+  var width;
+  var borderTop;
+  var borderBttm;
+  var borderRad;
+  var padLeft;
+  var padRight;
+  var padTop;
+  var padBttm;
 
-	//initialize on instance
-	setup.apply(this, arguments);
+  //initialize on instance
+  setup.apply(this, arguments);
 
 
-	//'private' functionss
-	function setIndex(num) {
-		num = fixNan(num);
+  //'private' functionss
+  function setMarkClass(dclr) {
+    if(typeof dclr === 'string') {
+      mark = '<mark style="margin: 0px; padding: 0px;'
+        + 'border: 0px; color: transparent;" class="'
+        + dclr + '">$&</mark>';
+    }
 
-		if(typeof num === 'number') {
-			num = num.toString();
-		}
+    screen();
+  };
 
-		if(parseFloat(num)) {
-			cntr.style.zIndex = num;
-		}
-	};
 
+  function setRegExp(regex) {
+    if(regex instanceof RegExp) {
+      re = regex;
+    }
 
-	function setMarkClass(dclr) {
-		if(typeof dclr === 'string') {
-			mark = '<mark style="margin: 0px; padding: 0px;'
-				+ 'border: 0px; color: transparent;" class="'
-				+ dclr + '">$&</mark>';
-		}
+    screen();
+  };
 
-		screen();
-	};
 
+  function highlight(text) {
+    if(re !== undefined) {
+      text = text.replace(re, mark);
+    }
 
-	function setRegExp(regex) {
-		if(regex instanceof RegExp) {
-			re = regex;
-		}
+    return text;
+  };
 
-		screen();
-	};
 
+  function newLines(text) {
+    text = text.replace(/\n$/g, '\n\n');
 
-	function highlight(text) {
-		if(re !== null) {
-			text = text.replace(re, mark);
-		}
+    return text;
+  };
 
-		return text;
-	};
 
+  function removeHTML(text) {
+    text = text.replace(/&/g, '&amp');
+    text = text.replace(/</g, '&lt');
+    text = text.replace(/>/g, '&gt');
 
-	function newLines(text) {
-		text = text.replace(/\n$/g, '\n\n');
+    return text;
+  };
 
-		return text;
-	};
 
+  function cancelCorners() {
+    if(modTop) {
+      cntr.style.borderTopRightRadius = borderRad + "px";
+    }
 
-	function removeHTML(text) {
-		text = text.replace(/&/g, '&amp');
-		text = text.replace(/</g, '&lt');
-		text = text.replace(/>/g, '&gt');
+    if(modBttm) {
+      cntr.style.borderBottomRightRadius = borderRad + "px";
+    }
+  };
 
-		return text;
-	};
 
+  function styleCorners() {
+    if(modTop) {
+      cntr.style.borderTopRightRadius = "0px";
+    }  
 
-	function cancelCorners() {
-		if(modTop) {
-			cntr.style.borderTopRightRadius = borderRad + "px";
-		}
+    if(modBttm) {
+      cntr.style.borderBottomRightRadius = "0px";
+    }  
+  };
 
-		if(modBttm) {
-			cntr.style.borderBottomRightRadius = borderRad + "px";
-		}
-	};
 
+  function scrollbar() {
+    if(ta.clientHeight !== ta.scrollHeight) {
+      if(ta.style.overflowY !== 'scroll') {
+        if(corners) {
+          styleCorners();
+        }
 
-	function styleCorners() {
-		if(modTop) {
-			cntr.style.borderTopRightRadius = "0px";
-		}	
+        ta.style.overflowY = 'scroll';
+        setDivWidth();
+      }
+    }else if(ta.style.overflowY === 'scroll') {
+      ta.style.overflowY = 'hidden';
 
-		if(modBttm) {
-			cntr.style.borderBottomRightRadius = "0px";
-		}	
-	};
+      if(corners) {
+        cancelCorners();
+      }
 
+      setDivWidth();
+    }
+  };
 
-	function scrollbar() {
-		if(ta.clientHeight !== ta.scrollHeight) {
-			if(ta.style.overflowY !== 'scroll') {
-				if(corners) {
-					styleCorners();
-				}
 
-				ta.style.overflowY = 'scroll';
-				setDivWidth();
-			}
-		}else if(ta.style.overflowY === 'scroll') {
-			ta.style.overflowY = 'hidden';
+  function size() {
+    scrollLeft = window.pageXOffset;
+    scrollTop = window.pageYOffset;
 
-			if(corners) {
-				cancelCorners();
-			}
+    cntr.style.height = "auto";
+    ta.style.height = "auto";
 
-			setDivWidth();
-		}
-	};
+    if(cntr.clientHeight <= ta.scrollHeight) {
+      cntr.style.height = (ta.scrollHeight + tare) + "px";
+    }
 
+    setTaHeight();
+    setTaWidth();
+    setDivHeight();
+    scrollbar();
 
-	function size() {
-		scrollLeft = window.pageXOffset;
-		scrollTop = window.pageYOffset;
+    window.scrollTo(scrollLeft, scrollTop);
+  };
 
-		cntr.style.height = "auto";
-		ta.style.height = "auto";
 
-		if(cntr.clientHeight <= ta.scrollHeight) {
-			cntr.style.height = (ta.scrollHeight + tare) + "px";
-		}
+  function screen() {
+    var text = ta.value;
 
-		setTaHeight();
-		setTaWidth();
-		setDivHeight();
-		scrollbar();
+    text = removeHTML(text);
+    text = highlight(text);
+    text = newLines(text);
 
-		window.scrollTo(scrollLeft, scrollTop);
-	};
+    div.innerHTML = text;
+  };
 
 
-	function screen() {
-		var text = ta.value;
+  function onInput() {
+    screen();
+    size();
+  };
 
-		text = removeHTML(text);
-		text = highlight(text);
-		text = newLines(text);
 
-		div.innerHTML = text;
-	};
+  function onScroll() {
+    div.scrollTop = ta.scrollTop;
+  };
 
 
-	function onInput() {
-		screen();
-		size();
-	};
+  function onResize() {
+    getTares();
+    styleTa();
+    styleDiv();
 
+    if(corners && ta.style.overflowY !== 'scroll') {
+      cancelCorners();
+    }
 
-	function onScroll() {
-		div.scrollTop = ta.scrollTop;
-	};
+    size();
+  };
 
 
-	function onResize() {
-		getTares();
-		styleTa();
-		styleDiv();
+  function removeEvents() {
+    ta.removeEventListener('input', onInput, false);
+    ta.removeEventListener('scroll', onScroll, false);
+    window.removeEventListener('resize', onResize, false);
+  };
 
-		if(corners && ta.style.overflowY !== 'scroll') {
-			cancelCorners();
-		}
 
-		size();
-	};
+  function addEvents() {
+    ta.addEventListener('input', onInput, false);
+    ta.addEventListener('scroll', onScroll, false);
+    window.addEventListener('resize', onResize, false);
+  };
 
 
-	function removeEvents() {
-		ta.removeEventListener('input', onInput, false);
-		ta.removeEventListener('scroll', onScroll, false);
-		window.removeEventListener('resize', onResize, false);
-	};
+  function styleFont(node) {
+    node.style.fontFamily = comp.getPropertyValue('font-family');
+    node.style.fontSize = comp.getPropertyValue('font-size');
+    node.style.lineHeight = comp.getPropertyValue('line-height');
+    node.style.letterSpacing = comp.getPropertyValue('letter-spacing');
+    node.style.color = comp.getPropertyValue('color');
+  };
 
 
-	function addEvents() {
-		ta.addEventListener('input', onInput, false);
-		ta.addEventListener('scroll', onScroll, false);
-		window.addEventListener('resize', onResize, false);
-	};
+  function scratch(node) {
+    node.style.position = "absolute";
+    node.style.display = "block";
+    node.style.top = "0px";
+    node.style.left = "0px";
+    node.style.boxStyling = "border-box";
+    node.style.margin = "0px";
+    node.style.padding = "0px";
+    node.style.backgroundColor = "transparent";
+    node.style.border = "0px solid #000000";
+    node.style.borderRadius = "0px";
+    node.style.wordWrap = "break-word";
+    node.style.overflow = "hidden";
+    node.style.overflowX = "hidden";
+    node.style.overflowY = "hidden";
+    node.style.textAlign = "left";
+  };
 
 
-	function styleFont(node) {
-		node.style.fontFamily = comp.getPropertyValue('font-family');
-		node.style.fontSize = comp.getPropertyValue('font-size');
-		node.style.lineHeight = comp.getPropertyValue('line-height');
-		node.style.letterSpacing = comp.getPropertyValue('letter-spacing');
-		node.style.color = comp.getPropertyValue('color');
-	};
+  function setDivLoc() {
+    div.style.top = padTop + "px";
+    div.style.left = padLeft + "px";
+  };
 
 
-	function scratch(node) {
-		node.style.position = "absolute";
-		node.style.display = "block";
-		node.style.top = "0px";
-		node.style.left = "0px";
-		node.style.boxStyling = "border-box";
-		node.style.margin = "0px";
-		node.style.padding = "0px";
-		node.style.backgroundColor = "transparent";
-		node.style.border = "0px solid #000000";
-		node.style.borderRadius = "0px";
-		node.style.wordWrap = "break-word";
-		node.style.overflow = "hidden";
-		node.style.overflowX = "hidden";
-		node.style.overflowY = "hidden";
-		node.style.textAlign = "left";
-	};
+  function setDivHeight() {
+    div.style.height = (ta.clientHeight - padTop - padBttm) + "px";
+  };
 
 
-	function setDivLoc() {
-		div.style.top = padTop + "px";
-		div.style.left = padLeft + "px";
-	};
+  function setDivWidth() {
+    div.style.width = (ta.clientWidth - padLeft - padRight) + "px";
+  };
 
 
-	function setDivHeight() {
-		div.style.height = (ta.clientHeight - padTop - padBttm) + "px";
-	};
+  function styleDiv() {
+    styleFont(div);
 
+    div.style.zIndex = "1";
+    div.style.whiteSpace = "pre-wrap";
+    div.style.color = "transparent";
 
-	function setDivWidth() {
-		div.style.width = (ta.clientWidth - padLeft - padRight) + "px";
-	};
+    setDivHeight();
+    setDivWidth();
+    setDivLoc();
+  };
 
 
-	function styleDiv() {
-		styleFont(div);
+  function setupDiv() {
+    div = document.createElement('DIV');
+    scratch(div);
+    cntr.appendChild(div);
+    styleDiv();
+  };
 
-		div.style.zIndex = "1";
-		div.style.whiteSpace = "pre-wrap";
-		div.style.color = "transparent";
 
-		setDivHeight();
-		setDivWidth();
-		setDivLoc();
-	};
+  function setTaWidth() {
+    ta.style.width = (cntr.clientWidth - padLeft - padRight) + "px";
+  };
 
 
-	function setupDiv() {
-		div = document.createElement('DIV');
-		scratch(div);
-		cntr.appendChild(div);
-		styleDiv();
-	};
+  function setTaHeight() {
+    ta.style.height = (cntr.clientHeight - padTop - padBttm) + "px";
+  };
 
 
-	function setTaWidth() {
-		ta.style.width = (cntr.clientWidth - padLeft - padRight) + "px";
-	};
+  function setTaPad() {
+    ta.style.paddingTop = padTop + "px";
+    ta.style.paddingRight = padRight + "px";
+    ta.style.paddingBottom = padBttm + "px";
+    ta.style.paddingLeft = padLeft + "px";
+  };
 
 
-	function setTaHeight() {
-		ta.style.height = (cntr.clientHeight - padTop - padBttm) + "px";
-	};
+  function styleTa() {
+    styleFont(ta);
 
+    ta.style.resize = "none";
+    ta.style.zIndex = "2";
 
-	function setTaPad() {
-		ta.style.paddingTop = padTop + "px";
-		ta.style.paddingRight = padRight + "px";
-		ta.style.paddingBottom = padBttm + "px";
-		ta.style.paddingLeft = padLeft + "px";
-	};
+    setTaWidth();
+    setTaHeight();
+    setTaPad();
+  };
 
 
-	function styleTa() {
-		styleFont(ta);
+  function setupTa(node) {
+    ta = node;
+    scratch(ta);
+    styleTa();
+  };
 
-		ta.style.resize = "none";
-		ta.style.zIndex = "2";
 
-		setTaWidth();
-		setTaHeight();
-		setTaPad();
-	};
+  function setupCntr(node) {
+    cntr = node;
 
+    if(cntr.style.position === "") {
+      cntr.style.position = "relative";
+    }
 
-	function setupTa(node) {
-		ta = node;
-		scratch(ta);
-		styleTa();
-	};
+    comp = window.getComputedStyle(cntr, undefined);
+  };
 
 
-	function setupCntr(node) {
-		cntr = node;
+  function fixNan(obj) {
+    if(isNaN(obj)){
+      return 0;
+    }
 
-		if(cntr.style.position === "") {
-			cntr.style.position = "relative";
-		}
+    return obj;
+  };
 
-		comp = window.getComputedStyle(cntr, null);
-	};
 
+  function setCorners() {
+    borderRad = parseFloat(comp.getPropertyValue('border-top-left-radius'));
 
-	function fixNan(obj) {
-		if(isNaN(obj)){
-			return 0;
-		}
+    borderRad = fixNan(borderRad);
 
-		return obj;
-	};
+    modTop = (borderTop < borderRad) ? true : false;
+    modBttm = (borderBttm < borderRad) ? true : false;
+  };
 
 
-	function setCorners() {
-		borderRad = parseFloat(comp.getPropertyValue('border-top-left-radius'));
+  function setTares() {
+    boxSize = comp.getPropertyValue('box-sizing');
+    borderTop = parseFloat(comp.getPropertyValue('border-top-width'));
+    borderBttm = parseFloat(comp.getPropertyValue('border-bottom-width'));
+    padLeft = parseFloat(comp.getPropertyValue('padding-left'));
+    padRight = parseFloat(comp.getPropertyValue('padding-right'));
+    padTop = parseFloat(comp.getPropertyValue('padding-top'));
+    padBttm = parseFloat(comp.getPropertyValue('padding-bottom'));
+  };
 
-		borderRad = fixNan(borderRad);
 
-		modTop = (borderTop < borderRad) ? true : false;
-		modBttm = (borderBttm < borderRad) ? true : false;
-	};
+  function getTares() {
+    setTares();
+    setCorners();
 
+    if(boxSize !== 'border-box') {
+      tare = (padTop + padBttm) * -1;
+    }else{
+      tare = borderTop + borderBttm;
+    }
+  };
 
-	function setTares() {
-		boxSize = comp.getPropertyValue('box-sizing');
-		borderTop = parseFloat(comp.getPropertyValue('border-top-width'));
-		borderBttm = parseFloat(comp.getPropertyValue('border-bottom-width'));
-		padLeft = parseFloat(comp.getPropertyValue('padding-left'));
-		padRight = parseFloat(comp.getPropertyValue('padding-right'));
-		padTop = parseFloat(comp.getPropertyValue('padding-top'));
-		padBttm = parseFloat(comp.getPropertyValue('padding-bottom'));
-	};
 
+  function modCorners(bool) {
+    if(corners && !bool) {
+      cancelCorners();
+    }
 
-	function getTares() {
-		setTares();
-		setCorners();
+    if(typeof bool === 'boolean') {
+      corners = bool;
+    }
+  };
 
-		if(boxSize !== 'border-box') {
-			tare = (padTop + padBttm) * -1;
-		}else{
-			tare = borderTop + borderBttm;
-		}
-	};
 
+  function cleanUp() {
+    if(cntr !== undefined) {
+      cntr;
+      div;
+    }
 
-	function modCorners(bool) {
-		if(corners && !bool) {
-			cancelCorners();
-		}
+    if(ta !== undefined) {
+      removeEvents();
+      ta;
+    }
+  };
 
-		if(typeof bool === 'boolean') {
-			corners = bool;
-		}
-	};
 
+  function isTa(node) {
+    return node.tagName === 'TEXTAREA';
+  };
 
-	function cleanUp() {
-		if(cntr !== null) {
-			cntr = null;
-			div = null;
-		}
 
-		if(ta !== null) {
-			removeEvents();
-			ta = null;
-		}
-	};
+  function isDiv(node) {
+    return node.tagName === 'DIV';
+  };
 
 
-	function isTa(node) {
-		return node.tagName === 'TEXTAREA';
-	};
+  function setup() {
+    if(!arguments.length) {
+      return;
+    }
 
+    if(isDiv(arguments[0])) {
+      cleanUp();
+      setupCntr(arguments[0]);
+    }
 
-	function isDiv(node) {
-		return node.tagName === 'DIV';
-	};
+    if(isTa(arguments[1])) {
+      getTares();
 
+      if(arguments[4] === false) {
+        modCorners(arguments[4]);
+      }else{
+        modCorners(true);
+      }
 
-	function setup() {
-		if(!arguments.length) {
-			return;
-		}
+      setupTa(arguments[1]);
+      setupDiv();
+      addEvents();
+      size();
+    }
 
-		if(isDiv(arguments[0])) {
-			cleanUp();
-			setupCntr(arguments[0]);
-		}
+    if(arguments[2]) {
+      setMarkClass(arguments[2]);
+    }
 
-		if(isTa(arguments[1])) {
-			getTares();
+    if(arguments[3]) {
+      setRegExp(arguments[3]);
+    }
+  };
 
-			if(arguments[4] === false) {
-				modCorners(arguments[4]);
-			}else{
-				modCorners(true);
-			}
 
-			setupTa(arguments[1]);
-			setupDiv();
-			addEvents();
-			size();
-		}
+  //'interface'
+  return {
+    init: function() {
+      setup.apply(this, arguments);
+    },
 
-		if(arguments[2]) {
-			setMarkClass(arguments[2]);
-		}
+    corners: function(bool) {
+      modCorners(bool);
+    },
 
-		if(arguments[3]) {
-			setRegExp(arguments[3]);
-		}
-	};
+    getText: function () {
+      return ta.value;
+    },
 
+    setRegex: function(re) {
+      setRegExp(re);
+    },
 
-	//'interface'
-	return {
-		init: function() {
-			setup.apply(this, arguments);
-		},
+    setMark: function(dclr) {
+      setMarkClass(dclr);
+    },
 
-		corners: function(bool) {
-			modCorners(bool);
-		},
-
-		getText: function () {
-			return ta.value;
-		},
-
-		getComp: function() {
-			return comp;
-		},
-
-		setRegex: function(re) {
-			setRegExp(re);
-		},
-
-		setMark: function(dclr) {
-			setMarkClass(dclr);
-		},
-
-		setZ: function(num) {
-			setIndex(num);
-		},
-
-		destroy: function() {
-			cleanUp();
-		},
-	}
+    destroy: function() {
+      cleanUp();
+    },
+  }
 }

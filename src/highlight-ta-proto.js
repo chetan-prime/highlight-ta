@@ -87,7 +87,7 @@ HighlightTaObj.prototype.cancelCorners = function() {
 
 	if(this.modBttm) {
 		this.cntr.style.borderBottomRightRadius = this.borderRad + "px";
-	}	
+	}
 }
 
 
@@ -157,8 +157,7 @@ HighlightTaObj.prototype.screen = function() {
 
 HighlightTaObj.prototype.onInput = function() {
 	this.screen();
-	this.size();
-}
+
 
 
 HighlightTaObj.prototype.onScroll = function() {

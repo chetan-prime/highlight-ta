@@ -25,9 +25,8 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
 		ta.value = regexes[parseInt(Math.random() * regexes.length)];
 	}
 
-	var ata = autota(ta);
-
-
+	//var ata = autota(ta);
+	console.log("yo");
 	//create a highlight-ta
 	var cntr = document.getElementById('highlight-div');
 	var cntrta = document.getElementById('highlight-ta');
@@ -37,11 +36,13 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
 	}
 
 	//var taHlght = new HighlightTa(cntr, cntrta, "mark-style");
-	var taHlght = highlightta(cntr, cntrta, "mark-style");
+	//var taHlght = highlightta(cntr, cntrta, "mark-style");
+	var taHlght = hlghtta(cntr, cntrta);
+	console.log(hlghtta);
 
 	//main function to trigger highlights
 	function changed() {
-		var pattern = ata.getText();
+		var pattern = ta.value;
 		var mods = "";
 
 		for(var i = 0; i < chks.length; i++) {
