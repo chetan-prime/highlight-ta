@@ -9,6 +9,7 @@ main, section, h3, p, span, form, input, textarea {
 	margin: 0px;
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	font-weight: lighter;
+	box-sizing: border-box;
 }
 
 main {
@@ -57,6 +58,12 @@ input[type="checkbox"] {
 div {
 	border: 1px solid #000000;
 
+}
+
+
+section {
+	width: 100%;
+	box-sizing: border-box;
 }
 
 
@@ -114,7 +121,7 @@ div {
 	border-color: #999999;
 }
 
-	@media (min-width: 500px) { 
+	@media (min-width: 500px) {
 		.input-box {
 			width: 300px;
 		}
@@ -128,13 +135,13 @@ div {
 
 
 .container-box {
-	position: absolute;
+	position: relative;
 	width: 100%;
 	margin: 20px auto 20px auto;
 	padding: 10px;
 	border: 10px solid #9d4ba7;
 	border-radius: 5px;
-	/*box-sizing: border-box;*/
+	box-sizing: border-box;
 	background-color: #ffffff;
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	font-size: 0.9rem;

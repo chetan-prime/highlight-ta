@@ -1,436 +1,422 @@
-var highlightta = function() {
-  //'private' variables
-  var cntr;
-  var div;
-  var ta;
-  var re;
-  var mark;
-  var comp;
-  var corners;
-  var modTop;
-  var modBttm;
+var hlghtta = function (b, t, re, c) {
+  "use strict";
 
-  var boxSize;
-  var width;
-  var borderTop;
-  var borderBttm;
-  var borderRad;
-  var padLeft;
-  var padRight;
-  var padTop;
-  var padBttm;
+  var ta, cntr, div, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
+    brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, cPadT, cPadL,
+    func, regexes;
 
-  //initialize on instance
-  setup.apply(this, arguments);
+  var mark = "<mark style=\"color: transparent\">$&</mark>";
 
 
-  //'private' functionss
-  function setMarkClass(dclr) {
-    if(typeof dclr === 'string') {
-      mark = '<mark style="margin: 0px; padding: 0px;'
-        + 'border: 0px; color: transparent;" class="'
-        + dclr + '">$&</mark>';
+  function noCrnrs() {
+    if(crnrs) {
+      ta.style.borderTopRightRadius = "";
+      ta.style.borderBottomRightRadius = "";
     }
-
-    screen();
-  };
+  }
 
 
-  function setRegExp(regex) {
-    if(regex instanceof RegExp) {
-      re = regex;
+  function sharpCrnrs() {
+    if(crnrs) {
+      if(modT) {
+        ta.style.borderTopRightRadius = "0px";
+      }
+
+      if(modB) {
+        ta.style.borderBottomRightRadius = "0px";
+      }
     }
-
-    screen();
-  };
-
-
-  function highlight(text) {
-    if(re !== undefined) {
-      text = text.replace(re, mark);
-    }
-
-    return text;
-  };
-
-
-  function newLines(text) {
-    text = text.replace(/\n$/g, '\n\n');
-
-    return text;
-  };
-
-
-  function removeHTML(text) {
-    text = text.replace(/&/g, '&amp');
-    text = text.replace(/</g, '&lt');
-    text = text.replace(/>/g, '&gt');
-
-    return text;
-  };
-
-
-  function cancelCorners() {
-    if(modTop) {
-      cntr.style.borderTopRightRadius = borderRad + "px";
-    }
-
-    if(modBttm) {
-      cntr.style.borderBottomRightRadius = borderRad + "px";
-    }
-  };
-
-
-  function styleCorners() {
-    if(modTop) {
-      cntr.style.borderTopRightRadius = "0px";
-    }  
-
-    if(modBttm) {
-      cntr.style.borderBottomRightRadius = "0px";
-    }  
-  };
+  }
 
 
   function scrollbar() {
     if(ta.clientHeight !== ta.scrollHeight) {
-      if(ta.style.overflowY !== 'scroll') {
-        if(corners) {
-          styleCorners();
-        }
-
-        ta.style.overflowY = 'scroll';
-        setDivWidth();
+      if(ta.style.overflowY !== "scroll") {
+        sharpCrnrs();
+        ta.style.overflowY = "scroll";
       }
-    }else if(ta.style.overflowY === 'scroll') {
-      ta.style.overflowY = 'hidden';
-
-      if(corners) {
-        cancelCorners();
-      }
-
-      setDivWidth();
+    }else if(ta.style.overflowY === "scroll") {
+      noCrnrs();
+      ta.style.overflowY = "hidden";
     }
-  };
+  }
 
 
   function size() {
-    scrollLeft = window.pageXOffset;
-    scrollTop = window.pageYOffset;
+    scrlL = window.pageXOffset;
+    scrlT = window.pageYOffset;
 
-    cntr.style.height = "auto";
-    ta.style.height = "auto";
-
-    if(cntr.clientHeight <= ta.scrollHeight) {
-      cntr.style.height = (ta.scrollHeight + tare) + "px";
+    if(ta.scrollHeight <= ta.clientHeight) {
+      ta.style.height = "auto";
     }
 
-    setTaHeight();
-    setTaWidth();
-    setDivHeight();
+    ta.style.height = ta.scrollHeight + tare + "px";
+
     scrollbar();
+    updateDiv();
 
-    window.scrollTo(scrollLeft, scrollTop);
-  };
+    window.scrollTo(scrlL, scrlT);
+  }
 
 
-  function screen() {
-    var text = ta.value;
+  function removeHTML(t) {
+    t = t.replace(/&/g, '&amp');
+    t = t.replace(/</g, '&lt');
+    t = t.replace(/>/g, '&gt');
 
-    text = removeHTML(text);
-    text = highlight(text);
-    text = newLines(text);
+    return t;
+  }
 
-    div.innerHTML = text;
-  };
+
+  function newLines(t) {
+    t = t.replace(/\n$/g, '<br><br>');
+
+    return t;
+  }
+
+
+  function highlight(t) {
+    if (regexes) {
+      var i = 0;
+
+      while(i < regexes.length) {
+        t = regexes[i](t);
+
+        i += 1;
+      }
+
+      return t;
+    }
+  }
+
+
+  function removeNodes(d) {
+    while(d.hasChildNodes()) {
+      d.removeChild(d.lastChild);
+    }
+  }
+
+
+  function filter() {
+    var txt = ta.value;
+
+    txt = removeHTML(txt);
+    txt = newLines(txt);
+    txt = highlight(txt);
+
+    return txt;
+  }
 
 
   function onInput() {
-    screen();
+    removeNodes(div);
+
+    var txt = filter(ta.value);
+    div.innerHTML = txt;
+
     size();
-  };
+  }
 
 
   function onScroll() {
     div.scrollTop = ta.scrollTop;
-  };
+  }
 
 
   function onResize() {
-    getTares();
+    noCrnrs();
+    getTare();
+    cntrSpace();
     styleTa();
     styleDiv();
+    simpleStyle();
 
-    if(corners && ta.style.overflowY !== 'scroll') {
-      cancelCorners();
+    if(ta.style.overflowY === "scroll") {
+      sharpCrnrs();
     }
 
     size();
-  };
+  }
 
 
-  function removeEvents() {
-    ta.removeEventListener('input', onInput, false);
-    ta.removeEventListener('scroll', onScroll, false);
-    window.removeEventListener('resize', onResize, false);
-  };
+  function addEvnts() {
+    ta.addEventListener("input", onInput, false);
+    ta.addEventListener("scroll", onScroll, false);
+    window.addEventListener("resize", onResize, false);
+  }
 
 
-  function addEvents() {
-    ta.addEventListener('input', onInput, false);
-    ta.addEventListener('scroll', onScroll, false);
-    window.addEventListener('resize', onResize, false);
-  };
+  function rmvEvnts() {
+    ta.removeEventListener("input", size, false);
+    ta.removeEventListener("scroll", onScroll, false);
+    window.removeEventListener("resize", onResize, false);
+  }
 
 
-  function styleFont(node) {
-    node.style.fontFamily = comp.getPropertyValue('font-family');
-    node.style.fontSize = comp.getPropertyValue('font-size');
-    node.style.lineHeight = comp.getPropertyValue('line-height');
-    node.style.letterSpacing = comp.getPropertyValue('letter-spacing');
-    node.style.color = comp.getPropertyValue('color');
-  };
+  function fixNan(a) {
+    if(isNaN(a)) {
+      return 0;
+    }
+
+    return a;
+  }
 
 
-  function scratch(node) {
-    node.style.position = "absolute";
-    node.style.display = "block";
-    node.style.top = "0px";
-    node.style.left = "0px";
-    node.style.boxStyling = "border-box";
-    node.style.margin = "0px";
-    node.style.padding = "0px";
-    node.style.backgroundColor = "transparent";
-    node.style.border = "0px solid #000000";
-    node.style.borderRadius = "0px";
-    node.style.wordWrap = "break-word";
-    node.style.overflow = "hidden";
-    node.style.overflowX = "hidden";
-    node.style.overflowY = "hidden";
-    node.style.textAlign = "left";
-  };
+  function setTare() {
+    brdrT = parseFloat(tComp.getPropertyValue("border-top-width"));
+    brdrB = parseFloat(tComp.getPropertyValue("border-bottom-width"));
+    brdrL = parseFloat(tComp.getPropertyValue("border-left-width"));
+    brdrR = parseFloat(tComp.getPropertyValue("border-right-width"));
+    padT = parseFloat(tComp.getPropertyValue("padding-top"));
+    padB = parseFloat(tComp.getPropertyValue("padding-bottom"));
+    padL = parseFloat(tComp.getPropertyValue("padding-left"));
+    padR = parseFloat(tComp.getPropertyValue("padding-right"));
+
+    brdrT = fixNan(brdrT);
+    brdrB = fixNan(brdrB);
+    brdrL = fixNan(brdrL);
+    brdrR = fixNan(brdrR);
+    padT = fixNan(padT);
+    padB = fixNan(padB);
+    padL = fixNan(padL);
+    padR = fixNan(padR);
+  }
 
 
-  function setDivLoc() {
-    div.style.top = padTop + "px";
-    div.style.left = padLeft + "px";
-  };
+  function setCntrTare() {
+    cPadT = parseFloat(cComp.getPropertyValue("padding-top"));
+    cPadL = parseFloat(cComp.getPropertyValue("padding-left"));
+
+    cPadT = fixNan(cPadT);
+    cPadL = fixNan(cPadL);
+  }
 
 
-  function setDivHeight() {
-    div.style.height = (ta.clientHeight - padTop - padBttm) + "px";
-  };
+  function modCrnrs() {
+    radT = parseFloat(tComp.getPropertyValue("border-top-right-radius"));
+    radB = parseFloat(tComp.getPropertyValue("border-bottom-right-radius"));
+    radT = fixNan(radT);
+    radB = fixNan(radB);
+
+    modT = (brdrT < radT) ? true : false;
+    modB = (brdrB < radB) ? true : false;
+  }
 
 
-  function setDivWidth() {
-    div.style.width = (ta.clientWidth - padLeft - padRight) + "px";
-  };
+  function getTare() {
+    setTare();
+    setCntrTare();
+    modCrnrs();
+
+    if(tComp.getPropertyValue("box-sizing") === "border-box") {
+      tare = brdrT + brdrB;
+    }else{
+      tare = (padT + padB) * -1;
+    }
+  }
 
 
-  function styleDiv() {
-    styleFont(div);
-
-    div.style.zIndex = "1";
-    div.style.whiteSpace = "pre-wrap";
-    div.style.color = "transparent";
-
-    setDivHeight();
-    setDivWidth();
-    setDivLoc();
-  };
-
-
-  function setupDiv() {
-    div = document.createElement('DIV');
-    scratch(div);
-    cntr.appendChild(div);
-    styleDiv();
-  };
-
-
-  function setTaWidth() {
-    ta.style.width = (cntr.clientWidth - padLeft - padRight) + "px";
-  };
-
-
-  function setTaHeight() {
-    ta.style.height = (cntr.clientHeight - padTop - padBttm) + "px";
-  };
-
-
-  function setTaPad() {
-    ta.style.paddingTop = padTop + "px";
-    ta.style.paddingRight = padRight + "px";
-    ta.style.paddingBottom = padBttm + "px";
-    ta.style.paddingLeft = padLeft + "px";
-  };
+  function modCrnrs(b) {
+    if(typeof b === "boolean") {
+      if(!b) {
+        noCrnrs();
+        crnrs = b;
+      }else{
+        crnrs = b;
+        sharpCrnrs();
+      }
+    }
+  }
 
 
   function styleTa() {
-    styleFont(ta);
-
-    ta.style.resize = "none";
-    ta.style.zIndex = "2";
-
-    setTaWidth();
-    setTaHeight();
-    setTaPad();
-  };
-
-
-  function setupTa(node) {
-    ta = node;
-    scratch(ta);
-    styleTa();
-  };
+    ta.style.overflow = "hidden";
+    ta.style.overflowX = "hidden";
+    ta.style.overflowY = "hidden";
+    ta.style.position = "relative";
+    ta.style.background = "none";
+    ta.style.backgroundColor = "transparent";
+    ta.style.zIndex = "1";
+  }
 
 
-  function setupCntr(node) {
-    cntr = node;
-
+  function simpleStyle() {
     if(cntr.style.position === "") {
       cntr.style.position = "relative";
     }
 
-    comp = window.getComputedStyle(cntr, undefined);
-  };
+    div.style.position = "absolute";
+    div.style.whiteSpace = "pre-line";
+    div.style.wordWrap = "break-word";
+    div.style.overflow = "hidden";
+    div.style.overflowX = "hidden";
+    div.style.overflowY = "hidden";
+    div.style.color = "transparent";
+    div.style.border = "none";
+    div.style.border = "1px solid #000000";
+    div.style.boxSizing = "border-box";
+  }
 
 
-  function fixNan(obj) {
-    if(isNaN(obj)){
-      return 0;
+  function styleDiv() {
+    div.style.boxSizing = tComp.getPropertyValue("box-sizing");
+    div.style.fontStyle = tComp.getPropertyValue("font-style");
+    div.style.fontSize = tComp.getPropertyValue("font-size");
+    div.style.fontVariant = tComp.getPropertyValue("font-variant");
+    div.style.fontWeight = tComp.getPropertyValue("font-weight");
+    div.style.lineHeight = tComp.getPropertyValue("line-height");
+    div.style.marginTop = tComp.getPropertyValue("margin-top");
+    div.style.marginLeft = tComp.getPropertyValue("margin-left");
+  }
+
+
+  function cntrSpace() {
+    div.style.top = (cPadT + brdrT + padT) + "px";
+    div.style.left = (cPadL + brdrL + padL) + "px";
+  }
+
+
+  function updateDiv() {
+    div.style.height = (ta.clientHeight - padL - padR) + "px";
+    div.style.width = (ta.clientWidth - padT - padB) + "px";
+  }
+
+
+  function unstyle(n) {
+    n.style.position = "";
+    n.style.width = "";
+    n.style.overflow = "";
+    n.style.overflowX = "";
+    n.style.overflowY = "";
+    n.style.wordWrap = "";
+    n.style.whiteSpace = "";
+  }
+
+
+  function wrapFunc(f) {
+    return function(t) {
+      try {
+        t = f(t);
+      } catch(e) {
+        console.log(e);
+      } finally {
+
+        return t;
+      }
+    }
+  }
+
+
+  function makeRegex(r, m) {
+    return function(t) {
+      t = t.replace(r, m);
+
+      return t;
+    };
+  }
+
+
+  function setRegexes(r) {
+    regexes = [];
+
+    if(r instanceof RegExp) {
+      console.log("regex");
+      regexes.push(makeRegex(r, mark));
+      console.log(regexes);
     }
 
-    return obj;
-  };
-
-
-  function setCorners() {
-    borderRad = parseFloat(comp.getPropertyValue('border-top-left-radius'));
-
-    borderRad = fixNan(borderRad);
-
-    modTop = (borderTop < borderRad) ? true : false;
-    modBttm = (borderBttm < borderRad) ? true : false;
-  };
-
-
-  function setTares() {
-    boxSize = comp.getPropertyValue('box-sizing');
-    borderTop = parseFloat(comp.getPropertyValue('border-top-width'));
-    borderBttm = parseFloat(comp.getPropertyValue('border-bottom-width'));
-    padLeft = parseFloat(comp.getPropertyValue('padding-left'));
-    padRight = parseFloat(comp.getPropertyValue('padding-right'));
-    padTop = parseFloat(comp.getPropertyValue('padding-top'));
-    padBttm = parseFloat(comp.getPropertyValue('padding-bottom'));
-  };
-
-
-  function getTares() {
-    setTares();
-    setCorners();
-
-    if(boxSize !== 'border-box') {
-      tare = (padTop + padBttm) * -1;
-    }else{
-      tare = borderTop + borderBttm;
-    }
-  };
-
-
-  function modCorners(bool) {
-    if(corners && !bool) {
-      cancelCorners();
+    if(typeof r === "string") {
+      regexes.push(makeRegex(new RegExp(r, "g"), mark));
+      console.log("string")
     }
 
-    if(typeof bool === 'boolean') {
-      corners = bool;
+    if(typeof r === "function") {
+      regexes.push(wrapFunc(r));
+      console.log("function")
     }
-  };
+  }
 
 
   function cleanUp() {
-    if(cntr !== undefined) {
-      cntr;
-      div;
-    }
-
     if(ta !== undefined) {
-      removeEvents();
-      ta;
+      unstyle(ta);
+      noCrnrs();
+      rmvEvnts();
+      tComp = undefined;
+      crnrs = undefined;
+      ta = undefined;
     }
-  };
+
+    if(cntr !== undefined) {
+      unstyle(cntr);
+      cntr.removeChild(div);
+      cntr = undefined;
+    }
+  }
 
 
-  function isTa(node) {
-    return node.tagName === 'TEXTAREA';
-  };
-
-
-  function isDiv(node) {
-    return node.tagName === 'DIV';
-  };
-
-
-  function setup() {
-    if(!arguments.length) {
+  function setup(b, t, re, c) {
+    if(!t || !b) {
       return;
     }
 
-    if(isDiv(arguments[0])) {
-      cleanUp();
-      setupCntr(arguments[0]);
+    if(re) {
+      setRegexes(re);
     }
 
-    if(isTa(arguments[1])) {
-      getTares();
+    cleanUp();
 
-      if(arguments[4] === false) {
-        modCorners(arguments[4]);
-      }else{
-        modCorners(true);
-      }
+    if(t.tagName === "TEXTAREA") {
+      ta = t;
+      tComp = window.getComputedStyle(ta);
 
-      setupTa(arguments[1]);
-      setupDiv();
-      addEvents();
-      size();
+      modCrnrs(true);
+      modCrnrs(c);
+
+      rmvEvnts();
+      addEvnts();
+      styleTa();
     }
 
-    if(arguments[2]) {
-      setMarkClass(arguments[2]);
+    if(b.tagName === "DIV") {
+      cntr = b;
+      cComp = window.getComputedStyle(cntr);
+
+      div = document.createElement("DIV");
+      cntr.appendChild(div);
+
+      onResize();
+      onInput();
     }
 
-    if(arguments[3]) {
-      setRegExp(arguments[3]);
-    }
-  };
+  }
 
 
-  //'interface'
+  //initialize on instance
+  setup(b, t, re, c);
+
+
   return {
-    init: function() {
-      setup.apply(this, arguments);
+    //"interface"
+    init: function(b, t, re, c) {
+      setup(b, t, re, c);
     },
 
-    corners: function(bool) {
-      modCorners(bool);
+    setCrnrs: function(b) {
+      modCrnrs(b);
     },
 
-    getText: function () {
-      return ta.value;
+    setHighlights: function(re) {
+      setRegexes(re);
+      onInput();
     },
 
-    setRegex: function(re) {
-      setRegExp(re);
-    },
-
-    setMark: function(dclr) {
-      setMarkClass(dclr);
+    update: function() {
+      onResize();
     },
 
     destroy: function() {
       cleanUp();
-    },
-  }
-}
+    }
+  };
+};
