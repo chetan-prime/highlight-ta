@@ -3,7 +3,7 @@ var hlghtta = function (b, t, re, c) {
 
   var ta, cntr, div, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
     brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, cPadT, cPadL,
-    func, regexes, mark;
+    regexes;
 
 
   function noCrnrs() {
@@ -190,7 +190,7 @@ var hlghtta = function (b, t, re, c) {
   }
 
 
-  function modCrnrs() {
+  function setCrnrs() {
     radT = parseFloat(tComp.getPropertyValue("border-top-right-radius"));
     radB = parseFloat(tComp.getPropertyValue("border-bottom-right-radius"));
     radT = fixNan(radT);
@@ -204,7 +204,7 @@ var hlghtta = function (b, t, re, c) {
   function getTare() {
     setTare();
     setCntrTare();
-    modCrnrs();
+    setCrnrs();
 
     if(tComp.getPropertyValue("box-sizing") === "border-box") {
       tare = brdrT + brdrB;
@@ -300,12 +300,12 @@ var hlghtta = function (b, t, re, c) {
       } finally {
         return t;
       }
-    }
+    };
   }
 
 
   function makeMark(m) {
-    m = "<mark class=\"" + m + "\" style=\"color: transparent\"> $&</mark>"
+    m = "<mark class=\"" + m + "\" style=\"color: transparent\"> $&</mark>";
     return m;
   }
 
@@ -324,11 +324,11 @@ var hlghtta = function (b, t, re, c) {
 
     if(r instanceof Object) {
       for(var rule in r) {
+        if(rule instanceof Object) {
         var p, m;
 
         if(r[rule].function) {
-          console.log("function")
-          regexes.push(wrapFunc(r[rule].function))
+          regexes.push(wrapFunc(r[rule].function));
           continue;
         }
 
@@ -341,8 +341,7 @@ var hlghtta = function (b, t, re, c) {
           regexes.push(makeRegex(p, m));
         }
       }
-      console.log("set regexes!");
-      return;
+      }
     }
   }
 
@@ -388,7 +387,7 @@ var hlghtta = function (b, t, re, c) {
       styleTa();
     }
 
-    if(b.tagName === "DIV") {
+    if(b.tagName === "DIV" || b.tagName === "SECTION") {
       cntr = b;
       cComp = window.getComputedStyle(cntr);
 

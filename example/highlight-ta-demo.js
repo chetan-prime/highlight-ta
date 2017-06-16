@@ -52,15 +52,16 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
     }
 
     var reg = new RegExp(pattern, mods);
+    
     var re = {
-      "pattern1": {"pattern": "Red",
+      "pattern1": {"pattern": "red",
                    "css": "mark--bgrnd-clr--red"},
       "pattern2": {"pattern": "blue",
                    "css": "mark--bgrnd-clr--blue"},
       "pattern3": {"pattern": "purple",
                    "css": "mark--bgrnd-clr--purple"},
       "pattern4": {"function": function(t) {
-        t = t.replace(/hello/gi, "<mark style=\"color: transparent\">$&</mark>");
+        t = t.replace(reg, "<mark style=\"color: transparent\">$&</mark>");
 
         return t;
       }}
