@@ -51,15 +51,22 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
       }
     }
 
-    var re = new RegExp(pattern, mods);
-    taHlght.setHighlights(re);
-    //taHlght.setHighlights(function(t) {
-    //  var re = new RegExp("hello", "g");
-    //  t = t.replace(re,
-    //    "<mark style=\"background-color: #cdcdcd; color: transparent;\">$&</mark>");
+    var reg = new RegExp(pattern, mods);
+    var re = {
+      "pattern1": {"pattern": "Red",
+                   "css": "mark--bgrnd-clr--red"},
+      "pattern2": {"pattern": "blue",
+                   "css": "mark--bgrnd-clr--blue"},
+      "pattern3": {"pattern": "purple",
+                   "css": "mark--bgrnd-clr--purple"},
+      "pattern4": {"function": function(t) {
+        t = t.replace(/hello/gi, "<mark style=\"color: transparent\">$&</mark>");
 
-    //  return t;
-    //});
+        return t;
+      }}
+    };
+
+    taHlght.setHighlights(re);
   }
 
   // add event listeners for 'form' elements

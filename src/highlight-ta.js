@@ -3,9 +3,7 @@ var hlghtta = function (b, t, re, c) {
 
   var ta, cntr, div, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
     brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, cPadT, cPadL,
-    func, regexes;
-
-  var mark = "<mark style=\"color: transparent\">$&</mark>";
+    func, regexes, mark;
 
 
   function noCrnrs() {
@@ -300,10 +298,15 @@ var hlghtta = function (b, t, re, c) {
       } catch(e) {
         console.log(e);
       } finally {
-
         return t;
       }
     }
+  }
+
+
+  function makeMark(m) {
+    m = "<mark class=\"" + m + "\" style=\"color: transparent\"> $&</mark>"
+    return m;
   }
 
 
@@ -319,20 +322,27 @@ var hlghtta = function (b, t, re, c) {
   function setRegexes(r) {
     regexes = [];
 
-    if(r instanceof RegExp) {
-      console.log("regex");
-      regexes.push(makeRegex(r, mark));
-      console.log(regexes);
-    }
+    if(r instanceof Object) {
+      for(var rule in r) {
+        var p, m;
 
-    if(typeof r === "string") {
-      regexes.push(makeRegex(new RegExp(r, "g"), mark));
-      console.log("string")
-    }
+        if(r[rule].function) {
+          console.log("function")
+          regexes.push(wrapFunc(r[rule].function))
+          continue;
+        }
 
-    if(typeof r === "function") {
-      regexes.push(wrapFunc(r));
-      console.log("function")
+        m = r[rule].css !== undefined ? makeMark(r[rule].css) : makeMark("");
+        p = r[rule].pattern instanceof RegExp ? r[rule].pattern : undefined;
+        p = typeof r[rule].pattern === "string" ?
+          new RegExp(r[rule].pattern, "g") : undefined;
+
+        if(p instanceof RegExp) {
+          regexes.push(makeRegex(p, m));
+        }
+      }
+      console.log("set regexes!");
+      return;
     }
   }
 
@@ -388,7 +398,6 @@ var hlghtta = function (b, t, re, c) {
       onResize();
       onInput();
     }
-
   }
 
 
@@ -402,8 +411,8 @@ var hlghtta = function (b, t, re, c) {
       setup(b, t, re, c);
     },
 
-    setCrnrs: function(b) {
-      modCrnrs(b);
+    setCrnrs: function(c) {
+      modCrnrs(c);
     },
 
     setHighlights: function(re) {
