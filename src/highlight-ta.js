@@ -293,6 +293,9 @@ var hlghtta = function (b, t, re, c) {
   function unstyle(n) {
     n.style.position = "";
     n.style.width = "";
+    n.style.minHeight = "";
+    n.style.maxHeight = "";
+    n.style.height = "";
     n.style.overflow = "";
     n.style.overflowX = "";
     n.style.overflowY = "";

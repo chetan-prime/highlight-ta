@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>AutoTa Demo</title>
+    <title>Highlight-Ta Demo</title>
     <link rel="stylesheet" href="example/highlight-ta.css"/>
     <script type="text/javascript" src="src/highlight-ta.js" defer="defer"></script>
     <script type="text/javascript" src="example/highlight-ta-demo.js" defer="defer"></script>
   </head>
 
   <body>
-    <a href="https://github.com/taylor-vann/auto-ta">
+    <a href="https://github.com/taylor-vann/highlight-ta">
     <div class="source-link">
       <img src="example/octo-cat_100.png" alt="octo-cat" class="octo-cat"/>
     </div>
@@ -38,9 +38,9 @@
         <section class="demo-section">
         <h4>Try highlighting text! (In this case, type words beginning with capital letters.)</h4>
         <div id="div-demo0">
-          <textarea rows="1" id="ta-demo0" class="comment-box no-scroll">There is no golden afternoon next to the cliff. When the sun went over it at about two o’clock a whispering shade came to the beach. The sycamores rustled in the afternoon breeze. Little water snakes slipped down to the rocks and then gently entered the water and swam along through the pool, their heads held up like little periscopes and a tiny wake spreading behind them.</textarea>
+          <textarea rows="1" id="ta-demo0" class="comment-box no-scroll">Now I stared at this sudden apparition with my eyes fairly starting out of my head in astonishment. Remember, I had crashed in the desert a thousand miles from any inhabited region. And yet my little man seemed neither to be straying uncertainly among the sands, nor to be fainting from fatigue or hunger or thirst or fear. Nothing about him gave any suggestion of a child lost in the middle of the desert, a thousand miles from any human habitation.</textarea>
         </div>
-        <p>If this seems useful, get the <a href="http://github.com/taylor-vann/auto-ta">code</a>.<p>
+        <p>If this seems useful, get the <a href="http://github.com/taylor-vann/highlight-ta">code</a>.<p>
         </section>
       </section>
 
@@ -168,22 +168,33 @@ var ht = hlghtta(div, ta, re);
 var ht = hlghtta(div, ta, re, false);
 
 
-// Initialize or reset auto-ta with init()
+// Initialize or reset highlight-ta with init()
 
 var ht = hlghtta();
-ht.init(document.getElementById("SomeID"));
-ht.init(document.getElementById("SomeID"), false);
+ht.init(div, ta, re);
+ht.init(div, ta, re, false;
 </code></pre>
 
-        <h3>Destroy Auto-Ta:</h3>
-        <pre><code>// Remove the textarea element and its event listeners
-ht.destroy();</code></pre>
 
-        <p>When you destroy Highlight-Ta, it will reset the textarea to its original CSS declarations.</p>
-        <p>The textarea below has a height of 100px and a max-height of 200px. Destroying it will return the height to 100px. Instantiating it will expand the textarea up to (but not over) 200px.</p>
+        <h3>Set Highlight-Ta Patterns:</h3>
+        <p>You can set the patterns dynamically with Highlight-Ta. The new patterns will be immediately shown.</p>
+        <pre><code>// Make sure you have some patterns or regexes!
+
+ar patterns= {
+  "pattern2": {"pattern": "Hello, world!"},
+  "42": {"pattern": "The answer to the question."}
+  "pattern1": {"pattern": "Goodbye, universe!"},
+  "coolbeans": {"pattern": "Right on, paragon!"}
+}
+
+
+// Remove the textarea element and its event listeners
+
+ht.setHighlights(patterns);
+</code></pre>
 
         <section class="demo-section">
-        <h4>Try to destroy Auto-Ta!</h4>
+        <h4>Try to set a new pattern!</h4>
         <div class="radios">
           <div class="radio-button">
              <input type="radio" name="ta1" value="on" checked="checked"><label>init</label>
@@ -192,13 +203,33 @@ ht.destroy();</code></pre>
             <input type="radio" name="ta1" value="off"><label>destroy</label>
           </div>
         </div>
-        <div id="div-demo1">
-          <textarea rows="1" id="ta-demo1" class="comment-box cap">Better than anything else Frankie loved it when there were parties upstairs in the laboratory. When girls and men gathered to sit and talk, when the great phonograph played music that throbbed in his stomach and made beautiful and huge pictures from vaguely in his head, Frankie loved it. Then he crouched down in a corner behind a chair where he was hidden and could watch and listen. When there was laughter at a joke he didn’t understand Frankie laughed delightedly behind his chair and when the conversation dealt with abstractions his brows furrowed and he became intent and serious.</textarea>
+        <div id="ta-demo1">
+          <textarea rows="1" id="ta-demo1" class="comment-box cap">Indeed, as I learned, there were on the planet where the little prince lived--as on all planets--good plants and bad plants. In consequence, there were good seeds from good plants, and bad seeds from bad plants. But seeds are invisible. They sleep deep in the heart of the earth's darkness, until some one among them is seized with the desire to awaken. Then this little seed will stretch itself and begin--timidly at first--to push a charming little sprig inoffensively upward toward the sun. If it is only a sprout of radish or the sprig of a rose-bush, one would let it grow wherever it might wish. But when it is a bad plant, one must destroy it as soon as possible, the very first instant that one recognizes it.</textarea>
+        </div>
+        </section>
+
+        <h3>Destroy Highlight-Ta:</h3>
+        <p>When you destroy Highlight-Ta, it will reset the textarea to its original CSS declarations.</p>
+        <pre><code>// Remove the highlighted areas and event listeners
+ht.destroy();</code></pre>
+        <p>The textarea below has a height of 100px and a max-height of 200px. Destroying it will return the height to 100px. Instantiating it will expand the textarea up to (but not over) 200px.</p>
+        <section class="demo-section">
+        <h4>Try to destroy highlight-ta!</h4>
+        <div class="radios">
+          <div class="radio-button">
+             <input type="radio" name="ta1" value="on" checked="checked"><label>init</label>
+          </div>
+          <div class="radio-button">
+            <input type="radio" name="ta1" value="off"><label>destroy</label>
+          </div>
+        </div>
+        <div id="div-demo2">
+          <textarea rows="1" id="ta-demo2" class="comment-box cap">Better than anything else Frankie loved it when there were parties upstairs in the laboratory. When girls and men gathered to sit and talk, when the great phonograph played music that throbbed in his stomach and made beautiful and huge pictures from vaguely in his head, Frankie loved it. Then he crouched down in a corner behind a chair where he was hidden and could watch and listen. When there was laughter at a joke he didn’t understand Frankie laughed delightedly behind his chair and when the conversation dealt with abstractions his brows furrowed and he became intent and serious.</textarea>
         </div>
         </section>
 
         <h3>Modify Corners:</h3>
-        <p>If an object's border-radius is greater than its border width, the scrollbar will lie over the top and bottom right corners on most browsers. It's not exactly neat. Auto-Ta compensates and squares corners when the scrollbar is present.</p>
+        <p>If an object's border-radius is greater than its border width, the scrollbar will lie over the top and bottom right corners on most browsers. It's not exactly neat. Highlight-ta compensates and squares corners when the scrollbar is present.</p>
         <pre><code>// Turn sharp corners on (default)
 ta.setCorners(true);
 
@@ -210,20 +241,20 @@ ta.setCorners(false);
         <h4>Try turning the corners off!</h4>
         <div class="radios-right">
           <div class="radio-button-right">
-             <input type="radio" name="ta2" value="yes" checked="checked"><label>on</label>
+             <input type="radio" name="ta3" value="yes" checked="checked"><label>on</label>
           </div>
           <div class="radio-button-right">
-            <input type="radio" name="ta2" value="no"><label>off</label>
+            <input type="radio" name="ta3" value="no"><label>off</label>
           </div>
         </div>
-        <div id="div-demo2">
-          <textarea rows="1" id="ta-demo2" class="comment-box crazy-corners">Now he was ready. He took a great breath and opened the door. The music and the talk roared around him. Frankie picked up the tray of beer and walked through the door. He knew how. He went straight toward the same young woman who had thanked him before. And then right in front of her, the thing happened, the co-ordination failed, the hands fumbled, the panicked muscles, the nerves telegraphed to a dead operator, the responses did not come back. Tray and beer collapsed forward into the young woman’s lap. For a moment Frankie stood still. And then he turned and ran.</textarea>
+        <div id="div-demo3">
+          <textarea rows="1" id="ta-demo3" class="comment-box crazy-corners">When one wishes to play the wit, he sometimes wanders a little from the truth. I have not been altogether honest in what I have told you about the lamplighters. And I realize that I run the risk of giving a false idea of our planet to those who do not know it. Men occupy a very small place upon the Earth. If the two billion inhabitants who people its surface were all to stand upright and somewhat crowded together, as they do for some big public assembly, they could easily be put into one public square twenty miles long and twenty miles wide. All humanity could be piled up on a small Pacific islet. </textarea>
         </div>
         </section>
 
         <h3>Updating Content:</h3>
-        <p>If the content of the textarea is altered with JavaScript, normal event listeners won't recognize the change. Auto-Ta can resize whenever you tell it to resize.</p>
-        <pre><code>// Update Auto-Ta programmatically
+        <p>If the content of the textarea is altered with JavaScript, normal event listeners won't recognize the change. highlight-ta can resize whenever you tell it to resize.</p>
+        <pre><code>// Update highlight-ta programmatically
 ta.update();
 
 // as in...
@@ -235,13 +266,13 @@ ta.update();
 </code></pre>
         <p>Replace the contents of the second textarea with the contents of the first by pressing the update button below.</p>
         <section class="demo-section">
-        <h4>Try to update Auto-Ta!</h4>
-        <textarea rows="2" id="ta-demo3" class="comment-box trim">“If you get caught don’t mention me,” Gay called out after him. Meanwhile Gay tested the bands. The low-high pedal didn’t quite touch the floor so he knew there was a little band left. The brake pedal did touch the floor so there was no brake, but the reverse pedal had lots of band left. On a Model T Ford the reverse is your margin of safety. When your brake is gone, you can use reverse as a brake. And when the low gear band is worn too thin to pull up a steep hill, why you can turn around and back up it. Gay found there was plenty of reverse and he knew everything was all right.</textarea>
+        <h4>Try to update highlight-ta!</h4>
+        <textarea rows="2" id="ta-demo4" class="comment-box trim">"You are beautiful, but you are empty," he went on. "One could not die for you. To be sure, an ordinary passerby would think that my rose looked just like you--the rose that belongs to me. But in herself alone she is more important than all the hundreds of you other roses: because it is she that I have watered; because it is she that I have put under the glass globe; because it is she that I have sheltered behind the screen; because it is for her that I have killed the caterpillars (except the two or three that we saved to become butterflies); because it is she that I have listened to, when she grumbled, or boasted, or ever sometimes when she said nothing. Because she is my rose.</textarea>
         <div class="radios">
           <input type="button" id="update" value="Update" class="button" />
         </div>
-        <div id="div-demo4">
-        <textarea rows="1" id="ta-demo4" class="comment-box no-scroll"></textarea>
+        <div id="div-demo5">
+        <textarea rows="1" id="ta-demo5" class="comment-box no-scroll"></textarea>
         </div>
         </section>
       </section>
@@ -258,7 +289,7 @@ ta.update();
 
       <section class="segment">
         <h2>License</h2>
-        <p>Auto-Ta is released under the <a href="https://opensource.org/licenses/MIT">MIT</a> License.
+        <p>highlight-ta is released under the <a href="https://opensource.org/licenses/MIT">MIT</a> License.
       </section>
     </main>
 

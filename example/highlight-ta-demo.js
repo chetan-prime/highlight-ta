@@ -4,7 +4,14 @@ function highlightTaDemo() {
   var ta0 = document.getElementById("ta-demo0");
   var div0 = document.getElementById("div-demo0");
   var reg0 = new RegExp("[A-Z][a-z]*", "g");
-  var pttrn0 = {"pattern0": {"pattern": reg0}};
+  var areg1 = new RegExp("[a][a-z]", "g");
+  var areg2 = new RegExp("be", "g");
+  var areg3 = new RegExp("suggestion", "g");
+  var pttrn0 = {"pattern0": {"pattern": reg0},
+                "pattern1": {"pattern": areg1, "css": "mark--bgrnd-clr--blue"},
+                "pattern2": {"pattern": areg2, "css": "mark--bgrnd-clr--red"},
+                "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--purple"}
+  };
 
   console.log(ta0);
   console.log(div0);
@@ -13,43 +20,11 @@ function highlightTaDemo() {
   var ht0 = hlghtta(div0, ta0, pttrn0);
 
   // destroy demo textarea
-  var ta1 = document.getElementById("ta-demo1");
-  var div1 = document.getElementById("div-demo1");
-  var reg1 = new RegExp("[A-Z][a-z]*", "g");
-  var areg1 = new RegExp("", "");
-  var areg2 = new RegExp("", "");
-  var areg3 = new RegExp("", "");
-  var pttrn1 = {
-    "pattern0": {"pattern": reg1}};
-
-  console.log(ta1);
-  console.log(div1);
-  console.log(reg1);
-
-  var ht1 = hlghtta(div1, ta1, pttrn1);
-
-  function switchInit(v) {
-    switch(v) {
-      case "on":
-        ht1 = hlghtta(div1, ta1, pttrn1);
-        break;
-      case "off":
-        ht1.destroy();
-        break;
-    }
-  }
-  var rad1 = document.getElementsByName("ta1");
-
-  for(var i = 0; i < rad1.length; i++){
-    rad1[i].addEventListener("click", function sup() {switchInit(this.value)}, false);
-  }
-
-
-  // mod corners
   var ta2 = document.getElementById("ta-demo2");
   var div2 = document.getElementById("div-demo2");
   var reg2 = new RegExp("[A-Z][a-z]*", "g");
-  var pttrn2 = {"pattern0": {"pattern": reg2}};
+  var pttrn2 = {
+    "pattern0": {"pattern": reg2}};
 
   console.log(ta2);
   console.log(div2);
@@ -57,45 +32,74 @@ function highlightTaDemo() {
 
   var ht2 = hlghtta(div2, ta2, pttrn2);
 
+  function switchInit(v) {
+    switch(v) {
+      case "on":
+        ht2 = hlghtta(div2, ta2, pttrn2);
+        break;
+      case "off":
+        ht2.destroy();
+        break;
+    }
+  }
+  var rad2 = document.getElementsByName("ta1");
+
+  for(var i = 0; i < rad2.length; i++){
+    rad2[i].addEventListener("click", function sup() {switchInit(this.value)}, false);
+  }
+
+
+  // mod corners
+  var ta3 = document.getElementById("ta-demo3");
+  var div3 = document.getElementById("div-demo3");
+  var reg3 = new RegExp("[A-Z][a-z]*", "g");
+  var pttrn3 = {"pattern0": {"pattern": reg3}};
+
+  console.log(ta3);
+  console.log(div3);
+  console.log(reg3);
+
+  var ht3 = hlghtta(div3, ta3, pttrn3);
+
   function switchCrnrs(v) {
     switch(v) {
       case "yes":
-        ht2.setCorners(true);
+        ht3.setCorners(true);
         break;
       case "no":
-        ht2.setCorners(false);
+        ht3.setCorners(false);
         break;
     }
   }
 
-  var rad2 = document.getElementsByName("ta2");
+  var rad3 = document.getElementsByName("ta3");
 
-  for(var i = 0; i < rad2.length; i++){
-    rad2[i].addEventListener("click", function yo() {switchCrnrs(this.value)}, false);
+  for(var i = 0; i < rad3.length; i++){
+    rad3[i].addEventListener("click", function yo() {switchCrnrs(this.value)}, false);
   }
 
 
   // update
-  var ta3 = document.getElementById("ta-demo3");
   var ta4 = document.getElementById("ta-demo4");
-  var div4 = document.getElementById("div-demo4");
-  var reg4 = new RegExp("[A-Z][a-z]*", "g");
-  var pttrn4 = {"pattern0": {"pattern": reg4}};
+  var ta5 = document.getElementById("ta-demo5");
+  var div5 = document.getElementById("div-demo5");
+  var reg5 = new RegExp("[A-Z][a-z]*", "g");
+  var pttrn5 = {"pattern0": {"pattern": reg5}};
 
-  console.log(ta4);
-  console.log(div4);
-  console.log(reg4);
+  console.log(ta5);
+  console.log(div5);
+  console.log(reg5);
 
-  var ht4 = hlghtta(div4, ta4, pttrn4);
+  var ht5 = hlghtta(div5, ta5, pttrn5);
 
   function switchValue(s) {
-    ta4.value = s;
-    ht4.update();
+    ta5.value = s;
+    ht5.update();
   }
 
   var bttn = document.getElementById("update");
 
-  bttn.addEventListener("click", function hey() {switchValue(ta3.value)}, false);
+  bttn.addEventListener("click", function hey() {switchValue(ta4.value)}, false);
 
 
 
