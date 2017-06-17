@@ -1,56 +1,269 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Highlight-Ta Demo</title>
+    <title>AutoTa Demo</title>
     <link rel="stylesheet" href="example/highlight-ta.css"/>
-    <script type="text/javascript" src="https://taylor-vann.github.io/auto-ta/src/auto-ta.js" defer></script>
-    <script type="text/javascript" src="src/highlight-ta.js"></script>
-    <script type="text/javascript" src="example/highlight-ta-demo.js" defer></script>
+    <script type="text/javascript" src="src/highlight-ta.js" defer="defer"></script>
+    <script type="text/javascript" src="example/highlight-ta-demo.js" defer="defer"></script>
   </head>
 
   <body>
+    <a href="https://github.com/taylor-vann/auto-ta">
+    <div class="source-link">
+      <img src="example/octo-cat_100.png" alt="octo-cat" class="octo-cat"/>
+    </div>
+    </a>
+
+    <header class="hdr">
+      <a href="https://github.com/taylor-vann">
+      <div class="title">
+        <img src="example/elephant_100.png" alt="elephant" class="logo" />
+      </div>
+      <div class="title name">
+        <p class="p-name">Brian Taylor Vann</p>
+      </div>
+      </a>
+    </header>
+
     <main>
-      <section class="container">
-        <section class="center space">
-          <h3>RegExp Fiddler</h3>
-          <p>Practice Regexes!</p>
-        </section>
+      <section class="segment">
+        <h1>Highlight-Ta</h1>
+        <p>Highlight text in a textarea based on strings or regular expressions while automatically adjusting the textarea to fit its contents.</p>
+      </section>
 
-        <section class="input center">
-          <form id="regex-form">
-            <div class="inline-bar clr">
-              <div class="inline-bar fl">
-                <span class="inline-bar">/</span>
-              </div>
-              <textarea id="regex-input" class="input-box" rows="1"></textarea>
-              <span>/</span>
-            </div>
-            <div class="checks">
-              <input type="checkbox" name="modifier-g" id="mod-g" value="g" checked="checked">
-              <label for="mod-g">g</label>
-              <input type="checkbox" name="modifier-i" id="mod-i" value="i">
-              <label for="mod-i">i</label>
-              <input type="checkbox" name="modifier-m" id="mod-m" value="m">
-              <label for="mod-m">m</label>
-            </div>
-          </form>
-        </section>
 
-        <section>
-          <div id="highlight-div" class="container-box">
-            <textarea id="highlight-ta" class="comment-box" rows="1"></textarea>
+      <section class="segment">
+        <section class="demo-section">
+        <h4>Try highlighting text! (In this case, type words beginning with capital letters.)</h4>
+        <div id="div-demo0">
+          <textarea rows="1" id="ta-demo0" class="comment-box no-scroll">There is no golden afternoon next to the cliff. When the sun went over it at about two o’clock a whispering shade came to the beach. The sycamores rustled in the afternoon breeze. Little water snakes slipped down to the rocks and then gently entered the water and swam along through the pool, their heads held up like little periscopes and a tiny wake spreading behind them.</textarea>
+        </div>
+        <p>If this seems useful, get the <a href="http://github.com/taylor-vann/auto-ta">code</a>.<p>
+        </section>
+      </section>
+
+      <section class="segment">
+        <h2>About</h2>
+        <p>Highlight-Ta is a powerful closure function with two duties: to highlight selected text inside a textarea and to automatically resize a textarea while following CSS declarations and responsive media queries. You can highlight with multiple strings, regexes, classes and custom functions. It's built to help developers create better web applications. Highlight-Ta is a stand-alone script and does not rely on jQuery or third party libraries.</p>
+      </section>
+
+      <section class="segment">
+        <h2>How to Use</h2>
+        <p>In an attempt to stay framework agnostic, please do two things:</p>
+        <ul>
+          <li>Provide a div or section containing a textarea.</li>
+          <pre><code>&ltdiv id="cntr-div"&gt
+  &lttextarea id="hlght-ta"&gt
+  &lt/textarea&gt
+&lt/div&gt</code></pre>
+
+          <li>Provide an object of regexes, strings, or functions matching the following patterns:</li>
+          <pre><code>// an object of objects containing a "pattern" key with a string.
+
+var patterns= {
+  "pattern1": {"pattern": "Hello, world!"},
+  "pattern2": {"pattern": "Goodbye, universe!"}
+}</code></pre>
+        </ul>
+        <h3>Install Highlight-Ta:</h3>
+        <p>Add <code>highlight-ta.js</code> to your resources or install via npm.</p>
+        <pre><code>npm install highlight-ta</code></pre>
+        <h3>Create your patterns:</h3>
+        <p>With Highlight-Ta, you use regexes, strings and even create custom functions to highlight your text. This is the most important part and Highlight-Ta's most powerful feature. By default, Highlight-Ta will follow your default "mark" CSS declarations. Otherwise you can provide your own.</p>
+        <pre><code>// an object of objects containing a "pattern" key with a string.
+
+var patterns= {
+  "pattern1": {"pattern": "Hello, world!"},
+  "pattern2": {"pattern": "Goodbye, universe!"}
+}
+
+
+// an object of objects containing a "pattern" key with a string
+// and corresponding "css" keys
+
+var patterns= {
+  "pattern1": {"pattern": "Hello, world!",
+               "css": "hello-class"},
+  "pattern2": {"pattern": "Goodbye, universe!",
+               "class": "goodbye-class"}
+}
+
+
+// an object of objects containing a "pattern" of regexes
+// and corresponding "css" keys
+
+var reg0 = new RegExp("[A-Z][a-z]*", "g");
+var reg1 = new RegExp("", "g")
+
+var patterns= {
+  "pattern1": {"pattern": reg0,
+               "css": "hello-class"},
+  "pattern2": {"pattern": reg1,
+               "css": "goodbye-class"}
+}
+</code></pre>
+
+        <p>If you'd like to make custom functions for more complicated interactions, carefully use the following pattern.</p>
+        <code><pre>// don't use the "pattern" or "css" keys.
+// use a "function" key with a function that:
+//
+//   1) takes a string as an argument.
+//   3) replaces text with &ltmark&gt attributes.
+//   2) returns a string as an argument.
+
+
+var patterns= {
+  "pattern1": {"function": function(t) {
+    var m = "&ltmark id='some-id' style='some-class'&gt$&amp&ltmark&gt";
+    t = t.replace(new Regex("[a-z]*", "g"), <);
+
+    return t;
+    }
+  },
+  "pattern1": {"function": function(t) {
+    var m = "&ltmark id='dif-id' style='diff-class'&gt$&amp&ltmark&gt";
+    t = t.replace(new Regex("[a-z]*", "g"), <);
+
+    return t;
+  }
+}
+</code></pre>
+
+        <p>If you're worried about order of execution, Highlight-Ta executes each pattern you make based on the alphabetical order of the keys:</p>
+        <code><pre>// original order of keys:
+
+var patterns= {
+  "pattern2": {"pattern": "Hello, world!"},
+  "42": {"pattern": "The answer to the question."}
+  "pattern1": {"pattern": "Goodbye, universe!"},
+  "coolbeans": {"pattern": "Right on, paragon!"}
+}
+
+// order of execution:
+"42"
+"coolbeans"
+"pattern1"
+"pattern2"
+</code></pre>
+
+        <h3>Instantiate Highlight-Ta:</h3>
+        <p>Once you've created your patterns and provided a textarea wrapped in a div, Highlight-Ta handles the rest all on its own.</p>
+        <pre><code>// Get parent div, get child textarea, and regex or string
+
+var div = document.getElementById("SomeParentDiv");
+var ta = document.getElementById("ChildTextArea");
+var reg = new RegExp("[A-Z][a-z]*", "g");
+var re = {"myPattern": {"pattern": reg}};
+
+
+// Instantiate and initialize
+
+var ht = hlghtta(div, ta, re);
+
+
+// Instantiate and initialize without sharp corners
+
+var ht = hlghtta(div, ta, re, false);
+
+
+// Initialize or reset auto-ta with init()
+
+var ht = hlghtta();
+ht.init(document.getElementById("SomeID"));
+ht.init(document.getElementById("SomeID"), false);
+</code></pre>
+
+        <h3>Destroy Auto-Ta:</h3>
+        <pre><code>// Remove the textarea element and its event listeners
+ht.destroy();</code></pre>
+
+        <p>When you destroy Highlight-Ta, it will reset the textarea to its original CSS declarations.</p>
+        <p>The textarea below has a height of 100px and a max-height of 200px. Destroying it will return the height to 100px. Instantiating it will expand the textarea up to (but not over) 200px.</p>
+
+        <section class="demo-section">
+        <h4>Try to destroy Auto-Ta!</h4>
+        <div class="radios">
+          <div class="radio-button">
+             <input type="radio" name="ta1" value="on" checked="checked"><label>init</label>
           </div>
+          <div class="radio-button">
+            <input type="radio" name="ta1" value="off"><label>destroy</label>
+          </div>
+        </div>
+        <div id="div-demo1">
+          <textarea rows="1" id="ta-demo1" class="comment-box cap">Better than anything else Frankie loved it when there were parties upstairs in the laboratory. When girls and men gathered to sit and talk, when the great phonograph played music that throbbed in his stomach and made beautiful and huge pictures from vaguely in his head, Frankie loved it. Then he crouched down in a corner behind a chair where he was hidden and could watch and listen. When there was laughter at a joke he didn’t understand Frankie laughed delightedly behind his chair and when the conversation dealt with abstractions his brows furrowed and he became intent and serious.</textarea>
+        </div>
         </section>
 
-        <section class="space center">
-          <p>Made using Highlight-Ta.</p>
-          <p>If this seems useful, get the <a href="http://github.com/taylor-vann/highlight-ta">code</a>.<p>
-        <section>
+        <h3>Modify Corners:</h3>
+        <p>If an object's border-radius is greater than its border width, the scrollbar will lie over the top and bottom right corners on most browsers. It's not exactly neat. Auto-Ta compensates and squares corners when the scrollbar is present.</p>
+        <pre><code>// Turn sharp corners on (default)
+ta.setCorners(true);
+
+// Turn sharp corners off
+ta.setCorners(false);
+</code></pre>
+
+        <section class="demo-section">
+        <h4>Try turning the corners off!</h4>
+        <div class="radios-right">
+          <div class="radio-button-right">
+             <input type="radio" name="ta2" value="yes" checked="checked"><label>on</label>
+          </div>
+          <div class="radio-button-right">
+            <input type="radio" name="ta2" value="no"><label>off</label>
+          </div>
+        </div>
+        <div id="div-demo2">
+          <textarea rows="1" id="ta-demo2" class="comment-box crazy-corners">Now he was ready. He took a great breath and opened the door. The music and the talk roared around him. Frankie picked up the tray of beer and walked through the door. He knew how. He went straight toward the same young woman who had thanked him before. And then right in front of her, the thing happened, the co-ordination failed, the hands fumbled, the panicked muscles, the nerves telegraphed to a dead operator, the responses did not come back. Tray and beer collapsed forward into the young woman’s lap. For a moment Frankie stood still. And then he turned and ran.</textarea>
+        </div>
+        </section>
+
+        <h3>Updating Content:</h3>
+        <p>If the content of the textarea is altered with JavaScript, normal event listeners won't recognize the change. Auto-Ta can resize whenever you tell it to resize.</p>
+        <pre><code>// Update Auto-Ta programmatically
+ta.update();
+
+// as in...
+var elem = documents.getElementById("my-ta");
+var ta = autota(elem);
+
+elem.value = "Something changed my value!";
+ta.update();
+</code></pre>
+        <p>Replace the contents of the second textarea with the contents of the first by pressing the update button below.</p>
+        <section class="demo-section">
+        <h4>Try to update Auto-Ta!</h4>
+        <textarea rows="2" id="ta-demo3" class="comment-box trim">“If you get caught don’t mention me,” Gay called out after him. Meanwhile Gay tested the bands. The low-high pedal didn’t quite touch the floor so he knew there was a little band left. The brake pedal did touch the floor so there was no brake, but the reverse pedal had lots of band left. On a Model T Ford the reverse is your margin of safety. When your brake is gone, you can use reverse as a brake. And when the low gear band is worn too thin to pull up a steep hill, why you can turn around and back up it. Gay found there was plenty of reverse and he knew everything was all right.</textarea>
+        <div class="radios">
+          <input type="button" id="update" value="Update" class="button" />
+        </div>
+        <div id="div-demo4">
+        <textarea rows="1" id="ta-demo4" class="comment-box no-scroll"></textarea>
+        </div>
+        </section>
+      </section>
+
+
+      <section class="segment">
+        <h2>Alternatives</h2>
+        <p>Highlight-Ta was built to supply the easiest and most flexible. Existing libraries relied on external libraries and didn't function properly. In fact, here are some of the existing, functioning libraries:</p>
+        <p><a href="http://lonekorean.github.io/highlight-within-textarea/">Highlight-Within-Textarea</a> - a similar implementation relying on jQuery.</p>
+        <p><a href="https://www.npmjs.com/package/jquery-highlighttextarea">jQuery-Highlighttextarea</a> - another jQuery implementation.</p>
+        <p><a href="http://yavorskiy.github.io/angular-input-highlight/">Angular-Input-Highlight</a> - a directive for Angular.</p>
+        <p>By all means, please choose the library that is right for you and your development team. Highlight-Ta is framework agnostic and simple. If there is a feature worth adding or if you find a bug in the script, please post in the repository's <a href="https://github.com/taylor-vann/highlight-ta/issues">issues</a>.</p>
+      </section>
+
+      <section class="segment">
+        <h2>License</h2>
+        <p>Auto-Ta is released under the <a href="https://opensource.org/licenses/MIT">MIT</a> License.
       </section>
     </main>
 
-    <!-- <script type="text/javascript" src="https://taylor-vann.github.io/auto-ta/src/auto-ta.js"></script> -->
+    <footer>
+        <p class="copywrite">&#x00A9; Brian Taylor Vann 2017</p>
+    </footer>
   </body>
 </html>

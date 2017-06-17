@@ -239,7 +239,9 @@ var hlghtta = function (b, t, re, c) {
 
 
   function simpleStyle() {
-    if(cntr.style.position === "") {
+    if(cntr.style.position !== "absolute" ||
+      cntr.style.position !== "relative" ||
+      cntr.style.position !== "fixed") {
       cntr.style.position = "relative";
     }
 
@@ -249,9 +251,17 @@ var hlghtta = function (b, t, re, c) {
     div.style.overflow = "hidden";
     div.style.overflowX = "hidden";
     div.style.overflowY = "hidden";
+    div.style.paddingTop = "0px";
+    div.style.paddingRight = "0px";
+    div.style.paddingBottom = "0px";
+    div.style.paddingLeft = "0px";
+    div.style.marginTop = "0px";
+    div.style.marginRight = "0px";
+    div.style.marginBottom = "0px";
+    div.style.marginLeft = "0px";
     div.style.color = "transparent";
     div.style.border = "none";
-    div.style.border = "1px solid #000000";
+    //div.style.border = "1px solid #000000";
     div.style.boxSizing = "border-box";
   }
 
@@ -305,7 +315,7 @@ var hlghtta = function (b, t, re, c) {
 
 
   function makeMark(m) {
-    m = "<mark class=\"" + m + "\" style=\"color: transparent\"> $&</mark>";
+    m = "<mark class=\"" + m + "\" style=\"color: transparent\">$&</mark>";
     return m;
   }
 
@@ -323,26 +333,34 @@ var hlghtta = function (b, t, re, c) {
     regexes = [];
 
     if(r instanceof Object) {
-      for(var rule in r) {
-        if(rule instanceof Object) {
-        var p, m;
+      var keys = Object.keys(r);
+      keys = keys.sort();
 
-        if(r[rule].function) {
-          regexes.push(wrapFunc(r[rule].function));
-          continue;
+      for(var rule in keys) {
+        console.log(keys[rule]);
+        var k = r[keys[rule]];
+
+        if(k instanceof Object) {
+          var p, m;
+
+          if(k.function) {
+            regexes.push(wrapFunc(k.function));
+            continue;
+          }
+
+          m = k.css !== undefined ? makeMark(k.css) : makeMark("");
+          p = k.pattern instanceof RegExp ? k.pattern : p;
+          p = typeof k.pattern === "string" ?
+            new RegExp(k.pattern, "g") : p;
+
+          if(p instanceof RegExp) {
+            regexes.push(makeRegex(p, m));
+          }
         }
-
-        m = r[rule].css !== undefined ? makeMark(r[rule].css) : makeMark("");
-        p = r[rule].pattern instanceof RegExp ? r[rule].pattern : undefined;
-        p = typeof r[rule].pattern === "string" ?
-          new RegExp(r[rule].pattern, "g") : undefined;
-
-        if(p instanceof RegExp) {
-          regexes.push(makeRegex(p, m));
-        }
-      }
       }
     }
+
+    console.log(regexes)
   }
 
 
@@ -351,6 +369,7 @@ var hlghtta = function (b, t, re, c) {
       unstyle(ta);
       noCrnrs();
       rmvEvnts();
+
       tComp = undefined;
       crnrs = undefined;
       ta = undefined;
@@ -410,7 +429,7 @@ var hlghtta = function (b, t, re, c) {
       setup(b, t, re, c);
     },
 
-    setCrnrs: function(c) {
+    setCorners: function(c) {
       modCrnrs(c);
     },
 
@@ -420,6 +439,7 @@ var hlghtta = function (b, t, re, c) {
     },
 
     update: function() {
+      onInput();
       onResize();
     },
 

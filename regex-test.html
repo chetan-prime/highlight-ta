@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Highlight-Ta Demo</title>
+    <link rel="stylesheet" href="example/highlight-ta.css"/>
+    <script type="text/javascript" src="https://taylor-vann.github.io/auto-ta/src/auto-ta.js" defer></script>
+    <script type="text/javascript" src="src/highlight-ta.js"></script>
+    <script type="text/javascript" src="example/highlight-ta-demo.js" defer></script>
+  </head>
+
+  <body>
+    <main>
+      <section class="container">
+        <section class="center space">
+          <h3>RegExp Fiddler</h3>
+          <p>Practice Regexes!</p>
+        </section>
+
+        <section class="input center">
+          <form id="regex-form">
+            <div class="inline-bar clr">
+              <div class="inline-bar fl">
+                <span class="inline-bar">/</span>
+              </div>
+              <textarea id="regex-input" class="input-box" rows="1"></textarea>
+              <span>/</span>
+            </div>
+            <div class="checks">
+              <input type="checkbox" name="modifier-g" id="mod-g" value="g" checked="checked">
+              <label for="mod-g">g</label>
+              <input type="checkbox" name="modifier-i" id="mod-i" value="i">
+              <label for="mod-i">i</label>
+              <input type="checkbox" name="modifier-m" id="mod-m" value="m">
+              <label for="mod-m">m</label>
+            </div>
+          </form>
+        </section>
+
+        <section>
+          <div id="highlight-div" class="container-box">
+            <textarea id="highlight-ta" class="comment-box" rows="1"></textarea>
+          </div>
+        </section>
+
+        <section class="space center">
+          <p>Made using Highlight-Ta.</p>
+          <p>If this seems useful, get the <a href="http://github.com/taylor-vann/highlight-ta">code</a>.<p>
+        <section>
+      </section>
+    </main>
+
+    <!-- <script type="text/javascript" src="https://taylor-vann.github.io/auto-ta/src/auto-ta.js"></script> -->
+  </body>
+</html>
