@@ -487,3 +487,6 @@ var hlghtta = function (b, t, re, c) {
     }
   };
 };
+
+
+module.exports = hlghtta;
