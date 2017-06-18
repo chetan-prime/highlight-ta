@@ -13,10 +13,6 @@ function highlightTaDemo() {
                 "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--green"}
   };
 
-  console.log(ta0);
-  console.log(div0);
-  console.log(reg0);
-
   var ht0 = hlghtta(div0, ta0, pttrn0);
 
 
@@ -34,24 +30,14 @@ function highlightTaDemo() {
                 "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--green"}
   };
 
-  console.log(ta1);
-  console.log(div1);
-  console.log(chk1);
-  console.log(chk2);
-  console.log(chk3);
-  console.log(chk4);
-  console.log(chks);
-
   var ht1 = hlghtta(div1, ta1);
 
   switchChks = function() {
-    console.log("switch checks")
     var c = document.getElementsByName("chks")
 
     var pttrn1 = {};
 
     for(var j = 0; j < c.length; j++) {
-      console.log(c[j])
       if(c[j].checked){
         switch(c[j].value) {
           case "0":
@@ -74,7 +60,6 @@ function highlightTaDemo() {
   }
 
   for(var i = 0; i < chks.length; i++){
-    console.log(i)
     chks[i].addEventListener("click", switchChks.bind(this), false);
   }
 
@@ -82,12 +67,7 @@ function highlightTaDemo() {
   var ta2 = document.getElementById("ta-demo2");
   var div2 = document.getElementById("div-demo2");
   var reg2 = new RegExp("[A-Z][a-z]*", "g");
-  var pttrn2 = {
-    "pattern0": {"pattern": reg2}};
-
-  console.log(ta2);
-  console.log(div2);
-  console.log(reg2);
+  var pttrn2 = {"pattern0": {"pattern": reg2}};
 
   var ht2 = hlghtta(div2, ta2, pttrn2);
 
@@ -113,10 +93,6 @@ function highlightTaDemo() {
   var div3 = document.getElementById("div-demo3");
   var reg3 = new RegExp("[A-Z][a-z]*", "g");
   var pttrn3 = {"pattern0": {"pattern": reg3}};
-
-  console.log(ta3);
-  console.log(div3);
-  console.log(reg3);
 
   var ht3 = hlghtta(div3, ta3, pttrn3);
 
@@ -144,10 +120,6 @@ function highlightTaDemo() {
   var div5 = document.getElementById("div-demo5");
   var reg5 = new RegExp("[A-Z][a-z]*", "g");
   var pttrn5 = {"pattern0": {"pattern": reg5}};
-
-  console.log(ta5);
-  console.log(div5);
-  console.log(reg5);
 
   var ht5 = hlghtta(div5, ta5, pttrn5);
 
