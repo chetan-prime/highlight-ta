@@ -23,7 +23,7 @@ function highlightTaDemo() {
   // try different regexes
   var ta1 = document.getElementById("ta-demo1");
   var div1 = document.getElementById("div-demo1");
-  var chks = document.getElementsByName("chks")
+  var chks = document.getElementsByName("chks");
   var chk1 = document.getElementById("chkbx1");
   var chk2 = document.getElementById("chkbx2");
   var chk3 = document.getElementById("chkbx3");
@@ -44,7 +44,7 @@ function highlightTaDemo() {
 
   var ht1 = hlghtta(div1, ta1);
 
-  function switchChcks() {
+  switchChks = function() {
     console.log("switch checks")
     var c = document.getElementsByName("chks")
 
@@ -75,7 +75,7 @@ function highlightTaDemo() {
 
   for(var i = 0; i < chks.length; i++){
     console.log(i)
-    chks[i].addEventListener("click", switchChcks.bind(this), false);
+    chks[i].addEventListener("click", switchChks.bind(this), false);
   }
 
   // destroy demo textarea
@@ -237,8 +237,6 @@ Bunkercrumple\n451 Fantasy Ln\nCarmel CA\n93921\n\nJohn Bartholomew Bohem\n\
   chk2.addEventListener('change', changed, false);
   chk3.addEventListener('change', changed, false);
   ta.addEventListener('input', changed, false);
-
-  changed();
 }
 
 
