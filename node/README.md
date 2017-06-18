@@ -100,4 +100,4 @@ iOS | Not yet tested
 
 ## License ##
 
-Highlight-Ta is release under the GNU [MIT(https://opensource.org/licenses/MIT) license.
+Highlight-Ta is release under the GNU [MIT](https://opensource.org/licenses/MIT) license.

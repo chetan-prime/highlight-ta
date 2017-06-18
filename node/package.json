@@ -1,0 +1,33 @@
+{
+  "name": "highlight-ta",
+  "version": "1.0.2",
+  "description": "Highlight text in a textarea using vanilla JS.",
+  "main": "highlight-ta.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taylor-vann/highlight-ta.git"
+  },
+  "keywords": [
+    "highlight",
+    "textarea",
+    "text",
+    "area",
+    "ta",
+    "regexp",
+    "regex",
+    "UX",
+    "UI",
+    "automatic",
+    "resize",
+    "auto"
+  ],
+  "author": "Brian Taylor Vann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taylor-vann/highlight-ta/issues"
+  },
+  "homepage": "https://github.com/taylor-vann/highlight-ta#readme"
+}
