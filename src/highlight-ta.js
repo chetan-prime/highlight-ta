@@ -351,11 +351,12 @@ var hlghtta = function (b, t, re, c) {
 
   function removeChilds() {
     var c = cntr.childNodes;
-    var i = c.length - 1
-    var found = false
+    var i = c.length - 1;
+    var found = false;
+
     while(i > -1) {
       if(!found && c[i].tagName === 'TEXTAREA') {
-        found = true
+        found = true;
         i -= 1;
 
         continue;
@@ -384,7 +385,7 @@ var hlghtta = function (b, t, re, c) {
 
 
   function setRegexes(r) {
-    regs = r !== undefined ? r : regs
+    regs = r !== undefined ? r : regs;
     regexes = [];
 
     removeDivs();

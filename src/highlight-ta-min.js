@@ -33,10 +33,11 @@ function wrapFunc(f){return function(t){try{t=f(t);}catch(e){console.log(e);}fin
 function makeMark(m){m="<mark class=\""+m+"\" style=\"color: transparent\">$&</mark>";return m;}
 function makeRegex(r,m){return function(t){t=t.replace(r,m);return t;};}
 function addRegex(r){var d=document.createElement("DIV");regexes.push({"div":d,"regexp":r});}
+function removeChilds(){var c=cntr.childNodes;var i=c.length-1;var found=false;while(i>-1){if(!found&&c[i].tagName==='TEXTAREA'){found=true;i-=1;continue;}
+cntr.removeChild(c[i]);i-=1;}}
 function removeDivs(){if(cntr){var cn=cntr.childNodes;var i=cn.length-1;while(i!==-1){if(cn[i].tagName==="DIV"){cntr.removeChild(cn[i]);}
 i-=1;}}}
-function setRegexes(r){regs=r!==undefined?r:regs
-regexes=[];removeDivs();if(regs instanceof Object){var keys=Object.keys(r);keys=keys.sort();for(var rule in keys){var k=regs[keys[rule]];if(k instanceof Object){var p,m;if(k.function){addRegex(wrapFunc(k.function));continue;}
+function setRegexes(r){regs=r!==undefined?r:regs;regexes=[];removeDivs();if(regs instanceof Object){var keys=Object.keys(r);keys=keys.sort();for(var rule in keys){var k=regs[keys[rule]];if(k instanceof Object){var p,m;if(k.function){addRegex(wrapFunc(k.function));continue;}
 m=k.css!==undefined?makeMark(k.css):makeMark("");p=k.pattern instanceof RegExp?k.pattern:p;p=typeof k.pattern==="string"?new RegExp(k.pattern,"g"):p;if(p instanceof RegExp){addRegex(makeRegex(p,m));}}}}}
 function cleanUp(){if(ta!==undefined){unstyle(ta);noCrnrs();rmvEvnts();tComp=undefined;crnrs=undefined;ta=undefined;}
 if(cntr!==undefined){removeDivs();unstyle(cntr);cntr=undefined;}
@@ -44,5 +45,5 @@ regs=undefined;regexes=undefined;}
 function setup(b,t,re,c){if(!t||!b){return;}
 cleanUp();if(t.tagName==="TEXTAREA"){ta=t;tComp=window.getComputedStyle(ta);modCrnrs(true);modCrnrs(c);rmvEvnts();addEvnts();styleTa();}
 if(re){setRegexes(re);}
-if(b.tagName==="DIV"||b.tagName==="SECTION"){cntr=b;cComp=window.getComputedStyle(cntr);styleCntr();onResize();onInput();}}
+if(b.tagName==="DIV"||b.tagName==="SECTION"){cntr=b;cComp=window.getComputedStyle(cntr);removeChilds();styleCntr();onResize();onInput();}}
 setup(b,t,re,c);return{init:function(b,t,re,c){setup(b,t,re,c);},setCorners:function(c){modCrnrs(c);},setHighlights:function(re){setRegexes(re);onInput();onResize();},update:function(){onInput();onResize();},destroy:function(){cleanUp();}};};
