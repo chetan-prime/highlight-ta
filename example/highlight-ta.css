@@ -103,6 +103,10 @@ input[type="radio"] {
   display: inline;
 }
 
+input[type="checkbox"] {
+  display: inline;
+}
+
 label {
   display: inline;
   font-size: 14px;
@@ -124,8 +128,8 @@ code {
   color: #232323;
 }
 
-mark {
-  background-color: #dedede;
+li {
+  list-style-type: circle;
 }
 
 .source-link {
@@ -224,7 +228,19 @@ mark {
 
 
 .radio-button-right {
-  display: inline;
+  display: block;
+  margin: 0px 0px 0px 10px;
+}
+
+@media (min-width: 600px) {
+  .chkbx-button-right {
+    display: inline;
+    margin: 0px 0px 0px 20px;
+  }
+}
+
+.chkbx-button-right {
+  display: block;
   margin: 0px 0px 0px 10px;
 }
 
@@ -300,21 +316,24 @@ mark {
 }
 
 mark {
-	background-color: rgba(200, 200, 200, 1);
+	background-color: rgba(200, 200, 200, 0.5);
 	border-radius: 2px;
 }
 
 .mark--bgrnd-clr--blue {
-  background-color: rgba(0, 155, 174, 1);
+  background-color: #87b5ff;
+  background-color: rgba(135, 181, 255, 0.5);
 	border-radius: 2px;
 }
 
 .mark--bgrnd-clr--red {
-  background-color: rgba(244, 89, 66, 1);
+  background-color: #91ff87;
+  background-color: rgba(249, 119, 122, 0.5);
 	border-radius: 2px;
 }
 
-.mark--bgrnd-clr--purple {
-  background-color: rgba(235, 65, 244, 1);
+.mark--bgrnd-clr--green {
+  background-color: #fb87ff;
+  background-color: rgba(118, 249, 127, 0.5);
 	border-radius: 2px;
 }

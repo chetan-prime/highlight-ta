@@ -4,13 +4,13 @@ function highlightTaDemo() {
   var ta0 = document.getElementById("ta-demo0");
   var div0 = document.getElementById("div-demo0");
   var reg0 = new RegExp("[A-Z][a-z]*", "g");
-  var areg1 = new RegExp("[a][a-z]", "g");
-  var areg2 = new RegExp("be", "g");
-  var areg3 = new RegExp("suggestion", "g");
+  var areg1 = new RegExp("\\b(S|s)[a-z]*", "g");
+  var areg2 = new RegExp("\\b(F|f)[a-z]*", "g");
+  var areg3 = new RegExp("\\b(T|t)[a-z]*", "g");
   var pttrn0 = {"pattern0": {"pattern": reg0},
                 "pattern1": {"pattern": areg1, "css": "mark--bgrnd-clr--blue"},
                 "pattern2": {"pattern": areg2, "css": "mark--bgrnd-clr--red"},
-                "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--purple"}
+                "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--green"}
   };
 
   console.log(ta0);
@@ -18,6 +18,65 @@ function highlightTaDemo() {
   console.log(reg0);
 
   var ht0 = hlghtta(div0, ta0, pttrn0);
+
+
+  // try different regexes
+  var ta1 = document.getElementById("ta-demo1");
+  var div1 = document.getElementById("div-demo1");
+  var chks = document.getElementsByName("chks")
+  var chk1 = document.getElementById("chkbx1");
+  var chk2 = document.getElementById("chkbx2");
+  var chk3 = document.getElementById("chkbx3");
+  var chk4 = document.getElementById("chkbx4");
+  var pttrn1 = {"pattern0": {"pattern": reg0},
+                "pattern1": {"pattern": areg1, "css": "mark--bgrnd-clr--blue"},
+                "pattern2": {"pattern": areg2, "css": "mark--bgrnd-clr--red"},
+                "pattern3": {"pattern": areg3, "css": "mark--bgrnd-clr--green"}
+  };
+
+  console.log(ta1);
+  console.log(div1);
+  console.log(chk1);
+  console.log(chk2);
+  console.log(chk3);
+  console.log(chk4);
+  console.log(chks);
+
+  var ht1 = hlghtta(div1, ta1);
+
+  function switchChcks() {
+    console.log("switch checks")
+    var c = document.getElementsByName("chks")
+
+    var pttrn1 = {};
+
+    for(var j = 0; j < c.length; j++) {
+      console.log(c[j])
+      if(c[j].checked){
+        switch(c[j].value) {
+          case "0":
+            pttrn1["0"] = {"pattern": reg0};
+            break;
+          case "1":
+            pttrn1["1"] = {"pattern": areg1, "css": "mark--bgrnd-clr--blue"};
+            break;
+          case "2":
+            pttrn1["2"] = {"pattern": areg2, "css": "mark--bgrnd-clr--red"};
+            break;
+          case "3":
+            pttrn1["3"] = {"pattern": areg3, "css": "mark--bgrnd-clr--green"};
+            break;
+        }
+      }
+    }
+
+    ht1.setHighlights(pttrn1);
+  }
+
+  for(var i = 0; i < chks.length; i++){
+    console.log(i)
+    chks[i].addEventListener("click", switchChcks.bind(this), false);
+  }
 
   // destroy demo textarea
   var ta2 = document.getElementById("ta-demo2");

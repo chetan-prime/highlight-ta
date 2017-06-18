@@ -62,11 +62,12 @@
           <li>Provide an object of regexes, strings, or functions matching the following patterns:</li>
           <pre><code>// an object of objects containing a "pattern" key with a string.
 
-var patterns= {
+var patterns = {
   "pattern1": {"pattern": "Hello, world!"},
   "pattern2": {"pattern": "Goodbye, universe!"}
 }</code></pre>
         </ul>
+
         <h3>Install Highlight-Ta:</h3>
         <p>Add <code>highlight-ta.js</code> to your resources or install via npm.</p>
         <pre><code>npm install highlight-ta</code></pre>
@@ -74,16 +75,16 @@ var patterns= {
         <p>With Highlight-Ta, you use regexes, strings and even create custom functions to highlight your text. This is the most important part and Highlight-Ta's most powerful feature. By default, Highlight-Ta will follow your default "mark" CSS declarations. Otherwise you can provide your own.</p>
         <pre><code>// an object of objects containing a "pattern" key with a string.
 
-var patterns= {
-  "pattern1": {"pattern": "Hello, world!"},
-  "pattern2": {"pattern": "Goodbye, universe!"}
+var patterns = {
+  "myPattern1": {"pattern": "Hello, world!"},
+  "myPattern2": {"pattern": "Goodbye, universe!"}
 }
 
 
 // an object of objects containing a "pattern" key with a string
 // and corresponding "css" keys
 
-var patterns= {
+var patterns = {
   "pattern1": {"pattern": "Hello, world!",
                "css": "hello-class"},
   "pattern2": {"pattern": "Goodbye, universe!",
@@ -97,7 +98,7 @@ var patterns= {
 var reg0 = new RegExp("[A-Z][a-z]*", "g");
 var reg1 = new RegExp("", "g")
 
-var patterns= {
+var patterns = {
   "pattern1": {"pattern": reg0,
                "css": "hello-class"},
   "pattern2": {"pattern": reg1,
@@ -114,15 +115,15 @@ var patterns= {
 //   2) returns a string as an argument.
 
 
-var patterns= {
-  "pattern1": {"function": function(t) {
+var patterns = {
+  "myPattern1": {"function": function(t) {
     var m = "&ltmark id='some-id' style='some-class'&gt$&amp&ltmark&gt";
     t = t.replace(new Regex("[a-z]*", "g"), <);
 
     return t;
     }
   },
-  "pattern1": {"function": function(t) {
+  "myPattern2": {"function": function(t) {
     var m = "&ltmark id='dif-id' style='diff-class'&gt$&amp&ltmark&gt";
     t = t.replace(new Regex("[a-z]*", "g"), <);
 
@@ -134,7 +135,7 @@ var patterns= {
         <p>If you're worried about order of execution, Highlight-Ta executes each pattern you make based on the alphabetical order of the keys:</p>
         <code><pre>// original order of keys:
 
-var patterns= {
+var patterns = {
   "pattern2": {"pattern": "Hello, world!"},
   "42": {"pattern": "The answer to the question."}
   "pattern1": {"pattern": "Goodbye, universe!"},
@@ -180,7 +181,7 @@ ht.init(div, ta, re, false;
         <p>You can set the patterns dynamically with Highlight-Ta. The new patterns will be immediately shown.</p>
         <pre><code>// Make sure you have some patterns or regexes!
 
-ar patterns= {
+ar patterns = {
   "pattern2": {"pattern": "Hello, world!"},
   "42": {"pattern": "The answer to the question."}
   "pattern1": {"pattern": "Goodbye, universe!"},
@@ -196,15 +197,21 @@ ht.setHighlights(patterns);
         <section class="demo-section">
         <h4>Try to set a new pattern!</h4>
         <div class="radios">
-          <div class="radio-button">
-             <input type="radio" name="ta1" value="on" checked="checked"><label>init</label>
-          </div>
-          <div class="radio-button">
-            <input type="radio" name="ta1" value="off"><label>destroy</label>
-          </div>
+            <div class="chkbx-button-right">
+              <input type="checkbox" id="chkbx1" name="chks" value="0"><label>Words beginning with a <mark>Capital</mark> letter.</label>
+            </div>
+            <div class="chkbx-button-right">
+              <input type="checkbox" id="chkbx2" name="chks" value="1"><label>Words beginning with an <mark class="mark--bgrnd-clr--green">S or an s</mark>.</label>
+            </div>
+            <div class="chkbx-button-right">
+              <input type="checkbox" id="chkbx3" name="chks" value="2"><label>Words beginning with an <mark class="mark--bgrnd-clr--blue">F or an f</mark>.</label>
+            </div>
+            <div class="chkbx-button-right">
+              <input type="checkbox" id="chkbx4" name="chks" value="3"><label>Words beginning with an <mark class="mark--bgrnd-clr--red">T or a t</mark>.</label>
+            </div>
         </div>
-        <div id="ta-demo1">
-          <textarea rows="1" id="ta-demo1" class="comment-box cap">Indeed, as I learned, there were on the planet where the little prince lived--as on all planets--good plants and bad plants. In consequence, there were good seeds from good plants, and bad seeds from bad plants. But seeds are invisible. They sleep deep in the heart of the earth's darkness, until some one among them is seized with the desire to awaken. Then this little seed will stretch itself and begin--timidly at first--to push a charming little sprig inoffensively upward toward the sun. If it is only a sprout of radish or the sprig of a rose-bush, one would let it grow wherever it might wish. But when it is a bad plant, one must destroy it as soon as possible, the very first instant that one recognizes it.</textarea>
+        <div id="div-demo1">
+          <textarea rows="1" id="ta-demo1" class="comment-box">Indeed, as I learned, there were on the planet where the little prince lived--as on all planets--good plants and bad plants. In consequence, there were good seeds from good plants, and bad seeds from bad plants. But seeds are invisible. They sleep deep in the heart of the earth's darkness, until some one among them is seized with the desire to awaken. Then this little seed will stretch itself and begin--timidly at first--to push a charming little sprig inoffensively upward toward the sun. If it is only a sprout of radish or the sprig of a rose-bush, one would let it grow wherever it might wish. But when it is a bad plant, one must destroy it as soon as possible, the very first instant that one recognizes it.</textarea>
         </div>
         </section>
 
