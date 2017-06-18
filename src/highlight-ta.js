@@ -1,7 +1,7 @@
 var hlghtta = function (b, t, re, c) {
   "use strict";
 
-  var ta, cntr, div, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
+  var ta, cntr, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
     brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, cPadT, cPadL,
     regexes;
 
@@ -40,6 +40,61 @@ var hlghtta = function (b, t, re, c) {
   }
 
 
+  function removeHTML(t) {
+    t = t.replace(/&/g, '&amp');
+    t = t.replace(/</g, '&lt');
+    t = t.replace(/>/g, '&gt');
+
+    return t;
+  }
+
+
+  function newLines(t) {
+    t = t.replace(/\n$/g, '<br><br>');
+
+    return t;
+  }
+
+
+  function highlight(txt) {
+    if (regexes) {
+      var i = 0;
+      while(i < regexes.length) {
+        regexes[i].div.innerHTML = regexes[i].regexp(txt);
+        i += 1;
+      }
+    }
+  }
+
+
+  function filter() {
+    var txt = ta.value;
+
+    txt = removeHTML(txt);
+    txt = newLines(txt);
+
+    return txt;
+  }
+
+
+  function onInput() {
+    var txt = filter(ta.value);
+    highlight(txt);
+
+    size();
+  }
+
+
+  function onScroll() {
+    var i = 0;
+
+    while(i < regexes.length) {
+      regexes[i].div.scrollTop = ta.scrollTop;
+      i += 1;
+    }
+  }
+
+
   function size() {
     scrlL = window.pageXOffset;
     scrlT = window.pageYOffset;
@@ -64,80 +119,15 @@ var hlghtta = function (b, t, re, c) {
   }
 
 
-  function removeHTML(t) {
-    t = t.replace(/&/g, '&amp');
-    t = t.replace(/</g, '&lt');
-    t = t.replace(/>/g, '&gt');
-
-    return t;
-  }
-
-
-  function newLines(t) {
-    t = t.replace(/\n$/g, '<br><br>');
-
-    return t;
-  }
-
-
-  function highlight(txt) {
-    if (regexes) {
-      var i = 0;
-      while(i < regexes.length) {
-        console.log(regexes[i].regexp);
-
-        regexes[i].div.innerHTML = regexes[i].regexp(txt);
-        i += 1;
-      }
-    }
-  }
-
-
-  function removeNodes(d) {
-    while(d.hasChildNodes()) {
-      d.removeChild(d.lastChild);
-    }
-  }
-
-
-  function filter() {
-    var txt = ta.value;
-
-    txt = removeHTML(txt);
-    txt = newLines(txt);
-
-    return txt;
-  }
-
-
-  function onInput() {
-    var txt = filter(ta.value);
-    highlight(txt);
-
-    size();
-  }
-
-
-  function onScroll() {
-    // while loop
-    var i = 0;
-    while(i < regexes.length) {
-      regexes[i].div.scrollTop = ta.scrollTop;
-      i += 1;
-    }
-  }
-
-
   function onResize() {
     noCrnrs();
     getTare();
     styleTa();
     styleCntr();
 
-    // while loop
-    var i = 0;
-
     if(regexes) {
+      var i = 0;
+
       while(i < regexes.length) {
         updateDiv(regexes[i].div);
         styleDiv(regexes[i].div);
@@ -352,12 +342,11 @@ var hlghtta = function (b, t, re, c) {
   function addRegex(r) {
     var d = document.createElement("DIV");
     cntr.appendChild(d);
-    regexes.push({"div": d, "regexp": r})
+    regexes.push({"div": d, "regexp": r});
   }
 
 
   function removeDivs() {
-    console.log("removeDivs");
     var cn = cntr.childNodes;
     var i = cn.length - 1;
 
@@ -380,7 +369,6 @@ var hlghtta = function (b, t, re, c) {
       keys = keys.sort();
 
       for(var rule in keys) {
-        console.log(keys[rule]);
         var k = r[keys[rule]];
 
         if(k instanceof Object) {
@@ -402,8 +390,6 @@ var hlghtta = function (b, t, re, c) {
         }
       }
     }
-
-    console.log(regexes)
   }
 
 
@@ -454,10 +440,10 @@ var hlghtta = function (b, t, re, c) {
       if(re) {
         setRegexes(re);
       }
-    }
 
-    onResize();
-    onInput();
+      onResize();
+      onInput();
+    }
   }
 
 
