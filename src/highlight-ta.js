@@ -3,7 +3,7 @@ var hlghtta = function (b, t, re, c) {
 
   var ta, cntr, tComp, cComp, crnrs, modT, modB, radT, radB, brdrT, brdrB,
     brdrL, brdrR, padT, padB, padL, padR, tare, scrlL, scrlT, cPadT, cPadL,
-    regexes;
+    regs, regexes;
 
 
   function noCrnrs() {
@@ -61,6 +61,9 @@ var hlghtta = function (b, t, re, c) {
       var i = 0;
       while(i < regexes.length) {
         regexes[i].div.innerHTML = regexes[i].regexp(txt);
+
+        cntr.appendChild(regexes[i].div);
+
         i += 1;
       }
     }
@@ -341,35 +344,39 @@ var hlghtta = function (b, t, re, c) {
 
   function addRegex(r) {
     var d = document.createElement("DIV");
-    cntr.appendChild(d);
+    
     regexes.push({"div": d, "regexp": r});
   }
 
 
   function removeDivs() {
-    var cn = cntr.childNodes;
-    var i = cn.length - 1;
+    if(cntr) {
+      var cn = cntr.childNodes;
+      var i = cn.length - 1;
 
-    while(i !== -1) {
-      if (cn[i].tagName === "DIV") {
-        cntr.removeChild(cn[i]);
+      while(i !== -1) {
+        if (cn[i].tagName === "DIV") {
+          cntr.removeChild(cn[i]);
+        }
+
+        i -= 1;
       }
-
-      i -= 1;
     }
   }
 
 
   function setRegexes(r) {
+    regs = r !== undefined ? r : regs
     regexes = [];
+
     removeDivs();
 
-    if(r instanceof Object) {
+    if(regs instanceof Object) {
       var keys = Object.keys(r);
       keys = keys.sort();
 
       for(var rule in keys) {
-        var k = r[keys[rule]];
+        var k = regs[keys[rule]];
 
         if(k instanceof Object) {
           var p, m;
@@ -409,6 +416,9 @@ var hlghtta = function (b, t, re, c) {
       unstyle(cntr);
       cntr = undefined;
     }
+
+    regs = undefined;
+    regexes = undefined;
   }
 
 
@@ -431,15 +441,15 @@ var hlghtta = function (b, t, re, c) {
       styleTa();
     }
 
+    if(re) {
+      setRegexes(re);
+    }
+
     if(b.tagName === "DIV" || b.tagName === "SECTION") {
       cntr = b;
       cComp = window.getComputedStyle(cntr);
 
       styleCntr();
-
-      if(re) {
-        setRegexes(re);
-      }
 
       onResize();
       onInput();
