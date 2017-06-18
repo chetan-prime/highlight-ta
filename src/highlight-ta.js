@@ -349,6 +349,24 @@ var hlghtta = function (b, t, re, c) {
   }
 
 
+  function removeChilds() {
+    var c = cntr.childNodes;
+    var i = c.length - 1
+    var found = false
+    while(i > -1) {
+      if(!found && c[i].tagName === 'TEXTAREA') {
+        found = true
+        i -= 1;
+
+        continue;
+      }
+
+      cntr.removeChild(c[i]);
+      i -= 1;
+    }
+  }
+
+
   function removeDivs() {
     if(cntr) {
       var cn = cntr.childNodes;
@@ -449,8 +467,8 @@ var hlghtta = function (b, t, re, c) {
       cntr = b;
       cComp = window.getComputedStyle(cntr);
 
+      removeChilds();
       styleCntr();
-
       onResize();
       onInput();
     }

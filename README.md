@@ -28,7 +28,7 @@ Start with a \<textarea\> inside a \<div\> element:
 </div>
 ```
 
-Then create an object of rules with following pattern:
+Then create an object of rules with following patterns:
 
 ```Javascript
 // create patterns with strings!
@@ -37,8 +37,9 @@ var patterns = {
   "pattern1": {"pattern": "Hello, world!"},
   "pattern2": {"pattern": "Goodbye, universe!"},
 }
+```
 
-
+```JavaScript
 // create patterns with regexes
 
 var regexp0 = new RegExp("[A-Z][a-z]*", "g");
@@ -48,8 +49,6 @@ var patterns = {
   "pattern1": {"pattern": regex0},
   "pattern2": {"pattern": regex1},
 }
-
-var regexp = new RegExp("[A-Z][a-z]*", "g");
 ```
 
 
