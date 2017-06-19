@@ -2,9 +2,9 @@
 
 ## Abstract ##
 
-Highlight-Ta is a stand-along script that uses a regex, strings, and functions to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
+Highlight-Ta is a stand-alone script that uses a regular expressions, strings, and functions to highlight text inside a textarea. It also adjusts a textarea's height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
 
-Checkout this [demo](https://taylor-vann.github.io/highlight-ta/).
+Checkout this [demo](https://taylor-vann.github.io/highlight-ta/) for a functional demo and more detailed instructions.
 
 ## Usage ##
 
@@ -22,6 +22,15 @@ Start with a \<textarea\> inside a \<div\> element:
 <div id="highlight-div" class="someclass">
   <textarea id="highlight-ta"></textarea>
 </div>
+```
+
+Create an object of strings or regexes.
+
+```JavaScript
+var patterns = {
+  "pattern1": {"pattern": "Hello, world!"},
+  "pattern2": {"pattern": "Goodbye, universe!"},
+}
 ```
 
 By default, Highlight-Ta will use the default style for <mark> elements. Create a custom CSS declaration for the \<mark\> element and add them with a "css" key. Create an object of rules with following pattern:
@@ -46,7 +55,7 @@ var patterns = {
 }
 ```
 
-Next, pass the \<div\>, \<textarea\>, RegExp, to initialize a new instance of Highlight-Ta.
+Next, pass the \<div\>, \<textarea\>, Patterns, to initialize a new instance of Highlight-Ta.
 
 ```Javascript
 // was a little work but you made it!
@@ -58,8 +67,10 @@ var patterns = {
 }
 
 var hlghtTa = hlghtta(div, ta, patterns);
+```
 
-
+There are helper methods for functionality.
+```JavaScript
 // Initialize highlight-ta after instantiating
 var hlghtTa = hlghtta();
 
@@ -100,4 +111,4 @@ iOS | Not yet tested
 
 ## License ##
 
-Highlight-Ta is release under the GNU [MIT](https://opensource.org/licenses/MIT) license.
+Highlight-Ta is release under the [MIT](https://opensource.org/licenses/MIT) license.

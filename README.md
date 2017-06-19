@@ -8,7 +8,7 @@ Checkout this [demo](https://taylor-vann.github.io/highlight-ta/). You can exper
 
 ## Details ##
 
-Highlight-Ta is a stand-along script that uses a regex to highlight text inside a textarea. It also adjusts its height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
+Highlight-Ta is a stand-alone script that uses a regular expressions, strings, and functions to highlight text inside a textarea. It also adjusts that textarea's height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
 
 ## Usage ##
 
@@ -52,7 +52,7 @@ var patterns = {
 ```
 
 
-By default, Highlight-Ta will use the default style for <mark> elements. Create a custom CSS declaration for the \<mark\> element and add them with a "css" key:
+By default, Highlight-Ta will use the default style for <mark> elements. Create a custom CSS declaration with a \<mark\> element and include them with a "css" key:
 
 ```CSS
 .myClass0 {
@@ -77,18 +77,18 @@ var patterns = {
 You can create custom functions by carefully following this pattern:
 
 ```JavaScript
-// you don't need pattern or function keys, they'll be ignnored
+// you don't need pattern or function keys, they'll be ignored
 var patterns = {
   "myPattern1": {"function": function(t) {
     var m = "<mark id='some-id' style='some-class'>$&</mark>";
-    t = t.replace(new Regex("[a-z]*", "g"), <);
+    t = t.replace(new Regex("[a-z]*", "g"), m);
 
     return t;
     }
   },
   "myPattern2": {"function": function(t) {
   var m = "&ltmark id='dif-id' style='diff-class'>$&</mark>";
-    t = t.replace(new Regex("[a-z]*", "g"), <);
+    t = t.replace(new Regex("[A-Z]*", "g"), m);
 
     return t;
   }

@@ -30,7 +30,7 @@
     <main>
       <section class="segment">
         <h1>Highlight-Ta</h1>
-        <p>Highlight text in a textarea based on strings or regular expressions while automatically adjusting the textarea to fit its contents.</p>
+        <p>Highlight text in a textarea based on strings or regular expressions while automatically adjusting to fit its contents.</p>
       </section>
 
 
@@ -46,7 +46,7 @@
 
       <section class="segment">
         <h2>About</h2>
-        <p>Highlight-Ta is a powerful closure function with two duties: to highlight selected text inside a textarea and to automatically resize a textarea while following CSS declarations and responsive media queries. You can highlight with multiple strings, regexes, classes and custom functions. It's built to help developers create better web applications. Highlight-Ta is a stand-alone script and does not rely on jQuery or third party libraries.</p>
+        <p>Highlight-Ta is a powerful closure function with two duties: to highlight selected text inside a textarea and to automatically resize that textarea according to CSS declarations and responsive media queries. You can highlight with multiple strings, regexes, classes and custom functions. It's built to help developers create better web applications. Highlight-Ta is a stand-alone script and does not rely on jQuery or third party libraries.</p>
       </section>
 
       <section class="segment">
@@ -59,10 +59,8 @@
   &lt/textarea&gt
 &lt/div&gt</code></pre>
 
-          <li>Provide an object of regexes, strings, or functions matching the following patterns:</li>
-          <pre><code>// an object of objects containing a "pattern" key with a string.
-
-var patterns = {
+          <li>Provide an object of regexes, strings, or functions matching the following pattern:</li>
+          <pre><code>var patterns = {
   "pattern1": {"pattern": "Hello, world!"},
   "pattern2": {"pattern": "Goodbye, universe!"}
 }</code></pre>
@@ -70,9 +68,13 @@ var patterns = {
 
         <h3>Install Highlight-Ta:</h3>
         <p>Add <code>highlight-ta.js</code> to your resources or install via npm.</p>
-        <pre><code>npm install highlight-ta</code></pre>
+
+        <pre><code>npm install highlight-ta
+...
+const hlghtta = require("highlight-ta");</code></pre>
+
         <h3>Create your patterns:</h3>
-        <p>With Highlight-Ta, you use regexes, strings and even create custom functions to highlight your text. This is the most important part and Highlight-Ta's most powerful feature. By default, Highlight-Ta will follow your default "mark" CSS declarations. Otherwise you can provide your own.</p>
+        <p>For Highlight-Ta, you use regexes, strings and even custom functions to highlight your text. This is Highlight-Ta's most powerful feature. By default, Highlight-Ta will follow your default "mark" CSS declarations. Otherwise you can provide your own.</p>
         <pre><code>// an object of objects containing a "pattern" key with a string.
 
 var patterns = {
@@ -88,7 +90,7 @@ var patterns = {
   "pattern1": {"pattern": "Hello, world!",
                "css": "hello-class"},
   "pattern2": {"pattern": "Goodbye, universe!",
-               "class": "goodbye-class"}
+               "css": "goodbye-class"}
 }
 
 
@@ -118,14 +120,14 @@ var patterns = {
 var patterns = {
   "myPattern1": {"function": function(t) {
     var m = "&ltmark id='some-id' style='some-class'&gt$&amp&ltmark&gt";
-    t = t.replace(new Regex("[a-z]*", "g"), <);
+    t = t.replace(new Regex("[a-z]*", "g"), m);
 
     return t;
     }
   },
   "myPattern2": {"function": function(t) {
     var m = "&ltmark id='dif-id' style='diff-class'&gt$&amp&ltmark&gt";
-    t = t.replace(new Regex("[a-z]*", "g"), <);
+    t = t.replace(new Regex("[a-z]*", "g"), m);
 
     return t;
   }
@@ -142,7 +144,9 @@ var patterns = {
   "coolbeans": {"pattern": "Right on, paragon!"}
 }
 
+
 // order of execution:
+
 "42"
 "coolbeans"
 "pattern1"
@@ -155,8 +159,8 @@ var patterns = {
 
 var div = document.getElementById("SomeParentDiv");
 var ta = document.getElementById("ChildTextArea");
-var reg = new RegExp("[A-Z][a-z]*", "g");
-var re = {"myPattern": {"pattern": reg}};
+var re = {"myPattern": {"pattern": "Hello, world!",
+                        "css": "myMark"}};
 
 
 // Instantiate and initialize
@@ -167,13 +171,16 @@ var ht = hlghtta(div, ta, re);
 // Instantiate and initialize without sharp corners
 
 var ht = hlghtta(div, ta, re, false);
+</pre></code>
 
+<p>You can also reset or initialize Highlight-Ta after instantiating.</p>
 
-// Initialize or reset highlight-ta with init()
+<pre><code>// Initialize or reset highlight-ta
 
 var ht = hlghtta();
+
 ht.init(div, ta, re);
-ht.init(div, ta, re, false;
+ht.init(div, ta, re, false);
 </code></pre>
 
 
@@ -181,15 +188,22 @@ ht.init(div, ta, re, false;
         <p>You can set the patterns dynamically with Highlight-Ta. The new patterns will be immediately shown.</p>
         <pre><code>// Make sure you have some patterns or regexes!
 
-var patterns = {
-  "pattern2": {"pattern": "Hello, world!"},
-  "42": {"pattern": "The answer to the question."}
-  "pattern1": {"pattern": "Goodbye, universe!"},
-  "coolbeans": {"pattern": "Right on, paragon!"}
-}
+var reg0 = new RegExp("[A-Z][a-z]*", "g");
+var reg1 = new RegExp("\\b(S|s)[a-z]*", "g");
+var reg2 = new RegExp("\\b(F|f)[a-z]*", "g");
+var reg3 = new RegExp("\\b(T|t)[a-z]*", "g");
+
+var pttrn0 = {"pattern2": {"pattern": reg0},
+              "42": {"pattern": reg1,
+                           "css": "mark--bgrnd-clr--blue"},
+              "pattern1": {"pattern": reg2,
+                           "css": "mark--bgrnd-clr--red"},
+              "coolbeans": {"pattern": reg3,
+                           "css": "mark--bgrnd-clr--green"}
+};
 
 
-// Remove the textarea element and its event listeners
+// Set Highlight-Ta patterns
 
 ht.setHighlights(patterns);
 </code></pre>
@@ -218,6 +232,7 @@ ht.setHighlights(patterns);
         <h3>Destroy Highlight-Ta:</h3>
         <p>When you destroy Highlight-Ta, it will reset the textarea to its original CSS declarations.</p>
         <pre><code>// Remove the highlighted areas and event listeners
+
 ht.destroy();</code></pre>
         <p>The textarea below has a height of 100px and a max-height of 200px. Destroying it will return the height to 100px. Instantiating it will expand the textarea up to (but not over) 200px.</p>
         <section class="demo-section">
@@ -237,10 +252,13 @@ ht.destroy();</code></pre>
 
         <h3>Modify Corners:</h3>
         <p>If an object's border-radius is greater than its border width, the scrollbar will lie over the top and bottom right corners on most browsers. It's not exactly neat. Highlight-ta compensates and squares corners when the scrollbar is present.</p>
-        <pre><code>// Turn sharp corners on (default)
+        <pre><code>// Turn sharp corners on (default behavior)
+
 ta.setCorners(true);
 
+
 // Turn sharp corners off
+
 ta.setCorners(false);
 </code></pre>
 
@@ -262,13 +280,16 @@ ta.setCorners(false);
         <h3>Updating Content:</h3>
         <p>If the content of the textarea is altered with JavaScript, normal event listeners won't recognize the change. highlight-ta can resize whenever you tell it to resize.</p>
         <pre><code>// Update highlight-ta programmatically
+
 ta.update();
 
+
 // as in...
+
 var elem = documents.getElementById("my-ta");
 var ta = autota(elem);
-
 elem.value = "Something changed my value!";
+
 ta.update();
 </code></pre>
         <p>Replace the contents of the second textarea with the contents of the first by pressing the update button below.</p>
