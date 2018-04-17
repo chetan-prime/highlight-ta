@@ -2,23 +2,17 @@
 
 ## Abstract ##
 
-Use a regexes, strings, and functions to highlight text inside a textarea.
+Use regexes, strings, and functions to highlight text inside a textarea.
 
 Checkout this [demo](https://taylor-vann.github.io/highlight-ta/). You can experiment with [regexes](https://taylor-vann.github.io/highlight-ta/regex-test).
 
 ## Details ##
 
-Highlight-Ta is a stand-alone script that uses a regular expressions, strings, and functions to highlight text inside a textarea. It also adjusts that textarea's height to fit its text while following CSS declarations like box-sizing, padding, and min/max height. Highlight-Ta was created for designers and developers who need to highlight text in a textarea without relying on jQuery or weighty third-party libraries.
+Highlight-Ta is a small closure that uses a regular expression or a string to highlight text inside a textarea. It also adjusts that textarea's height to fit its contents. Highlight-Ta does not rely on jQuery or third-party libraries.
 
 ## Usage ##
 
-Grab `highlight-ta.js` and add it to your resources or install via npm:
-
-```JavaScript
-npm install highlight-ta
-...
-const hlghtta = require("highlight-ta");
-```
+Add `highlight-ta.js` to your resources or runv `npm install highlight-ta`:
 
 Start with a \<textarea\> inside a \<div\> element:
 
@@ -127,12 +121,11 @@ If you're wondering, "why not dynamically create a textarea inside the div?" The
 There are also a few helper methods:
 
 ```Javascript
-// Turn corners off
-hlghtTa.setCorners(false);
-// Turn corners on
-hlghtTa.setCorners(true);
+// If you change the value of a textarea using JS,
+// you should update the highlightTa closure.
+hlghtTa.update();
 
-// Remove elements and event listeners
+// Remove elements and event listeners.
 hlghtTa.destroy();
 ```
 
