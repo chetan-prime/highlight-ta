@@ -295,8 +295,8 @@ var hlghtta = function (b, t, re, c) {
   function updateDiv(n) {
     n.style.top = (cPadT + brdrT + padT) + "px";
     n.style.left = (cPadL + brdrL + padL) + "px";
-    n.style.height = (ta.clientHeight - padL - padR) + "px";
-    n.style.width = (ta.clientWidth - padT - padB) + "px";
+    n.style.height = (ta.clientHeight - padT - padB) + "px";
+    n.style.width = (ta.clientWidth - padL - padR) + "px";
   }
 
 
